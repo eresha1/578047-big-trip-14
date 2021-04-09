@@ -8,6 +8,8 @@ import { createPointsListTemplate } from './view/points-list';
 import { createPointTemplate } from './view/point';
 import { createAddPointTemplate } from './view/add-point';
 import { createEditPointTemplate } from './view/edit-point';
+import { generateRoutePoint } from './mock/point.js';
+
 
 const EVENT_COUNT = 3;
 const position = {
@@ -50,3 +52,5 @@ for (let i = 0; i < EVENT_COUNT; i++) {
 }
 
 render(pointsList, createAddPointTemplate());
+
+console.log(generateRoutePoint());
