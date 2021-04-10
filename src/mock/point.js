@@ -18,24 +18,23 @@ import {
 
 import { generateOffersList } from './offer.js';
 
-const getDestinationImages = (arrayLength) => {
+const getDestinationImages = (arrayLength, destination) => {
   return new Array(arrayLength).fill('').map(() => ({
-    src: 'http://picsum.photos/248/152?r=${Math.random()}',
-    alt: 'route-point photo',
+    src: `http://picsum.photos/248/152?r=${Math.random()}`,
+    alt: `${destination} photo`,
   }));
 };
 
 const getDestination = () => {
   const destination = getRandomElement(DESTINATION);
   const description = getRandomQuantityElements(
-    DESCRIPTION, MinCount.DESCRIPTION_COUNT, MaxCount.DESCRIPTION_COUNT).join(' ');
-
-  const photo = getDestinationImages(
-    getRandomInteger(MinCount.IMG_COUNT, MaxCount.IMG_COUNT));
+    DESCRIPTION, MinCount.DESCRIPTION_COUNT, MaxCount.DESCRIPTION_COUNT);
+  const photoPlace = getDestinationImages(
+    getRandomInteger(MinCount.IMG_COUNT, MaxCount.IMG_COUNT), destination);
   return {
     destination,
     description,
-    photo,
+    photoPlace,
   };
 };
 
@@ -49,7 +48,7 @@ const getStartDate = () => {
 const offersList = generateOffersList(OFFERS, MinCount.OFFER_PRICE, MaxCount.OFFER_PRICE, typePoints);
 
 const getPossibleOffers = (offersList, type) => {
-  return offersList.filter((item) => item.typeOffer === type);
+  return  offersList.filter((item) => item.typeOffer === type);
 };
 
 export const generateRoutePoint = () => {

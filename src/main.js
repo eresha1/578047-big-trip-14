@@ -9,6 +9,7 @@ import { createPointTemplate } from './view/point';
 import { createAddPointTemplate } from './view/add-point';
 import { createEditPointTemplate } from './view/edit-point';
 import { generateRoutePoint } from './mock/point.js';
+import { typePoints } from './mock/const.js';
 
 
 const POINTS_COUNT = 10;
@@ -49,12 +50,12 @@ render(pageMainElement, createPointsListTemplate());
 
 const pointsList = document.querySelector('.trip-events__list');
 
-render(pointsList, createEditPointTemplate());
+render(pointsList, createEditPointTemplate(points[1], typePoints));
 
 for (let i = 0; i < POINTS_COUNT; i++) {
   render(pointsList, createPointTemplate(points[i]));
 }
 
-render(pointsList, createAddPointTemplate());
+render(pointsList, createAddPointTemplate(points[1]));
 
 console.log(generateRoutePoint());

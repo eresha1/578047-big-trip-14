@@ -1,5 +1,10 @@
-export const createAddPointTemplate = (point) => {
-  // const {type, icon, startTime, endTime, duration, price, destinationInfo, offers} = point;
+
+export const createAddPointTemplate = (point, types) => {
+  const {type, startTime, endTime, duration, price, destinationInfo, offers} = point;
+console.log(type)
+
+
+
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
     <header class="event__header">

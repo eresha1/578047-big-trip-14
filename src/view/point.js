@@ -1,24 +1,23 @@
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
 
 import {humanizeShortDate, humanizeFullDate, humanizeAttributeDate, humanizeTime, getDuration, getDurationFormat} from '../utils/utils';
 
+const createOffersTemplate = (offers) => {
+  return offers.map((offer) => {
+      return `<li class="event__offer">
+        <span class="event__offer-title">${offer.title}</span>
+        &plus;&euro;&nbsp;
+        <span class="event__offer-price">${offer.priceOffer}</span>
+      </li>`;
+    }).join(`\n`);
+};
+
+const isActive = (status) => {
+  return status ? `event__favorite-btn--active` : ``;
+};
 
 export const createPointTemplate = (point) => {
   const {type, startTime, endTime,  price, destinationInfo, offers, isFavorite} = point;
-
-  const createOffersTemplate = (offers) => {
-    return offers.map((offer) => {
-        return `<li class="event__offer">
-          <span class="event__offer-title">${offer.title}</span>
-          &plus;&euro;&nbsp;
-          <span class="event__offer-price">${offer.priceOffer}</span>
-        </li>`;
-      }).join(`\n`);
-  };
-
-  const isActive = (status) => {
-    return status ? `event__favorite-btn--active` : ``;
-  };
 
   const icon = type.toLowerCase();
   const dateStart = humanizeShortDate(startTime);
