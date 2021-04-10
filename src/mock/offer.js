@@ -10,21 +10,3 @@ export const generateOffersList = (offers, min, max, type) => {
     id: i++,
   }));
 };
-
-// export const generateOffersList = (offers, min, max, types) => {
-
-
-// const isOffer = generateRandomBoolean();
-
-//   let i = 0;
-//   if (isOffer) {
-//     return new Array(getRandomInteger(1, offers.length)).fill('').map(() => ({
-//       title: offers[i],
-//       priceOffer: getRandomInteger(min, max) * 10,
-//       id: i++,
-//     }))
-
-// }
-
-  // return offerList;
-// };

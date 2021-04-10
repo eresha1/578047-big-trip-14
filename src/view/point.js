@@ -1,13 +1,13 @@
 // import dayjs from 'dayjs';
 
-import {humanizeShortDate, humanizeFullDate, humanizeAttributeDate, humanizeTime, getDuration, getDurationFormat} from '../utils/utils';
+import {humanizeShortDate, humanizeFullDate, humanizeAttributeDate, humanizeTime, getDuration, getDurationFormat} from '../utils/utils.js';
 
 const createOffersTemplate = (offers) => {
   return offers.map((offer) => {
       return `<li class="event__offer">
         <span class="event__offer-title">${offer.title}</span>
         &plus;&euro;&nbsp;
-        <span class="event__offer-price">${offer.priceOffer}</span>
+        <span class="event__offer-${offer.priceOffer}">${offer.priceOffer}</span>
       </li>`;
     }).join(`\n`);
 };

@@ -39,7 +39,7 @@ const getDestination = () => {
 };
 
 const getStartDate = () => {
-  const daysGap = getRandomInteger(0, 7);
+  const daysGap = getRandomInteger(-7, 7);
   const hour = getRandomInteger(0, 23);
   const min = getRandomInteger(0, 59);
   return dayjs().add(daysGap, 'day').add(hour, 'hours').add(min, 'm').toDate();
