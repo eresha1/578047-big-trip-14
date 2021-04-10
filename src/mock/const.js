@@ -24,16 +24,15 @@ export const MinCount = {
   IMG_COUNT: 1,
   OFFER_COUNT: 0,
   PRICE: 1,
-  OFFER_PRICE: 30,
+  OFFER_PRICE: 1,
 };
 
 export const MaxCount = {
   DESCRIPTION_COUNT: 5,
   IMG_COUNT: 6,
   OFFER_COUNT: 5,
-  PRICE: 80,
-  OFFER_PRICE: 300,
+  PRICE: 9,
+  OFFER_PRICE: 9,
   DAYS_GAP: 7,
-  PRICE_GAP: 10,
 };
 

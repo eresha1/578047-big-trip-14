@@ -11,7 +11,11 @@ import { createEditPointTemplate } from './view/edit-point';
 import { generateRoutePoint } from './mock/point.js';
 
 
-const EVENT_COUNT = 3;
+const POINTS_COUNT = 10;
+const points = new Array(POINTS_COUNT).fill().map(generateRoutePoint);
+console.log(points)
+
+
 const position = {
   BEFORE_BEGIN: 'beforebegin',
   AFTER_BEGIN: 'afterbegin',
@@ -25,7 +29,7 @@ const render = (container, template, place = position.BEFORE_END) => {
 
 const headerMainElement = document.querySelector('.trip-main');
 
-render(headerMainElement, createInfoTemplate(), 'afterBegin');
+render(headerMainElement, createInfoTemplate(), position.AFTER_BEGIN);
 
 const infoElement = headerMainElement.querySelector('.trip-info');
 render(infoElement, createCostTemplate());
@@ -47,8 +51,8 @@ const pointsList = document.querySelector('.trip-events__list');
 
 render(pointsList, createEditPointTemplate());
 
-for (let i = 0; i < EVENT_COUNT; i++) {
-  render(pointsList, createPointTemplate());
+for (let i = 0; i < POINTS_COUNT; i++) {
+  render(pointsList, createPointTemplate(points[i]));
 }
 
 render(pointsList, createAddPointTemplate());

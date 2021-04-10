@@ -1,11 +1,11 @@
-import {getRandomElement, getRandomIntegerInterval} from '../utils/random.js';
+import {getRandomElement, getRandomInteger} from '../utils/random.js';
 
-export const generateOffersList = (offers, min, max, gap, type) => {
+export const generateOffersList = (offers, min, max, type) => {
   let i = 0;
   return new Array(offers.length).fill('').map(() => ({
     typeOffer: getRandomElement(type),
     title: offers[i],
-    price: getRandomIntegerInterval(min, max, gap),
+    priceOffer: getRandomInteger(min, max) * 10,
     id: i++,
   }));
 };

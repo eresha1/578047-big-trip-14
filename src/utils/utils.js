@@ -4,22 +4,32 @@ export const humanizeShortDate = (date) => {
   return dayjs(date).format('MMM DD');
 };
 
+export const humanizeAttributeDate = (date) => {
+  return dayjs(date).format('YYYY-MM-DD');
+};
+
 export const humanizeFullDate = (date) => {
   return dayjs(date).format('YY/MM/DD HH:mm');
 };
 
-const castomizeTimeFormat = (time) => {
-  return time < 10 ? '0${time}' : '${time}';
+export const humanizeTime = (date) => {
+  return dayjs(date).format('HH:mm');
 };
 
-export const getDurationFormat = (startTime, endTime) => {
-  const diff = dayjs(endTime).diff(startTime, 'minute');
+const castomizeTimeFormat = (time) => {
+  return time < 10 ? '0' + time : time;
+};
 
-  const day = Math.trunc(diff / 1440);
-  const hours = Math.trunc((diff % 1440) / 60);
-  const minutes = (diff % 1440) % 60;
+export const getDuration = (startTime, endTime) => {
+   return dayjs(endTime).diff(startTime, 'minute');
+};
 
-  if (diff >= 1440) {
+export const getDurationFormat = (duration) => {
+  const day = Math.trunc(duration / 1440);
+  const hours = Math.trunc((duration % 1440) / 60);
+  const minutes = (duration % 1440) % 60;
+
+  if (duration >= 1440) {
     return (
       castomizeTimeFormat(day) +
       'D ' +
@@ -28,7 +38,7 @@ export const getDurationFormat = (startTime, endTime) => {
       castomizeTimeFormat(minutes) +
       'M'
     );
-  } else if (diff >= 60) {
+  } else if (duration >= 60) {
     return (
       castomizeTimeFormat(hours) + 'H ' + castomizeTimeFormat(minutes) + 'M'
     );

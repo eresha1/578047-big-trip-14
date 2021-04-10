@@ -10,6 +10,8 @@ export const getRandomElement = (elements) => {
   return elements[randomIndex];
 };
 
+export const generateRandomBoolean = () => Math.random() > 0.5;
+
 export const getRandomIntegerInterval = (a, b, interval) => {
   return Math.floor(getRandomInteger(a, b) / interval) * interval;
 };
@@ -27,3 +29,7 @@ export const getRandomQuantityElements = (elements, min, max) => {
   const arr = elements.slice();
   return getMixedArray(arr).splice(0, getRandomInteger(min, max));
 };
+
+export const generateID = () => {
+  return  Date.now() * Math.random()
+}

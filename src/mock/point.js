@@ -12,7 +12,8 @@ import {
 import {
   getRandomInteger,
   getRandomElement,
-  getRandomQuantityElements
+  getRandomQuantityElements,
+  generateRandomBoolean, generateID
 } from '../utils/random.js';
 
 import { generateOffersList } from './offer.js';
@@ -45,7 +46,7 @@ const getStartDate = () => {
   return dayjs().add(daysGap, 'day').add(hour, 'hours').add(min, 'm').toDate();
 };
 
-const offersList = generateOffersList(OFFERS, MinCount.OFFER_PRICE, MaxCount.OFFER_PRICE, MaxCount.PRICE_GAP, typePoints);
+const offersList = generateOffersList(OFFERS, MinCount.OFFER_PRICE, MaxCount.OFFER_PRICE, typePoints);
 
 const getPossibleOffers = (offersList, type) => {
   return offersList.filter((item) => item.typeOffer === type);
@@ -53,25 +54,24 @@ const getPossibleOffers = (offersList, type) => {
 
 export const generateRoutePoint = () => {
   const type = getRandomElement(typePoints);
-  const icon = type.toLowerCase();
+  const id = generateID();
 
   const destinationInfo = getDestination();
   const startTime = getStartDate();
   const endTime = dayjs(startTime)
     .add(getRandomInteger(10, 2000), 'minute')
     .toDate();
-  const duration = endTime - startTime;
   const price = getRandomInteger(MinCount.PRICE, MaxCount.PRICE) * 10;
   const offers = getPossibleOffers(offersList, type);
-
+  const isFavorite = generateRandomBoolean();
   return {
+    id,
     type,
-    icon,
     startTime,
     endTime,
-    duration,
     price,
     destinationInfo,
     offers,
+    isFavorite,
   };
 };
