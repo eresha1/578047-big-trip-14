@@ -8,29 +8,26 @@ import { createPointsListTemplate } from './view/points-list';
 import { createPointTemplate } from './view/point';
 import { createAddPointTemplate } from './view/add-point';
 import { createEditPointTemplate } from './view/edit-point';
+import { generateRoutePoint } from './mock/point.js';
+import { typePoints } from './mock/const.js';
+import { render, getSortStartDates } from './utils/utils.js';
+import { position } from './utils/const.js';
 
-const EVENT_COUNT = 3;
-const position = {
-  BEFORE_BEGIN: 'beforebegin',
-  AFTER_BEGIN: 'afterbegin',
-  BEFORE_END: 'beforeend',
-  AFTER_END: 'afterend',
-};
-
-const render = (container, template, place = position.BEFORE_END) => {
-  container.insertAdjacentHTML(place, template);
-};
+const POINTS_COUNT = 3;
+const points = new Array(POINTS_COUNT).fill().map(generateRoutePoint);
+const sortPoints = getSortStartDates(points);
 
 const headerMainElement = document.querySelector('.trip-main');
 
-render(headerMainElement, createInfoTemplate(), 'afterBegin');
+render(headerMainElement, createInfoTemplate(sortPoints), position.AFTER_BEGIN);
 
 const infoElement = headerMainElement.querySelector('.trip-info');
-render(infoElement, createCostTemplate());
+render(infoElement, createCostTemplate(points));
 
 const controlsElement = headerMainElement.querySelector('.trip-controls');
 
 const navigationElement = controlsElement.querySelector('.trip-controls__navigation');
+
 render(navigationElement, createNavigationTemplate());
 
 const filtersElement = controlsElement.querySelector('.trip-controls__filters');
@@ -43,10 +40,10 @@ render(pageMainElement, createPointsListTemplate());
 
 const pointsList = document.querySelector('.trip-events__list');
 
-render(pointsList, createEditPointTemplate());
+render(pointsList, createEditPointTemplate(points[0], typePoints));
 
-for (let i = 0; i < EVENT_COUNT; i++) {
-  render(pointsList, createPointTemplate());
+for (let i = 0; i < POINTS_COUNT; i++) {
+  render(pointsList, createPointTemplate(sortPoints[i]));
 }
 
-render(pointsList, createAddPointTemplate());
+render(pointsList, createAddPointTemplate(points[0]));
