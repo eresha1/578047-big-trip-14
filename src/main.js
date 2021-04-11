@@ -10,26 +10,11 @@ import { createAddPointTemplate } from './view/add-point';
 import { createEditPointTemplate } from './view/edit-point';
 import { generateRoutePoint } from './mock/point.js';
 import { typePoints } from './mock/const.js';
-import {getSortStartDates} from './utils/utils.js';
-
-
-
+import { render, position, getSortStartDates } from './utils/utils.js';
 
 const POINTS_COUNT = 10;
 const points = new Array(POINTS_COUNT).fill().map(generateRoutePoint);
 const sortPoints = getSortStartDates(points);
-console.log(points);
-
-const position = {
-  BEFORE_BEGIN: 'beforebegin',
-  AFTER_BEGIN: 'afterbegin',
-  BEFORE_END: 'beforeend',
-  AFTER_END: 'afterend',
-};
-
-const render = (container, template, place = position.BEFORE_END) => {
-  container.insertAdjacentHTML(place, template);
-};
 
 const headerMainElement = document.querySelector('.trip-main');
 
@@ -41,6 +26,7 @@ render(infoElement, createCostTemplate(points));
 const controlsElement = headerMainElement.querySelector('.trip-controls');
 
 const navigationElement = controlsElement.querySelector('.trip-controls__navigation');
+
 render(navigationElement, createNavigationTemplate());
 
 const filtersElement = controlsElement.querySelector('.trip-controls__filters');
@@ -60,5 +46,3 @@ for (let i = 0; i < POINTS_COUNT; i++) {
 }
 
 render(pointsList, createAddPointTemplate(points[0]));
-
-console.log(generateRoutePoint());

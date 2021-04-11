@@ -1,4 +1,4 @@
-import {getRandomElement, getRandomInteger, generateRandomBoolean} from '../utils/random.js';
+import {getRandomElement, getRandomInteger} from '../utils/random.js';
 
 export const generateOffersList = (offers, min, max, type) => {
 

@@ -7,7 +7,7 @@ export const createInputTypeItemMarkup = (types) => {
         <label class="event__type-label  event__type-label--${typeLowerCase}" for="event-type-${typeLowerCase}-1">${typePoint}</label>
     </div>`;
     })
-    .join(`\n`);
+    .join('\n');
 };
 
 export const createOptionValueMarkup = (destinations) => {
@@ -16,7 +16,7 @@ export const createOptionValueMarkup = (destinations) => {
       return `
     <option value="${destination}"></option>`;
     })
-    .join(`\n`);
+    .join('\n');
 };
 
 export const createOffersMarkup = (offers) => {
@@ -31,11 +31,10 @@ export const createOffersMarkup = (offers) => {
     </label>
     </div>`;
     })
-    .join(`\n`);
+    .join('\n');
 };
 
 export const isOffers = (offers) => {
-  console.log(offers);
   return offers.length > 0
     ? `<section class="event__section  event__section--offers">
         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
@@ -43,7 +42,7 @@ export const isOffers = (offers) => {
         ${createOffersMarkup(offers)}
         </div>
       </section>`
-    : ``;
+    : '';
 };
 
 export const createPhotoListMarkup = (photosList) => {
@@ -53,7 +52,7 @@ export const createPhotoListMarkup = (photosList) => {
         index + 1
       }">`;
     })
-    .join(`\n`);
+    .join('\n');
 };
 
 export const createDestinationMarkup = (destination) => {
