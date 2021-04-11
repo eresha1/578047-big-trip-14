@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import {getInfoDate} from '../utils/time-format.js';
 
 const createInfoTitleMarkup = (points) => {
   let route = '';
@@ -16,19 +16,7 @@ const createInfoTitleMarkup = (points) => {
 };
 
 const createInfoDatesMarkup = (points) => {
-  const startDate = dayjs(points[0].startTime);
-  const endDate = dayjs(points[points.length - 1].endTime);
-  if (startDate.month() === endDate.month()) {
-    return (
-      startDate.format('MMM DD') + '&nbsp;&mdash;&nbsp;' + endDate.format('DD')
-    );
-  } else {
-    return (
-      startDate.format('MMM DD') +
-      '&nbsp;&mdash;&nbsp;' +
-      endDate.format('MMM DD')
-    );
-  }
+  return getInfoDate(points[0].startTime, points[points.length - 1].endTime);
 };
 
 export const createInfoTemplate = (points) => {

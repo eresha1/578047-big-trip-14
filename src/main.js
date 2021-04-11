@@ -10,9 +10,10 @@ import { createAddPointTemplate } from './view/add-point';
 import { createEditPointTemplate } from './view/edit-point';
 import { generateRoutePoint } from './mock/point.js';
 import { typePoints } from './mock/const.js';
-import { render, position, getSortStartDates } from './utils/utils.js';
+import { render, getSortStartDates } from './utils/utils.js';
+import { position } from './utils/const.js';
 
-const POINTS_COUNT = 10;
+const POINTS_COUNT = 3;
 const points = new Array(POINTS_COUNT).fill().map(generateRoutePoint);
 const sortPoints = getSortStartDates(points);
 

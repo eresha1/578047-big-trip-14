@@ -11,6 +11,16 @@ export const filtersTitle = [
   },
 ];
 
+export const navigationTitle = [
+  {
+    title: 'Table',
+    isActive: true,
+  },
+  {
+    title: 'Stats',
+  },
+];
+
 export const sorting = [
   {
     title: 'day',
@@ -31,3 +41,11 @@ export const sorting = [
     isDisabled: true,
   },
 ];
+
+export const position = {
+  BEFORE_BEGIN: 'beforebegin',
+  AFTER_BEGIN: 'afterbegin',
+  BEFORE_END: 'beforeend',
+  AFTER_END: 'afterend',
+};
+

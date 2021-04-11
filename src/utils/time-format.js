@@ -46,3 +46,9 @@ export const getDurationFormat = (duration) => {
     return castomizeTimeFormat(minutes) + 'M';
   }
 };
+
+export const getInfoDate = (startTime, endTime) => {
+  const startDate = dayjs(startTime);
+  const endDate = dayjs(endTime);
+  return startDate.month() === endDate.month() ? startDate.format('MMM DD') + '&nbsp;&mdash;&nbsp;' + endDate.format('DD') : startDate.format('MMM DD') + '&nbsp;&mdash;&nbsp;' + endDate.format('MMM DD');
+};
