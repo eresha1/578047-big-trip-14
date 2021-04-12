@@ -1,19 +1,17 @@
-import { navigationTitle } from '../utils/const.js';
+const createNavigationItemMarkup = (item, isActive) => {
+  const {title} = item;
 
-const createNavigationItem = (items) => {
-  return items
-    .map((item) => {
-      const { title, isActive } = item;
-
-      return `<a class="trip-tabs__btn ${
-        isActive === true ? 'trip-tabs__btn--active' : ''
-      }" href="#">${title}</a>`;
-    })
-    .join('\n');
+  return `<a class="trip-tabs__btn ${
+    isActive ? 'trip-tabs__btn--active' : ''
+  }" href="#">${title}</a>`;
 };
 
-export const createNavigationTemplate = () => {
+export const createNavigationTemplate = (itemsTitle) => {
+  const navigationItemsTemplate = itemsTitle
+    .map((item, index) => createNavigationItemMarkup(item, index === 0))
+    .join('\n');
+
   return `<nav class="trip-controls__trip-tabs  trip-tabs">
-  ${createNavigationItem(navigationTitle)}
-</nav>`;
+  ${navigationItemsTemplate}
+  </nav>`;
 };

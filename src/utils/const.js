@@ -1,7 +1,6 @@
 export const filtersTitle = [
   {
     title: 'Everything',
-    isChecked: true,
   },
   {
     title: 'Future',
@@ -14,14 +13,13 @@ export const filtersTitle = [
 export const navigationTitle = [
   {
     title: 'Table',
-    isActive: true,
   },
   {
     title: 'Stats',
   },
 ];
 
-export const sorting = [
+export const sortingTitle = [
   {
     title: 'day',
     isChecked: true,

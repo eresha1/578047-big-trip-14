@@ -11,7 +11,7 @@ import { createEditPointTemplate } from './view/edit-point';
 import { generateRoutePoint } from './mock/point.js';
 import { typePoints } from './mock/const.js';
 import { render, getSortStartDates } from './utils/utils.js';
-import { position } from './utils/const.js';
+import { position, filtersTitle, navigationTitle, sortingTitle } from './utils/const.js';
 
 const POINTS_COUNT = 3;
 const points = new Array(POINTS_COUNT).fill().map(generateRoutePoint);
@@ -28,14 +28,14 @@ const controlsElement = headerMainElement.querySelector('.trip-controls');
 
 const navigationElement = controlsElement.querySelector('.trip-controls__navigation');
 
-render(navigationElement, createNavigationTemplate());
+render(navigationElement, createNavigationTemplate(navigationTitle));
 
 const filtersElement = controlsElement.querySelector('.trip-controls__filters');
-render(filtersElement, createFiltersTemplate());
+render(filtersElement, createFiltersTemplate(filtersTitle));
 
 const pageMainElement = document.querySelector('.page-main .trip-events');
 
-render(pageMainElement, createSortingTemplate());
+render(pageMainElement, createSortingTemplate(sortingTitle));
 render(pageMainElement, createPointsListTemplate());
 
 const pointsList = document.querySelector('.trip-events__list');
