@@ -1,7 +1,25 @@
-import { position } from './const.js';
+import { RenderPosition } from './const.js';
 
-export const render = (container, template, place = position.BEFORE_END) => {
+export const render = (container, template, place = RenderPosition.BEFORE_END) => {
   container.insertAdjacentHTML(place, template);
+};
+
+export const renderElement = (container, element, place) => {
+  switch (place) {
+    case RenderPosition.AFTER_BEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFORE_END:
+      container.append(element);
+      break;
+  }
+};
+
+export const createElement = (template) => {
+  const newElement = document.createElement('div');
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
 };
 
 export const getTotalCost = (points) => {

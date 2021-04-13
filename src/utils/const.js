@@ -40,10 +40,15 @@ export const sortingTitle = [
   },
 ];
 
-export const position = {
-  BEFORE_BEGIN: 'beforebegin',
+// export const position = {
+//   BEFORE_BEGIN: 'beforebegin',
+//   AFTER_BEGIN: 'afterbegin',
+//   BEFORE_END: 'beforeend',
+//   AFTER_END: 'afterend',
+// };
+
+
+export const RenderPosition = {
   AFTER_BEGIN: 'afterbegin',
   BEFORE_END: 'beforeend',
-  AFTER_END: 'afterend',
 };
-

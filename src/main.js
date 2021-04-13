@@ -1,17 +1,17 @@
 import { createInfoTemplate } from './view/info.js';
 import { createCostTemplate } from './view/cost.js';
 import { createNavigationTemplate } from './view/navigation.js';
-import { createFiltersTemplate } from './view/filters.js';
+import FiltersView from './view/filters.js';
 import { createSortingTemplate } from './view/sorting.js';
-import { createPointsListTemplate } from './view/points-list';
+import PointsListView from './view/points-list';
 
 import { createPointTemplate } from './view/point';
 import { createAddPointTemplate } from './view/add-point';
 import { createEditPointTemplate } from './view/edit-point';
 import { generateRoutePoint } from './mock/point.js';
 import { typePoints } from './mock/const.js';
-import { render, getSortStartDates } from './utils/utils.js';
-import { position, filtersTitle, navigationTitle, sortingTitle } from './utils/const.js';
+import { render, renderElement, getSortStartDates } from './utils/utils.js';
+import { RenderPosition, filtersTitle, navigationTitle, sortingTitle } from './utils/const.js';
 
 const POINTS_COUNT = 3;
 const points = new Array(POINTS_COUNT).fill().map(generateRoutePoint);
@@ -19,7 +19,7 @@ const sortPoints = getSortStartDates(points);
 
 const headerMainElement = document.querySelector('.trip-main');
 
-render(headerMainElement, createInfoTemplate(sortPoints), position.AFTER_BEGIN);
+render(headerMainElement, createInfoTemplate(sortPoints), RenderPosition.AFTER_BEGIN);
 
 const infoElement = headerMainElement.querySelector('.trip-info');
 render(infoElement, createCostTemplate(points));
@@ -30,13 +30,15 @@ const navigationElement = controlsElement.querySelector('.trip-controls__navigat
 
 render(navigationElement, createNavigationTemplate(navigationTitle));
 
-const filtersElement = controlsElement.querySelector('.trip-controls__filters');
-render(filtersElement, createFiltersTemplate(filtersTitle));
+const filtersBlock = controlsElement.querySelector('.trip-controls__filters');
+
+renderElement(filtersBlock, new FiltersView(filtersTitle).getElement(), RenderPosition.BEFORE_END);
 
 const pageMainElement = document.querySelector('.page-main .trip-events');
 
 render(pageMainElement, createSortingTemplate(sortingTitle));
-render(pageMainElement, createPointsListTemplate());
+
+renderElement(pageMainElement, new PointsListView().getElement(), RenderPosition.BEFORE_END);
 
 const pointsList = document.querySelector('.trip-events__list');
 
