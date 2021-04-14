@@ -1,3 +1,5 @@
+import {createElement} from '../utils/utils.js';
+
 const createSortingItemMarkup = (sort, isChecked) => {
   const {title, isDisabled} = sort;
 
@@ -7,7 +9,7 @@ const createSortingItemMarkup = (sort, isChecked) => {
       </div>`;
 };
 
-export const createSortingTemplate = (sortsTitle) => {
+const createSortingTemplate = (sortsTitle) => {
 
   const sortsTemplate = sortsTitle.map((item, index) => createSortingItemMarkup(item, index === 0))
     .join('\n');
@@ -15,3 +17,26 @@ export const createSortingTemplate = (sortsTitle) => {
     ${sortsTemplate}
   </form>`;
 };
+
+export default class Sorting {
+  constructor(sorts) {
+    this._sorts = sorts;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createSortingTemplate(this._sorts);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+

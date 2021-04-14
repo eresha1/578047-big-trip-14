@@ -1,3 +1,5 @@
+import {createElement} from '../utils/utils.js';
+
 const createNavigationItemMarkup = (item, isActive) => {
   const {title} = item;
 
@@ -6,7 +8,7 @@ const createNavigationItemMarkup = (item, isActive) => {
   }" href="#">${title}</a>`;
 };
 
-export const createNavigationTemplate = (itemsTitle) => {
+const createNavigationTemplate = (itemsTitle) => {
   const navigationItemsTemplate = itemsTitle
     .map((item, index) => createNavigationItemMarkup(item, index === 0))
     .join('\n');
@@ -15,3 +17,26 @@ export const createNavigationTemplate = (itemsTitle) => {
   ${navigationItemsTemplate}
   </nav>`;
 };
+
+export default class Navigation {
+  constructor(navigationItems) {
+    this._navigationItems = navigationItems;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createNavigationTemplate(this._navigationItems);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+

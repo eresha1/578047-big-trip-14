@@ -1,10 +1,6 @@
 import { RenderPosition } from './const.js';
 
-export const render = (container, template, place = RenderPosition.BEFORE_END) => {
-  container.insertAdjacentHTML(place, template);
-};
-
-export const renderElement = (container, element, place) => {
+export const render = (container, element, place) => {
   switch (place) {
     case RenderPosition.AFTER_BEGIN:
       container.prepend(element);

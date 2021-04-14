@@ -1,3 +1,4 @@
+import {createElement} from '../utils/utils.js';
 import {getInfoDate} from '../utils/time-format.js';
 
 const createInfoTitleMarkup = (points) => {
@@ -19,7 +20,7 @@ const createInfoDatesMarkup = (points) => {
   return getInfoDate(points[0].startTime, points[points.length - 1].endTime);
 };
 
-export const createInfoTemplate = (points) => {
+const createInfoTemplate = (points) => {
   return `<section class="trip-main__trip-info  trip-info">
   <div class="trip-info__main">
     <h1 class="trip-info__title">${createInfoTitleMarkup(points)}</h1>
@@ -28,3 +29,26 @@ export const createInfoTemplate = (points) => {
   </div>
 </section>`;
 };
+
+export default class Info {
+  constructor(points) {
+    this._points = points;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createInfoTemplate(this._points);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+

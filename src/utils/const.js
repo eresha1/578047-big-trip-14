@@ -10,7 +10,7 @@ export const filtersTitle = [
   },
 ];
 
-export const navigationTitle = [
+export const navigationItemsTitle = [
   {
     title: 'Table',
   },
@@ -19,7 +19,7 @@ export const navigationTitle = [
   },
 ];
 
-export const sortingTitle = [
+export const sortsTitle = [
   {
     title: 'day',
     isChecked: true,
