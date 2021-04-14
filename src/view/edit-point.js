@@ -23,7 +23,8 @@ const createEditPointTemplate = (point) => {
   const timeStartValue = humanizeFullDate(startTime);
   const timeEndValue = humanizeFullDate(endTime);
 
-  return `<form class="event event--edit" action="#" method="post">
+  return `<li class="trip-events__item">
+  <form class="event event--edit" action="#" method="post">
     <header class="event__header">
       <div class="event__type-wrapper">
         <label class="event__type  event__type-btn" for="event-type-toggle-1">
@@ -75,7 +76,8 @@ const createEditPointTemplate = (point) => {
     <section class="event__details">
         ${isOffers(offers)}
         ${createDestinationMarkup(destinationInfo)}
-  </form>`;
+  </form>;
+  </li>`;
 };
 
 export default class EditPoint {
