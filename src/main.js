@@ -5,7 +5,6 @@ import FiltersView from './view/filters.js';
 import SortingView from './view/sorting.js';
 import PointsListView from './view/points-list.js';
 import ListEmptyView from './view/list-empty.js';
-
 import PointView from './view/point.js';
 // import AddPointView from './view/add-point.js';
 import EditPointView from './view/edit-point.js';
@@ -16,6 +15,29 @@ import { RenderPosition, filtersTitle, navigationItemsTitle, sortsTitle } from '
 const POINTS_COUNT = 3;
 const points = new Array(POINTS_COUNT).fill().map(generateRoutePoint);
 const sortPoints = getSortStartDates(points);
+const headerMainElement = document.querySelector('.trip-main');
+const controlsElement = headerMainElement.querySelector('.trip-controls');
+const navigationElement = controlsElement.querySelector('.trip-controls__navigation');
+const filtersBlock = controlsElement.querySelector('.trip-controls__filters');
+
+const pageMainElement = document.querySelector('.page-main .trip-events');
+
+const renderTripInfo = () => {
+  render(headerMainElement, new InfoView(sortPoints).getElement(), RenderPosition.AFTER_BEGIN);
+
+  const infoElement = headerMainElement.querySelector('.trip-info');
+  render(infoElement, new CostView(points).getElement(), RenderPosition.BEFORE_END);
+};
+
+const renderPointsSection = () => {
+  render(pageMainElement, new SortingView(sortsTitle).getElement(), RenderPosition.BEFORE_END);
+
+  const pointsListComponent = new PointsListView();
+
+  render(pageMainElement, pointsListComponent.getElement(), RenderPosition.BEFORE_END);
+
+  sortPoints.forEach((point) => renderPoint(pointsListComponent.getElement(), point));
+};
 
 const renderPoint = (pointListElement, point) => {
   const pointComponent = new PointView(point);
@@ -56,39 +78,12 @@ const renderPoint = (pointListElement, point) => {
   render(pointListElement, pointComponent.getElement(), RenderPosition.BEFORE_END);
 };
 
-const headerMainElement = document.querySelector('.trip-main');
-
-const controlsElement = headerMainElement.querySelector('.trip-controls');
-
-const navigationElement = controlsElement.querySelector('.trip-controls__navigation');
-
 render(navigationElement, new NavigationView(navigationItemsTitle).getElement(), RenderPosition.BEFORE_END);
-
-const filtersBlock = controlsElement.querySelector('.trip-controls__filters');
-
 render(filtersBlock, new FiltersView(filtersTitle).getElement(), RenderPosition.BEFORE_END);
 
-const pageMainElement = document.querySelector('.page-main .trip-events');
-
-if (points.length === 0) {
-  render(pageMainElement, new ListEmptyView().getElement(), RenderPosition.BEFORE_END);
+if (points.length > 0) {
+  renderTripInfo();
+  renderPointsSection();
 } else {
-
-  render(headerMainElement, new InfoView(sortPoints).getElement(), RenderPosition.AFTER_BEGIN);
-
-  const infoElement = headerMainElement.querySelector('.trip-info');
-  render(infoElement, new CostView(points).getElement(), RenderPosition.BEFORE_END);
-
-  render(pageMainElement, new SortingView(sortsTitle).getElement(), RenderPosition.BEFORE_END);
-
-  const pointsListComponent = new PointsListView();
-
-  render(pageMainElement, pointsListComponent.getElement(), RenderPosition.BEFORE_END);
-
-  for (let i = 0; i < POINTS_COUNT; i++) {
-    renderPoint(pointsListComponent.getElement(), sortPoints[i]);
-  }
+  render(pageMainElement, new ListEmptyView().getElement(), RenderPosition.BEFORE_END);
 }
-
-// render(pointsListComponent.getElement(), new AddPointView(points[0]).getElement(), RenderPosition.BEFORE_END);
-
