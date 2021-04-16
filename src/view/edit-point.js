@@ -1,3 +1,4 @@
+import {createElement} from '../utils/utils.js';
 import { typePoints, DESTINATION } from '../mock/const.js';
 import { humanizeFullDate } from '../utils/time-format';
 import {
@@ -7,7 +8,7 @@ import {
   createDestinationMarkup
 } from '../utils/points.js';
 
-export const createEditPointTemplate = (point) => {
+const createEditPointTemplate = (point) => {
   const {
     type,
     startTime,
@@ -22,7 +23,7 @@ export const createEditPointTemplate = (point) => {
   const timeStartValue = humanizeFullDate(startTime);
   const timeEndValue = humanizeFullDate(endTime);
 
-  return `
+  return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
     <header class="event__header">
       <div class="event__type-wrapper">
@@ -75,5 +76,29 @@ export const createEditPointTemplate = (point) => {
     <section class="event__details">
         ${isOffers(offers)}
         ${createDestinationMarkup(destinationInfo)}
-  </form>`;
+  </form>;
+  </li>`;
 };
+
+export default class EditPoint {
+  constructor(point) {
+    this._point = point;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEditPointTemplate(this._point);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+

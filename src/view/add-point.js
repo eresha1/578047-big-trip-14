@@ -1,3 +1,5 @@
+import {createElement} from '../utils/utils.js';
+
 import { typePoints, DESTINATION } from '../mock/const.js';
 import { humanizeFullDate } from '../utils/time-format';
 import {
@@ -7,7 +9,7 @@ import {
   createDestinationMarkup
 } from '../utils/points.js';
 
-export const createAddPointTemplate = (point) => {
+const createAddPointTemplate = (point) => {
   const {
     type,
     startTime,
@@ -73,3 +75,26 @@ export const createAddPointTemplate = (point) => {
     ${createDestinationMarkup(destinationInfo)}
   </form>`;
 };
+
+export default class AddPoint {
+  constructor(point) {
+    this._point = point;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createAddPointTemplate(this._point);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+

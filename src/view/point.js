@@ -1,3 +1,5 @@
+import {createElement} from '../utils/utils.js';
+
 import {
   humanizeShortDate,
   humanizeAttributeDate,
@@ -18,7 +20,7 @@ const createOffersTemplate = (offers) => {
     .join('\n');
 };
 
-export const createPointTemplate = (point) => {
+const createPointTemplate = (point) => {
   const {
     type,
     startTime,
@@ -40,7 +42,7 @@ export const createPointTemplate = (point) => {
   const timeEndAttribute = humanizeTime(endTime);
   const duration = getDurationFormat(getDuration(startTime, endTime));
 
-  return ` <li class="trip-events__item">
+  return `<li class="trip-events__item">
   <div class="event">
     <time class="event__date" datetime="${dateStartAttribute}">${dateStart}</time>
     <div class="event__type">
@@ -76,3 +78,26 @@ export const createPointTemplate = (point) => {
   </div>
 </li>`;
 };
+
+export default class Point {
+  constructor(point) {
+    this._point = point;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createPointTemplate(this._point);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+

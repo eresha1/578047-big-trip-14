@@ -1,7 +1,6 @@
 export const filtersTitle = [
   {
     title: 'Everything',
-    isChecked: true,
   },
   {
     title: 'Future',
@@ -11,17 +10,16 @@ export const filtersTitle = [
   },
 ];
 
-export const navigationTitle = [
+export const navigationItemsTitle = [
   {
     title: 'Table',
-    isActive: true,
   },
   {
     title: 'Stats',
   },
 ];
 
-export const sorting = [
+export const sortsTitle = [
   {
     title: 'day',
     isChecked: true,
@@ -42,10 +40,15 @@ export const sorting = [
   },
 ];
 
-export const position = {
-  BEFORE_BEGIN: 'beforebegin',
+// export const position = {
+//   BEFORE_BEGIN: 'beforebegin',
+//   AFTER_BEGIN: 'afterbegin',
+//   BEFORE_END: 'beforeend',
+//   AFTER_END: 'afterend',
+// };
+
+
+export const RenderPosition = {
   AFTER_BEGIN: 'afterbegin',
   BEFORE_END: 'beforeend',
-  AFTER_END: 'afterend',
 };
-
