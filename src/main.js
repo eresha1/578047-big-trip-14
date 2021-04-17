@@ -58,18 +58,17 @@ const renderPoint = (pointListElement, point) => {
     }
   };
 
-  pointComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+  pointComponent.setRollupBtnClickHandler(() => {
     replacePointToForm();
     document.addEventListener('keydown', onEscKeyDown);
   });
 
-  editPointComponent.getElement().addEventListener('submit', (evt) => {
-    evt.preventDefault();
+  editPointComponent.setFormSubmitHandler(() => {
     replaceFormToPoint();
     document.removeEventListener('keydown', onEscKeyDown);
   });
 
-  editPointComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+  editPointComponent.setFormRollupBtnClickHandler(() => {
     replaceFormToPoint();
     document.removeEventListener('keydown', onEscKeyDown);
   });
