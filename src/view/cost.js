@@ -1,5 +1,5 @@
 import AbstractView  from '../view/abstract.js';
-import {getTotalCost} from '../utils/utils.js';
+import {getTotalCost} from '../utils/common.js';
 
 const createCostTemplate = (points) => {
   const totalCost = getTotalCost(points);
