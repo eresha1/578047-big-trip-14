@@ -6,13 +6,12 @@ import SortingView from './view/sorting.js';
 import PointsListView from './view/points-list.js';
 import ListEmptyView from './view/list-empty.js';
 import PointView from './view/point.js';
-// import AddPointView from './view/add-point.js';
 import EditPointView from './view/edit-point.js';
 import { generateRoutePoint } from './mock/point.js';
 import { render, getSortStartDates } from './utils/utils.js';
 import { RenderPosition, filtersTitle, navigationItemsTitle, sortsTitle } from './utils/const.js';
 
-const POINTS_COUNT = 3;
+const POINTS_COUNT = 5;
 const points = new Array(POINTS_COUNT).fill().map(generateRoutePoint);
 const sortPoints = getSortStartDates(points);
 const headerMainElement = document.querySelector('.trip-main');

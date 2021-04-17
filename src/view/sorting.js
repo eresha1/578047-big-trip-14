@@ -1,4 +1,4 @@
-import {createElement} from '../utils/utils.js';
+import AbstractView  from '../view/abstract.js';
 
 const createSortingItemMarkup = (sort, isChecked) => {
   const {title, isDisabled} = sort;
@@ -18,25 +18,14 @@ const createSortingTemplate = (sortsTitle) => {
   </form>`;
 };
 
-export default class Sorting {
+export default class Sorting extends AbstractView {
   constructor(sorts) {
+    super();
     this._sorts = sorts;
-    this._element = null;
   }
 
   getTemplate() {
     return createSortingTemplate(this._sorts);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

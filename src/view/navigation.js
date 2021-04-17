@@ -1,4 +1,4 @@
-import {createElement} from '../utils/utils.js';
+import AbstractView  from '../view/abstract.js';
 
 const createNavigationItemMarkup = (item, isActive) => {
   const {title} = item;
@@ -18,25 +18,14 @@ const createNavigationTemplate = (itemsTitle) => {
   </nav>`;
 };
 
-export default class Navigation {
+export default class Navigation extends AbstractView {
   constructor(navigationItems) {
+    super();
     this._navigationItems = navigationItems;
-    this._element = null;
   }
 
   getTemplate() {
     return createNavigationTemplate(this._navigationItems);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

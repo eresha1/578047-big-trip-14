@@ -1,4 +1,4 @@
-import {createElement} from '../utils/utils.js';
+import AbstractView  from '../view/abstract.js';
 import { typePoints, DESTINATION } from '../mock/const.js';
 import { humanizeFullDate } from '../utils/time-format';
 import {
@@ -80,25 +80,14 @@ const createEditPointTemplate = (point) => {
   </li>`;
 };
 
-export default class EditPoint {
+export default class EditPoint extends AbstractView {
   constructor(point) {
+    super();
     this._point = point;
-    this._element = null;
   }
 
   getTemplate() {
     return createEditPointTemplate(this._point);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 
