@@ -1,5 +1,4 @@
-import {createElement} from '../utils/utils.js';
-
+import AbstractView  from '../view/abstract.js';
 import { typePoints, DESTINATION } from '../mock/const.js';
 import { humanizeFullDate } from '../utils/time-format';
 import {
@@ -76,25 +75,14 @@ const createAddPointTemplate = (point) => {
   </form>`;
 };
 
-export default class AddPoint {
+export default class AddPoint extends AbstractView {
   constructor(point) {
+    super();
     this._point = point;
-    this._element = null;
   }
 
   getTemplate() {
     return createAddPointTemplate(this._point);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

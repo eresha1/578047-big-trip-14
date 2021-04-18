@@ -1,4 +1,4 @@
-import {createElement} from '../utils/utils.js';
+import AbstractView  from '../view/abstract.js';
 import { typePoints, DESTINATION } from '../mock/const.js';
 import { humanizeFullDate } from '../utils/time-format';
 import {
@@ -80,25 +80,36 @@ const createEditPointTemplate = (point) => {
   </li>`;
 };
 
-export default class EditPoint {
+export default class EditPoint extends AbstractView {
   constructor(point) {
+    super();
     this._point = point;
-    this._element = null;
+    this._formSubmitHandler = this._formSubmitHandler.bind(this);
+    this._formClickHandler = this._formClickHandler.bind(this);
   }
 
   getTemplate() {
     return createEditPointTemplate(this._point);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
+  _formSubmitHandler(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit();
   }
 
-  removeElement() {
-    this._element = null;
+  setFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().addEventListener('submit', this._formSubmitHandler);
+  }
+
+  _formClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.formClick();
+  }
+
+  setFormRollupBtnClickHandler(callback) {
+    this._callback.formClick = callback;
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._formClickHandler);
   }
 }
 

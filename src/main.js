@@ -6,13 +6,13 @@ import SortingView from './view/sorting.js';
 import PointsListView from './view/points-list.js';
 import ListEmptyView from './view/list-empty.js';
 import PointView from './view/point.js';
-// import AddPointView from './view/add-point.js';
 import EditPointView from './view/edit-point.js';
 import { generateRoutePoint } from './mock/point.js';
-import { render, getSortStartDates } from './utils/utils.js';
-import { RenderPosition, filtersTitle, navigationItemsTitle, sortsTitle } from './utils/const.js';
+import { getSortStartDates } from './utils/common.js';
+import { RenderPosition, render, replace } from './utils/render.js';
+import { filtersTitle, navigationItemsTitle, sortsTitle } from './utils/const.js';
 
-const POINTS_COUNT = 3;
+const POINTS_COUNT = 5;
 const points = new Array(POINTS_COUNT).fill().map(generateRoutePoint);
 const sortPoints = getSortStartDates(points);
 const headerMainElement = document.querySelector('.trip-main');
@@ -23,20 +23,10 @@ const filtersBlock = controlsElement.querySelector('.trip-controls__filters');
 const pageMainElement = document.querySelector('.page-main .trip-events');
 
 const renderTripInfo = () => {
-  render(headerMainElement, new InfoView(sortPoints).getElement(), RenderPosition.AFTER_BEGIN);
+  render(headerMainElement, new InfoView(sortPoints), RenderPosition.AFTER_BEGIN);
 
   const infoElement = headerMainElement.querySelector('.trip-info');
-  render(infoElement, new CostView(points).getElement(), RenderPosition.BEFORE_END);
-};
-
-const renderPointsSection = () => {
-  render(pageMainElement, new SortingView(sortsTitle).getElement(), RenderPosition.BEFORE_END);
-
-  const pointsListComponent = new PointsListView();
-
-  render(pageMainElement, pointsListComponent.getElement(), RenderPosition.BEFORE_END);
-
-  sortPoints.forEach((point) => renderPoint(pointsListComponent.getElement(), point));
+  render(infoElement, new CostView(points), RenderPosition.BEFORE_END);
 };
 
 const renderPoint = (pointListElement, point) => {
@@ -44,11 +34,11 @@ const renderPoint = (pointListElement, point) => {
   const editPointComponent = new EditPointView(point);
 
   const replacePointToForm = () => {
-    pointListElement.replaceChild(editPointComponent.getElement(), pointComponent.getElement());
+    replace(editPointComponent, pointComponent);
   };
 
   const replaceFormToPoint = () => {
-    pointListElement.replaceChild(pointComponent.getElement(), editPointComponent.getElement());
+    replace(pointComponent, editPointComponent);
   };
 
   const onEscKeyDown = (evt) => {
@@ -59,31 +49,40 @@ const renderPoint = (pointListElement, point) => {
     }
   };
 
-  pointComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+  pointComponent.setRollupBtnClickHandler(() => {
     replacePointToForm();
     document.addEventListener('keydown', onEscKeyDown);
   });
 
-  editPointComponent.getElement().addEventListener('submit', (evt) => {
-    evt.preventDefault();
+  editPointComponent.setFormSubmitHandler(() => {
     replaceFormToPoint();
     document.removeEventListener('keydown', onEscKeyDown);
   });
 
-  editPointComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+  editPointComponent.setFormRollupBtnClickHandler(() => {
     replaceFormToPoint();
     document.removeEventListener('keydown', onEscKeyDown);
   });
 
-  render(pointListElement, pointComponent.getElement(), RenderPosition.BEFORE_END);
+  render(pointListElement, pointComponent, RenderPosition.BEFORE_END);
 };
 
-render(navigationElement, new NavigationView(navigationItemsTitle).getElement(), RenderPosition.BEFORE_END);
-render(filtersBlock, new FiltersView(filtersTitle).getElement(), RenderPosition.BEFORE_END);
+const renderPointsSection = () => {
+  render(pageMainElement, new SortingView(sortsTitle), RenderPosition.BEFORE_END);
+
+  const pointsListComponent = new PointsListView();
+
+  render(pageMainElement, pointsListComponent, RenderPosition.BEFORE_END);
+
+  sortPoints.forEach((point) => renderPoint(pointsListComponent, point));
+};
+
+render(navigationElement, new NavigationView(navigationItemsTitle), RenderPosition.BEFORE_END);
+render(filtersBlock, new FiltersView(filtersTitle), RenderPosition.BEFORE_END);
 
 if (points.length > 0) {
   renderTripInfo();
   renderPointsSection();
 } else {
-  render(pageMainElement, new ListEmptyView().getElement(), RenderPosition.BEFORE_END);
+  render(pageMainElement, new ListEmptyView(), RenderPosition.BEFORE_END);
 }

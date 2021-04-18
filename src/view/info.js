@@ -1,4 +1,4 @@
-import {createElement} from '../utils/utils.js';
+import AbstractView  from '../view/abstract.js';
 import {getInfoDate} from '../utils/time-format.js';
 
 const createInfoTitleMarkup = (points) => {
@@ -30,25 +30,14 @@ const createInfoTemplate = (points) => {
 </section>`;
 };
 
-export default class Info {
+export default class Info extends AbstractView {
   constructor(points) {
+    super();
     this._points = points;
-    this._element = null;
   }
 
   getTemplate() {
     return createInfoTemplate(this._points);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

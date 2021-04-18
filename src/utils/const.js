@@ -46,9 +46,3 @@ export const sortsTitle = [
 //   BEFORE_END: 'beforeend',
 //   AFTER_END: 'afterend',
 // };
-
-
-export const RenderPosition = {
-  AFTER_BEGIN: 'afterbegin',
-  BEFORE_END: 'beforeend',
-};
