@@ -1,3 +1,4 @@
+import MainInfoView from './view/main-info.js';
 import InfoView from './view/info.js';
 import CostView from './view/cost.js';
 import NavigationView from './view/navigation.js';
@@ -22,11 +23,13 @@ const filtersBlock = controlsElement.querySelector('.trip-controls__filters');
 
 const pageMainElement = document.querySelector('.page-main .trip-events');
 
-const renderTripInfo = () => {
-  render(headerMainElement, new InfoView(sortPoints), RenderPosition.AFTER_BEGIN);
 
-  const infoElement = headerMainElement.querySelector('.trip-info');
-  render(infoElement, new CostView(points), RenderPosition.BEFORE_END);
+const renderTripInfo = () => {
+  const infoComponent = new MainInfoView();
+  render(headerMainElement, infoComponent, RenderPosition.AFTER_BEGIN);
+
+  render(infoComponent, new InfoView(sortPoints), RenderPosition.BEFORE_END);
+  render(infoComponent, new CostView(points), RenderPosition.BEFORE_END);
 };
 
 const renderPoint = (pointListElement, point) => {
