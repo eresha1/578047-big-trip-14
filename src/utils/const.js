@@ -19,30 +19,38 @@ export const navigationItemsTitle = [
   },
 ];
 
-export const sortsTitle = [
+export const SortType = {
+  DEFAULT: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFERS: 'offers',
+};
+
+
+export const SortsTitle = [
   {
     title: 'day',
-    isChecked: true,
+    type: SortType.DEFAULT,
+    // isChecked: true,
   },
   {
     title: 'event',
     isDisabled: true,
+    type: SortType.EVENT,
   },
   {
     title: 'time',
+    type: SortType.TIME,
   },
   {
     title: 'price',
+    type: SortType.PRICE,
   },
   {
     title: 'offers',
     isDisabled: true,
+    type: SortType.OFFERS,
   },
 ];
 
-// export const position = {
-//   BEFORE_BEGIN: 'beforebegin',
-//   AFTER_BEGIN: 'afterbegin',
-//   BEFORE_END: 'beforeend',
-//   AFTER_END: 'afterend',
-// };

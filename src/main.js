@@ -4,7 +4,7 @@ import FiltersView from './view/filters.js';
 import { generateRoutePoint } from './mock/point.js';
 import { getSortStartDates } from './utils/common.js';
 import { RenderPosition, render } from './utils/render.js';
-import { filtersTitle, navigationItemsTitle, sortsTitle } from './utils/const.js';
+import { filtersTitle, navigationItemsTitle } from './utils/const.js';
 
 const POINTS_COUNT = 5;
 const points = new Array(POINTS_COUNT).fill().map(generateRoutePoint);
@@ -20,4 +20,4 @@ render(navigationElement, new NavigationView(navigationItemsTitle), RenderPositi
 render(filtersBlock, new FiltersView(filtersTitle), RenderPosition.BEFORE_END);
 
 const tripPresenter = new TripPresenter(headerMainElement, pageMainElement);
-tripPresenter.init(sortPoints, sortsTitle);
+tripPresenter.init(sortPoints);
