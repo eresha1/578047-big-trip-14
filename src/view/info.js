@@ -21,13 +21,11 @@ const createInfoDatesMarkup = (points) => {
 };
 
 const createInfoTemplate = (points) => {
-  return `<section class="trip-main__trip-info  trip-info">
-  <div class="trip-info__main">
+  return `<div class="trip-info__main">
     <h1 class="trip-info__title">${createInfoTitleMarkup(points)}</h1>
 
     <p class="trip-info__dates">${createInfoDatesMarkup(points)}</p>
-  </div>
-</section>`;
+  </div>`;
 };
 
 export default class Info extends AbstractView {
