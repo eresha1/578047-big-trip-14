@@ -1,4 +1,4 @@
-import AbstractView  from '../view/abstract.js';
+import SmartView  from '../view/smart.js';
 import { typePoints, DESTINATION } from '../mock/const.js';
 import { humanizeFullDate } from '../utils/time-format';
 import {
@@ -80,12 +80,14 @@ const createEditPointTemplate = (point) => {
   </li>`;
 };
 
-export default class EditPoint extends AbstractView {
+export default class EditPoint extends SmartView {
   constructor(point) {
     super();
     this._point = point;
+    // this._data = point;
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._formClickHandler = this._formClickHandler.bind(this);
+
   }
 
   getTemplate() {
@@ -94,7 +96,7 @@ export default class EditPoint extends AbstractView {
 
   _formSubmitHandler(evt) {
     evt.preventDefault();
-    this._callback.formSubmit();
+    this._callback.formSubmit(this._point);
   }
 
   setFormSubmitHandler(callback) {
@@ -110,6 +112,17 @@ export default class EditPoint extends AbstractView {
   setFormRollupBtnClickHandler(callback) {
     this._callback.formClick = callback;
     this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._formClickHandler);
+  }
+
+  static parsePointToData(task) {
+    return Object.assign(
+      {},
+      task,
+      {
+        isDueDate: task.dueDate !== null,
+        isRepeating: isTaskRepeating(task.repeating),
+      },
+    );
   }
 }
 
