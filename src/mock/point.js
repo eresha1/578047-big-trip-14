@@ -45,10 +45,17 @@ const getStartDate = () => {
   return dayjs().add(daysGap, 'day').add(hour, 'hours').add(min, 'm').toDate();
 };
 
-const offersList = generateOffersList(OFFERS, MinCount.OFFER_PRICE, MaxCount.OFFER_PRICE, typePoints);
+const offersList = generateOffersList(OFFERS, typePoints);
+console.log(offersList)
 
-const getPossibleOffers = (offersList, type) => {
-  return  offersList.filter((item) => item.typeOffer === type);
+export const getPossibleOffers = (type) => {
+let offers = [];
+   offersList.forEach((item) => {
+    if (Object.values(item)[0].toLowerCase() === type) {
+      offers = Object.values(item)[1]
+    }
+  });
+  return offers;
 };
 
 export const generateRoutePoint = () => {
@@ -61,7 +68,8 @@ export const generateRoutePoint = () => {
     .add(getRandomInteger(10, 2000), 'minute')
     .toDate();
   const price = getRandomInteger(MinCount.PRICE, MaxCount.PRICE) * 10;
-  const offers = getPossibleOffers(offersList, type);
+  const offers = getPossibleOffers(type.toLowerCase());
+
   const isFavorite = generateRandomBoolean();
   return {
     id,

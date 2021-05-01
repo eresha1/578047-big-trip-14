@@ -33,4 +33,3 @@ export const getRandomQuantityElements = (elements, min, max) => {
 export const generateID = () => {
   return  Date.now() * Math.random();
 };
-

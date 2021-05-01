@@ -1,10 +1,12 @@
-export const createInputTypeItemMarkup = (types) => {
+export const createInputTypeItemMarkup = (types, currentType) => {
+
   return types
-    .map((typePoint) => {
-      const typeLowerCase = typePoint.toLowerCase();
+    .map((typePoint, id) => {
+      // console.log(typePoint, currentType)
       return `<div class="event__type-item">
-        <input id="event-type-${typeLowerCase}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${typeLowerCase}">
-        <label class="event__type-label  event__type-label--${typeLowerCase}" for="event-type-${typeLowerCase}-1">${typePoint}</label>
+        <input id="event-type-${id + 1}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${typePoint.toLowerCase()}" ${typePoint === currentType ? `checked` : ``} >
+        <label class="event__type-label  event__type-label--${typePoint.toLowerCase()}
+        " for="event-type-${id + 1}">${typePoint}</label>
     </div>`;
     })
     .join('\n');
@@ -20,21 +22,23 @@ export const createOptionValueMarkup = (destinations) => {
 };
 
 export const createOffersMarkup = (offers) => {
+
   return offers
     .map((offer) => {
       return `<div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title}-1" type="checkbox" name="event-offer-${offer.title}">
-    <label class="event__offer-label" for="event-offer-${offer.title}-1">
-      <span class="event__offer-title">${offer.title}</span>
-      &plus;
-      &euro;&nbsp;<span class="event__offer-price">${offer.priceOffer}</span>
-    </label>
+        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title}-1" type="checkbox" name="event-offer-${offer.title}">
+        <label class="event__offer-label" for="event-offer-${offer.title}-1">
+        <span class="event__offer-title">${offer.title}</span>
+        &plus;
+        &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
+        </label>
     </div>`;
     })
     .join('\n');
 };
 
-export const isOffers = (offers) => {
+export const offersType = (offers) => {
+  console.log(offers)
   return offers.length > 0
     ? `<section class="event__section  event__section--offers">
         <h3 class="event__section-title  event__section-title--offers">Offers</h3>

@@ -1,12 +1,20 @@
 import SmartView  from '../view/smart.js';
 import { typePoints, DESTINATION } from '../mock/const.js';
 import { humanizeFullDate } from '../utils/time-format';
+import { getPossibleOffers } from '../mock/point.js';
 import {
   createInputTypeItemMarkup,
   createOptionValueMarkup,
-  isOffers,
+  offersType,
   createDestinationMarkup
 } from '../utils/points.js';
+
+
+const getTypeImage = (type) =>
+  type
+    ? `<img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon ${type}">`
+    : '';
+
 
 const createEditPointTemplate = (point) => {
   const {
@@ -20,6 +28,8 @@ const createEditPointTemplate = (point) => {
   const destinations = DESTINATION;
   const icon = type.toLowerCase();
 
+  console.log(typePoints, type, offers)
+
   const timeStartValue = humanizeFullDate(startTime);
   const timeEndValue = humanizeFullDate(endTime);
 
@@ -29,14 +39,14 @@ const createEditPointTemplate = (point) => {
       <div class="event__type-wrapper">
         <label class="event__type  event__type-btn" for="event-type-toggle-1">
           <span class="visually-hidden">Choose event type</span>
-          <img class="event__type-icon" width="17" height="17" src="img/icons/${icon}.png" alt="${icon} icon">
+          ${getTypeImage(icon)}
         </label>
         <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
         <div class="event__type-list">
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Event type</legend>
-            ${createInputTypeItemMarkup(typePoints)}
+            ${createInputTypeItemMarkup(typePoints, type)}
           </fieldset>
         </div>
       </div>
@@ -74,7 +84,7 @@ const createEditPointTemplate = (point) => {
       </button>
     </header>
     <section class="event__details">
-        ${isOffers(offers)}
+        ${offersType(offers)}
         ${createDestinationMarkup(destinationInfo)}
   </form>;
   </li>`;
@@ -83,20 +93,69 @@ const createEditPointTemplate = (point) => {
 export default class EditPoint extends SmartView {
   constructor(point) {
     super();
-    this._point = point;
-    // this._data = point;
+    // this._point = point;
+    this._data = EditPoint.parsePointToState(point);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._formClickHandler = this._formClickHandler.bind(this);
+    this._handleInputRadio = this._handleInputRadio.bind(this);
 
+    this._setInnerHandlers();
+    console.log(this._data.offers)
+    console.log(getPossibleOffers(this._data.type.toLowerCase()))
   }
 
   getTemplate() {
-    return createEditPointTemplate(this._point);
+    return createEditPointTemplate(this._data);
   }
+
+  restoreHandlers() {
+    this._setInnerHandlers();
+    this.setFormSubmitHandler(this._callback.formSubmit);
+    this.setFormRollupBtnClickHandler(this._callback.formClick);
+  }
+
+
+  _setInnerHandlers() {
+      this.getElement()
+      .querySelectorAll(`input[type=radio]`)
+      .forEach((item) => item.addEventListener(`change`, this._handleInputRadio));
+
+
+    // this.getElement()
+    //   .querySelector('.event__input--destination')
+    //   .addEventListener('blur', this._destinationToggleHandler);
+    // this.getElement()
+    //   .querySelector('.event__input--price')
+    //   .addEventListener('input', this._priceChangeHAndler);
+    // if (this._state.hasOffers) {
+    //   this.getElement()
+    //     .querySelector('.event__available-offers')
+    //     .addEventListener('click', this._offersSelectionHandler);
+    }
+
+
+    _handleInputRadio(evt) {
+      console.log(this._data)
+      console.log(this._data.type)
+      console.log(this._data.offers)
+      console.log(evt.target.value)
+      console.log( getPossibleOffers(this._data.offers))
+      // console.log(getPossibleOffers)
+    // console.log(evt.target.checked)
+    this._data.type = evt.target.value
+      this.updateData({
+        type: evt.target.value,
+        isChecked: evt.target.value = this._data.type ,
+        offers: ( getPossibleOffers(this._data.type)),
+      });
+
+    }
+
 
   _formSubmitHandler(evt) {
     evt.preventDefault();
-    this._callback.formSubmit(this._point);
+    this._callback.formSubmit(EditPoint.parseStateToPoint(this._data));
+
   }
 
   setFormSubmitHandler(callback) {
@@ -114,15 +173,22 @@ export default class EditPoint extends SmartView {
     this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._formClickHandler);
   }
 
-  static parsePointToData(task) {
+  static parsePointToState(point) {
     return Object.assign(
       {},
-      task,
+      point,
       {
-        isDueDate: task.dueDate !== null,
-        isRepeating: isTaskRepeating(task.repeating),
+        // isOffers: offers.length > 0,
       },
     );
+
   }
+
+  static parseStateToPoint(data) {
+    data = Object.assign({}, data);
+    delete data.pointId;
+    return data;
+  }
+
 }
 
