@@ -25,7 +25,7 @@ const createPointTemplate = (point) => {
     type,
     startTime,
     endTime,
-    price,
+    basePrice,
     destinationInfo,
     offers,
     isFavorite,
@@ -58,7 +58,7 @@ const createPointTemplate = (point) => {
       <p class="event__duration">${duration}</p>
     </div>
     <p class="event__price">
-      &euro;&nbsp;<span class="event__price-value">${price}</span>
+      &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
     </p>
     <h4 class="visually-hidden">Offers:</h4>
     <ul class="event__selected-offers">

@@ -3,6 +3,7 @@ import Abstract from './abstract.js';
 export default class Smart extends Abstract {
   constructor() {
     super();
+    this._data = {};
   }
 
   updateElement() {
@@ -11,13 +12,15 @@ export default class Smart extends Abstract {
     this.removeElement();
 
     const newElement = this.getElement();
+    console.log(newElement, prevElement)
 
     parent.replaceChild(newElement, prevElement);
+    console.log(newElement, prevElement)
 
     this.restoreHandlers();
   }
 
-  updateData(update) {
+  updateData(update, justDataUpdating) {
     if (!update) {
       return;
     }
@@ -28,12 +31,14 @@ export default class Smart extends Abstract {
       update,
     );
 
+    if (justDataUpdating) {
+      return;
+    }
+
     this.updateElement();
   }
 
   _restoreHandlers() {
     throw new Error('Abstract method not implemented: resetHandlers');
   }
-
-
 }

@@ -13,7 +13,8 @@ import {
   getRandomInteger,
   getRandomElement,
   getRandomQuantityElements,
-  generateRandomBoolean, generateID
+  generateRandomBoolean,
+  generateID
 } from '../utils/random.js';
 
 import { generateOffersList } from './offer.js';
@@ -28,14 +29,28 @@ const getDestinationImages = (arrayLength, destination) => {
 const getDestination = () => {
   const destination = getRandomElement(DESTINATION);
   const description = getRandomQuantityElements(
-    DESCRIPTION, MinCount.DESCRIPTION_COUNT, MaxCount.DESCRIPTION_COUNT);
+    DESCRIPTION,
+    MinCount.DESCRIPTION_COUNT,
+    MaxCount.DESCRIPTION_COUNT,
+  );
   const photoPlace = getDestinationImages(
-    getRandomInteger(MinCount.IMG_COUNT, MaxCount.IMG_COUNT), destination);
+    getRandomInteger(MinCount.IMG_COUNT, MaxCount.IMG_COUNT),
+    destination,
+  );
   return {
     destination,
     description,
     photoPlace,
   };
+};
+
+export const getDestinationsList = () => {
+  const destinationsList = [];
+
+  for (let i = 0; i < DESTINATION.length; i++) {
+    destinationsList.push(getDestination());
+  }
+  return destinationsList;
 };
 
 const getStartDate = () => {
@@ -46,13 +61,12 @@ const getStartDate = () => {
 };
 
 const offersList = generateOffersList(OFFERS, typePoints);
-console.log(offersList)
 
 export const getPossibleOffers = (type) => {
-let offers = [];
-   offersList.forEach((item) => {
+  let offers = [];
+  offersList.forEach((item) => {
     if (Object.values(item)[0].toLowerCase() === type) {
-      offers = Object.values(item)[1]
+      offers = Object.values(item)[1];
     }
   });
   return offers;
@@ -67,7 +81,7 @@ export const generateRoutePoint = () => {
   const endTime = dayjs(startTime)
     .add(getRandomInteger(10, 2000), 'minute')
     .toDate();
-  const price = getRandomInteger(MinCount.PRICE, MaxCount.PRICE) * 10;
+  const basePrice = getRandomInteger(MinCount.PRICE, MaxCount.PRICE) * 10;
   const offers = getPossibleOffers(type.toLowerCase());
 
   const isFavorite = generateRandomBoolean();
@@ -76,7 +90,7 @@ export const generateRoutePoint = () => {
     type,
     startTime,
     endTime,
-    price,
+    basePrice,
     destinationInfo,
     offers,
     isFavorite,
