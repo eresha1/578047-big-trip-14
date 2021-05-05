@@ -20,8 +20,8 @@ export const DESTINATION = ['Amsterdam', 'Geneva', 'Chamonix', 'Saint Petersburg
 export const OFFERS = ['Upgrade to business class', 'Add luggage','Switch to comfort','Choose seats', 'Add meal', 'Travel by train', 'Book tickets', 'Choose temperature', 'Choose comfort class', 'Choose business class', 'Musical accompaniment'];
 
 export const MinCount = {
-  DESCRIPTION_COUNT: 1,
-  IMG_COUNT: 1,
+  DESCRIPTION_COUNT: 0,
+  IMG_COUNT: 0,
   OFFER_COUNT: 0,
   PRICE: 1,
   OFFER_PRICE: 1,

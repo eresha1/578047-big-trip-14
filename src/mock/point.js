@@ -13,7 +13,8 @@ import {
   getRandomInteger,
   getRandomElement,
   getRandomQuantityElements,
-  generateRandomBoolean, generateID
+  generateRandomBoolean,
+  generateID
 } from '../utils/random.js';
 
 import { generateOffersList } from './offer.js';
@@ -28,14 +29,28 @@ const getDestinationImages = (arrayLength, destination) => {
 const getDestination = () => {
   const destination = getRandomElement(DESTINATION);
   const description = getRandomQuantityElements(
-    DESCRIPTION, MinCount.DESCRIPTION_COUNT, MaxCount.DESCRIPTION_COUNT);
+    DESCRIPTION,
+    MinCount.DESCRIPTION_COUNT,
+    MaxCount.DESCRIPTION_COUNT,
+  );
   const photoPlace = getDestinationImages(
-    getRandomInteger(MinCount.IMG_COUNT, MaxCount.IMG_COUNT), destination);
+    getRandomInteger(MinCount.IMG_COUNT, MaxCount.IMG_COUNT),
+    destination,
+  );
   return {
     destination,
     description,
     photoPlace,
   };
+};
+
+export const getDestinationsList = () => {
+  const destinationsList = [];
+
+  for (let i = 0; i < DESTINATION.length; i++) {
+    destinationsList.push(getDestination());
+  }
+  return destinationsList;
 };
 
 const getStartDate = () => {
@@ -45,10 +60,16 @@ const getStartDate = () => {
   return dayjs().add(daysGap, 'day').add(hour, 'hours').add(min, 'm').toDate();
 };
 
-const offersList = generateOffersList(OFFERS, MinCount.OFFER_PRICE, MaxCount.OFFER_PRICE, typePoints);
+const offersList = generateOffersList(OFFERS, typePoints);
 
-const getPossibleOffers = (offersList, type) => {
-  return  offersList.filter((item) => item.typeOffer === type);
+export const getPossibleOffers = (type) => {
+  let offers = [];
+  offersList.forEach((item) => {
+    if (Object.values(item)[0].toLowerCase() === type) {
+      offers = Object.values(item)[1];
+    }
+  });
+  return offers;
 };
 
 export const generateRoutePoint = () => {
@@ -60,15 +81,16 @@ export const generateRoutePoint = () => {
   const endTime = dayjs(startTime)
     .add(getRandomInteger(10, 2000), 'minute')
     .toDate();
-  const price = getRandomInteger(MinCount.PRICE, MaxCount.PRICE) * 10;
-  const offers = getPossibleOffers(offersList, type);
+  const basePrice = getRandomInteger(MinCount.PRICE, MaxCount.PRICE) * 10;
+  const offers = getPossibleOffers(type.toLowerCase());
+
   const isFavorite = generateRandomBoolean();
   return {
     id,
     type,
     startTime,
     endTime,
-    price,
+    basePrice,
     destinationInfo,
     offers,
     isFavorite,

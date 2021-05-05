@@ -18,8 +18,9 @@ export default class Point {
     this._editPointComponent = null;
     this._mode = Mode.DEFAULT;
 
-    this._handleEditClick = this._handleEditClick.bind(this);
+    this._handlePointClick = this._handlePointClick.bind(this);
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
+    this._handleFormClick = this._handleFormClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
   }
@@ -33,10 +34,10 @@ export default class Point {
     this._pointComponent = new PointView(point);
     this._editPointComponent = new EditPointView(point);
 
-    this._pointComponent.setRollupBtnClickHandler(this._handleEditClick);
+    this._pointComponent.setRollupBtnClickHandler(this._handlePointClick);
     this._pointComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._editPointComponent.setFormSubmitHandler(this._handleFormSubmit);
-    this._editPointComponent.setFormRollupBtnClickHandler(this._handleFormSubmit);
+    this._editPointComponent.setFormRollupBtnClickHandler(this._handleFormClick);
 
 
     if (prevPointComponent === null || prevEditPointComponent === null) {
@@ -49,7 +50,7 @@ export default class Point {
     }
 
     if (this._mode === Mode.EDITING) {
-      replace(this._prevEditPointComponent, prevEditPointComponent);
+      replace(this._editPointComponent, prevEditPointComponent);
     }
 
     remove(prevPointComponent);
@@ -86,17 +87,23 @@ export default class Point {
     );
   }
 
-  _handleEditClick() {
+  _handlePointClick() {
     this._replacePointToForm();
   }
 
-  _handleFormSubmit() {
+  _handleFormClick() {
+    this._editPointComponent.reset(this._point);
+    this._replaceFormToPoint();
+  }
+
+  _handleFormSubmit(point) {
+    this._changeData(point);
     this._replaceFormToPoint();
   }
 
   _escKeyDownHandler(evt) {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
-      evt.preventDefault();
+      this._editPointComponent.reset(this._point);
       this._replaceFormToPoint();
       document.removeEventListener('keydown', this._escKeyDownHandler);
     }

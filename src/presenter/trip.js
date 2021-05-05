@@ -59,13 +59,14 @@ export default class Trip {
 
   _handleDataChange(updatedPoint) {
     this._points = updateItem(this._points, updatedPoint);
-    this._sourcedPoints = updateItem(this._sourcedPoints, updatedPoint);
+    // this._sourcedPoints = updateItem(this._sourcedPoints, updatedPoint);
     this._pointPresenter[updatedPoint.id].init(updatedPoint);
   }
 
   _handleModeChange() {
     Object.values(this._pointPresenter).forEach((presenter) =>
-      presenter.resetView());
+      presenter.resetView(),
+    );
   }
 
   _sortPoints(sortType) {
@@ -75,20 +76,33 @@ export default class Trip {
         break;
       case SortType.TIME:
         this._points.sort(
-          (a, b) => b.startTime - b.endTime - (a.startTime - a.endTime));
+          (a, b) => b.startTime - b.endTime - (a.startTime - a.endTime),
+        );
         break;
       case SortType.PRICE:
-        this._points.sort((a, b) => a.price - b.price);
+        this._points.sort((a, b) => a.basePrice - b.basePrice);
         break;
     }
     this._currentSortType = sortType;
   }
 
   _renderTripInfo() {
-    render(this._headerContainer, this._mainInfoComponent, RenderPosition.AFTER_BEGIN);
+    render(
+      this._headerContainer,
+      this._mainInfoComponent,
+      RenderPosition.AFTER_BEGIN,
+    );
 
-    render(this._mainInfoComponent, this._infoComponent, RenderPosition.BEFORE_END);
-    render(this._mainInfoComponent, this._costComponent, RenderPosition.BEFORE_END);
+    render(
+      this._mainInfoComponent,
+      this._infoComponent,
+      RenderPosition.BEFORE_END,
+    );
+    render(
+      this._mainInfoComponent,
+      this._costComponent,
+      RenderPosition.BEFORE_END,
+    );
   }
 
   _renderSort() {
@@ -97,13 +111,21 @@ export default class Trip {
   }
 
   _renderPoint(point) {
-    const pointPresenter = new PointPresenter(this._pointsListComponent, this._handleDataChange, this._handleModeChange);
+    const pointPresenter = new PointPresenter(
+      this._pointsListComponent,
+      this._handleDataChange,
+      this._handleModeChange,
+    );
     pointPresenter.init(point);
     this._pointPresenter[point.id] = pointPresenter;
   }
 
   _renderPointList() {
-    render(this._mainContainer, this._pointsListComponent, RenderPosition.BEFORE_END);
+    render(
+      this._mainContainer,
+      this._pointsListComponent,
+      RenderPosition.BEFORE_END,
+    );
     this._points.forEach((point) => this._renderPoint(point));
   }
 
@@ -114,11 +136,16 @@ export default class Trip {
 
   _clearPointsList() {
     Object.values(this._pointPresenter).forEach((presenter) =>
-      presenter.destroy());
+      presenter.destroy(),
+    );
     this._pointPresenter = {};
   }
 
   _renderListEmpty() {
-    render(this._mainContainer, this._listEmptyComponent, RenderPosition.BEFORE_END);
+    render(
+      this._mainContainer,
+      this._listEmptyComponent,
+      RenderPosition.BEFORE_END,
+    );
   }
 }
