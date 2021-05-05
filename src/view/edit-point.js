@@ -6,13 +6,13 @@ import {
   createInputTypeItemMarkup,
   createOptionValueMarkup,
   offersType,
-  createDestinationMarkup,
+  createDestinationMarkup
 } from '../utils/points.js';
 
 const getTypeImage = (type) =>
   type
     ? `<img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon ${type}">`
-    : "";
+    : '';
 
 const createEditPointTemplate = (data) => {
   const {
@@ -28,8 +28,6 @@ const createEditPointTemplate = (data) => {
   } = data;
   const destinations = DESTINATION;
   const icon = type.toLowerCase();
-
-  console.log(destinationInfo.destination);
 
   const timeStartValue = humanizeFullDate(startTime);
   const timeEndValue = humanizeFullDate(endTime);
@@ -57,8 +55,8 @@ const createEditPointTemplate = (data) => {
           ${type}
         </label>
         <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value="${
-          destinationInfo.destination
-        }" list="destination-list-${id}">
+  destinationInfo.destination
+}" list="destination-list-${id}">
         <datalist id="destination-list-${id}">
         ${createOptionValueMarkup(destinations)}
         </datalist>
@@ -105,8 +103,6 @@ export default class EditPoint extends SmartView {
     this._priceChangeHandler = this._priceChangeHandler.bind(this);
 
     this._setInnerHandlers();
-    console.log(this._data);
-    console.log(this.getElement().querySelector(".event__save-btn"));
   }
 
   reset(point) {
@@ -125,18 +121,18 @@ export default class EditPoint extends SmartView {
 
   _setInnerHandlers() {
     this.getElement()
-      .querySelectorAll(`input[type=radio]`)
+      .querySelectorAll('input[type=radio]')
       .forEach((item) =>
-        item.addEventListener(`change`, this._radioInputHandler)
+        item.addEventListener('change', this._radioInputHandler),
       );
 
     this.getElement()
-      .querySelector(".event__input--destination")
-      .addEventListener("change", this._destinationInputHandler);
+      .querySelector('.event__input--destination')
+      .addEventListener('change', this._destinationInputHandler);
 
     this.getElement()
-      .querySelector(".event__input--price")
-      .addEventListener("input", this._priceChangeHandler);
+      .querySelector('.event__input--price')
+      .addEventListener('input', this._priceChangeHandler);
   }
 
   _radioInputHandler(evt) {
@@ -152,7 +148,7 @@ export default class EditPoint extends SmartView {
     evt.preventDefault();
     const destinationsList = getDestinationsList();
 
-    for (let key of destinationsList) {
+    for (const key of destinationsList) {
       if (key.destination === evt.target.value) {
         this._data.destinationInfo = key;
       }
@@ -165,9 +161,8 @@ export default class EditPoint extends SmartView {
 
   _priceChangeHandler(evt) {
     evt.preventDefault();
-    console.log(evt.target.value);
     if (!new RegExp(/^-?[1-9]\d{0,5}$/).test(evt.target.value)) {
-      evt.target.setCustomValidity("Enter a positive integer.");
+      evt.target.setCustomValidity('Enter a positive integer.');
       evt.target.reportValidity();
       return;
     }
@@ -175,9 +170,8 @@ export default class EditPoint extends SmartView {
       {
         basePrice: evt.target.value,
       },
-      true
+      true,
     );
-    console.log(this._data);
   }
 
   _formSubmitHandler(evt) {

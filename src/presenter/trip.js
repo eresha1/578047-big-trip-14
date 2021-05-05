@@ -65,7 +65,7 @@ export default class Trip {
 
   _handleModeChange() {
     Object.values(this._pointPresenter).forEach((presenter) =>
-      presenter.resetView()
+      presenter.resetView(),
     );
   }
 
@@ -76,11 +76,11 @@ export default class Trip {
         break;
       case SortType.TIME:
         this._points.sort(
-          (a, b) => b.startTime - b.endTime - (a.startTime - a.endTime)
+          (a, b) => b.startTime - b.endTime - (a.startTime - a.endTime),
         );
         break;
       case SortType.PRICE:
-        this._points.sort((a, b) => a.price - b.price);
+        this._points.sort((a, b) => a.basePrice - b.basePrice);
         break;
     }
     this._currentSortType = sortType;
@@ -90,18 +90,18 @@ export default class Trip {
     render(
       this._headerContainer,
       this._mainInfoComponent,
-      RenderPosition.AFTER_BEGIN
+      RenderPosition.AFTER_BEGIN,
     );
 
     render(
       this._mainInfoComponent,
       this._infoComponent,
-      RenderPosition.BEFORE_END
+      RenderPosition.BEFORE_END,
     );
     render(
       this._mainInfoComponent,
       this._costComponent,
-      RenderPosition.BEFORE_END
+      RenderPosition.BEFORE_END,
     );
   }
 
@@ -114,7 +114,7 @@ export default class Trip {
     const pointPresenter = new PointPresenter(
       this._pointsListComponent,
       this._handleDataChange,
-      this._handleModeChange
+      this._handleModeChange,
     );
     pointPresenter.init(point);
     this._pointPresenter[point.id] = pointPresenter;
@@ -124,7 +124,7 @@ export default class Trip {
     render(
       this._mainContainer,
       this._pointsListComponent,
-      RenderPosition.BEFORE_END
+      RenderPosition.BEFORE_END,
     );
     this._points.forEach((point) => this._renderPoint(point));
   }
@@ -136,7 +136,7 @@ export default class Trip {
 
   _clearPointsList() {
     Object.values(this._pointPresenter).forEach((presenter) =>
-      presenter.destroy()
+      presenter.destroy(),
     );
     this._pointPresenter = {};
   }
@@ -145,7 +145,7 @@ export default class Trip {
     render(
       this._mainContainer,
       this._listEmptyComponent,
-      RenderPosition.BEFORE_END
+      RenderPosition.BEFORE_END,
     );
   }
 }

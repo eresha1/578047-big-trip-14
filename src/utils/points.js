@@ -4,7 +4,7 @@ export const createInputTypeItemMarkup = (types, currentType) => {
     .map((typePoint, id) => {
       // console.log(typePoint, currentType)
       return `<div class="event__type-item">
-        <input id="event-type-${id + 1}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${typePoint.toLowerCase()}" ${typePoint === currentType ? `checked` : ``} >
+        <input id="event-type-${id + 1}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${typePoint.toLowerCase()}" ${typePoint === currentType ? 'checked' : ''} >
         <label class="event__type-label  event__type-label--${typePoint.toLowerCase()}
         " for="event-type-${id + 1}">${typePoint}</label>
     </div>`;
@@ -45,7 +45,7 @@ export const offersType = (offers, isOffers) => {
         ${createOffersMarkup(offers)}
         </div>
       </section>`
-    : ``}`
+    : ''}`;
 };
 
 export const createPhotoListMarkup = (photosList) => {
@@ -61,7 +61,7 @@ export const createPhotoListMarkup = (photosList) => {
 export const createDestinationMarkup = (destination, isDestinationInfo) => {
   const { description, photoPlace } = destination;
   return `${isDestinationInfo
-      ? `<section class="event__section  event__section--destination">
+    ? `<section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
         <p class="event__destination-description">${description}</p>
         <div class="event__photos-container">
@@ -70,5 +70,5 @@ export const createDestinationMarkup = (destination, isDestinationInfo) => {
           </div>
         </div>
       </section>`
-      : ``}`
+    : ''}`;
 };
