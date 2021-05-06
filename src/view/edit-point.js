@@ -8,6 +8,9 @@ import {
   offersType,
   createDestinationMarkup
 } from '../utils/points.js';
+import flatpickr from 'flatpickr';
+
+import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 const getTypeImage = (type) =>
   type
@@ -95,14 +98,21 @@ export default class EditPoint extends SmartView {
   constructor(point) {
     super();
     this._data = EditPoint.parsePointToState(point);
+    // this._datepicker = null;
+    this._startTimeDatepicker = null;
+    this._endTimeDatepicker = null;
 
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._formClickHandler = this._formClickHandler.bind(this);
     this._radioInputHandler = this._radioInputHandler.bind(this);
     this._destinationInputHandler = this._destinationInputHandler.bind(this);
     this._priceChangeHandler = this._priceChangeHandler.bind(this);
+    this._startTimeChangeHandler = this._startTimeChangeHandler.bind(this);
+    this._endStartChangeHandler = this._endStartChangeHandler.bind(this);
 
     this._setInnerHandlers();
+    this._setStartTimePicker();
+    this._setEndTimePicker();
   }
 
   reset(point) {
@@ -115,6 +125,8 @@ export default class EditPoint extends SmartView {
 
   restoreHandlers() {
     this._setInnerHandlers();
+    this._setStartTimePicker();
+    this._setEndTimePicker();
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setFormRollupBtnClickHandler(this._callback.formClick);
   }
@@ -133,6 +145,53 @@ export default class EditPoint extends SmartView {
     this.getElement()
       .querySelector('.event__input--price')
       .addEventListener('input', this._priceChangeHandler);
+  }
+
+  _setStartTimePicker() {
+    if (this._startTimeDatepicker) {
+      this._startTimeDatepicker.destroy();
+      this._startTimeDatepicker = null;
+    }
+
+    this._startTimeDatepicker = flatpickr(
+      this.getElement().querySelector('input[name=event-start-time]'),
+      {
+        dateFormat: 'y/m/d H:i',
+        enableTime: true,
+        default: this._data.startTime,
+        onChange: this._startTimeChangeHandler,
+      },
+    );
+  }
+
+  _setEndTimePicker() {
+    if (this._endTimeDatepicker) {
+      this._endTimeDatepicker.destroy();
+      this._endTimeDatepicker = null;
+    }
+
+    this._endTimeDatepicker = flatpickr(
+      this.getElement().querySelector('input[name=event-end-time]'),
+      {
+        dateFormat: 'y/m/d H:i',
+        enableTime: true,
+        default: this._data.endTime,
+        minDate: this._data.startTime,
+        onChange: this._endStartChangeHandler,
+      },
+    );
+  }
+
+  _startTimeChangeHandler([userDate]) {
+    this.updateData({
+      startTime: userDate,
+    });
+  }
+
+  _endStartChangeHandler([userDate]) {
+    this.updateState({
+      endTime: userDate,
+    });
   }
 
   _radioInputHandler(evt) {
