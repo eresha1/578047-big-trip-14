@@ -14,7 +14,7 @@ const createOffersTemplate = (offers) => {
       return `<li class="event__offer">
         <span class="event__offer-title">${offer.title}</span>
         &plus;&euro;&nbsp;
-        <span class="event__offer-${offer.priceOffer}">${offer.price}</span>
+        <span class="event__offer-price">${offer.price}</span>
       </li>`;
     })
     .join('\n');

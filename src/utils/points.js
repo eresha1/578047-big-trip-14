@@ -1,12 +1,12 @@
 export const createInputTypeItemMarkup = (types, currentType) => {
 
   return types
-    .map((typePoint, id) => {
-      // console.log(typePoint, currentType)
+    .map((type, id) => {
+      const isChecked = (type === currentType)? 'checked':'';
       return `<div class="event__type-item">
-        <input id="event-type-${id + 1}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${typePoint.toLowerCase()}" ${typePoint === currentType ? 'checked' : ''} >
-        <label class="event__type-label  event__type-label--${typePoint.toLowerCase()}
-        " for="event-type-${id + 1}">${typePoint}</label>
+        <input id="event-type-${id + 1}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type.toLowerCase()}" ${isChecked} >
+        <label class="event__type-label  event__type-label--${type.toLowerCase()}
+        " for="event-type-${id + 1}">${type}</label>
     </div>`;
     })
     .join('\n');
@@ -25,12 +25,15 @@ export const createOffersMarkup = (offers) => {
 
   return offers
     .map((offer) => {
+      const {title, price, id} = offer;
+      const isOfferChecked = offer.isChecked ? 'checked' : '';
+
       return `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title}-1" type="checkbox" name="event-offer-${offer.title}">
-        <label class="event__offer-label" for="event-offer-${offer.title}-1">
-        <span class="event__offer-title">${offer.title}</span>
+        <input class="event__offer-checkbox  visually-hidden" id="${id}" type="checkbox" name="event-offer-${id}" ${isOfferChecked ? 'checked' : ''}>
+        <label class="event__offer-label" for="${id}">
+        <span class="event__offer-title">${title}</span>
         &plus;
-        &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
+        &euro;&nbsp;<span class="event__offer-price">${price}</span>
         </label>
     </div>`;
     })
