@@ -178,9 +178,9 @@ export default class EditPoint extends SmartView {
     this._startDatepicker = flatpickr(
       this.getElement().querySelector('input[name=event-start-time]'),
       {
-        dateFormat: "d/m/y H:i",
+        dateFormat: 'd/m/y H:i',
         enableTime: true,
-        default: this._data.startTime,
+        defaultDate: this._data.startTime,
         onChange: this._startTimeChangeHandler,
       },
     );
@@ -250,8 +250,8 @@ export default class EditPoint extends SmartView {
       return;
     }
     this.updateData({
-        basePrice: evt.target.value,
-      }, true);
+      basePrice: evt.target.value,
+    }, true);
   }
 
   _formSubmitHandler(evt) {
