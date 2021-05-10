@@ -5,11 +5,11 @@ export const humanizeShortDate = (date) => {
 };
 
 export const humanizeAttributeDate = (date) => {
-  return dayjs(date).format('YYYY-MM-DD');
+  return dayjs(date).format('DD-MM-YYYY');
 };
 
 export const humanizeFullDate = (date) => {
-  return dayjs(date).format('YY/MM/DD HH:mm');
+  return dayjs(date).format('DD/MM/YY HH:mm');
 };
 
 export const humanizeTime = (date) => {

@@ -31,7 +31,9 @@ const createEditPointTemplate = (data) => {
   const destinations = DESTINATION;
   const icon = type.toLowerCase();
 
+  // const timeStartValue = flatpickr.formatDate(startTime, `d/m/y H:i`);
   const timeStartValue = humanizeFullDate(startTime);
+  // const timeEndValue = flatpickr.formatDate(endTime, `d/m/y H:i`);
   const timeEndValue = humanizeFullDate(endTime);
 
   return `<li class="trip-events__item">
@@ -89,7 +91,7 @@ const createEditPointTemplate = (data) => {
     <section class="event__details">
         ${offersType(offers, isOffers)}
         ${createDestinationMarkup(destinationInfo, isDestinationInfo)}
-  </form>;
+  </form>
   </li>`;
 };
 
@@ -97,8 +99,8 @@ export default class EditPoint extends SmartView {
   constructor(point) {
     super();
     this._data = EditPoint.parsePointToState(point);
-    this._startTimeDatepicker = null;
-    this._endTimeDatepicker = null;
+    this._startDatepicker = null;
+    this._endDatepicker = null;
 
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._formClickHandler = this._formClickHandler.bind(this);
@@ -107,11 +109,11 @@ export default class EditPoint extends SmartView {
     this._priceChangeHandler = this._priceChangeHandler.bind(this);
     this._offersChangeHandler = this._offersChangeHandler.bind(this);
     this._startTimeChangeHandler = this._startTimeChangeHandler.bind(this);
-    this._endStartChangeHandler = this._endStartChangeHandler.bind(this);
+    this._endTimeChangeHandler = this._endTimeChangeHandler.bind(this);
 
     this._setInnerHandlers();
-    this._setStartTimePicker();
-    this._setEndTimePicker();
+    this._setStartDatepicker();
+    this._setEndDatepicker();
   }
 
   reset(point) {
@@ -124,8 +126,8 @@ export default class EditPoint extends SmartView {
 
   restoreHandlers() {
     this._setInnerHandlers();
-    this._setStartTimePicker();
-    this._setEndTimePicker();
+    this._setStartDatepicker();
+    this._setEndDatepicker();
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setFormRollupBtnClickHandler(this._callback.formClick);
   }
@@ -167,16 +169,16 @@ export default class EditPoint extends SmartView {
     }, true);
   }
 
-  _setStartTimePicker() {
-    if (this._startTimeDatepicker) {
-      this._startTimeDatepicker.destroy();
-      this._startTimeDatepicker = null;
+  _setStartDatepicker() {
+    if (this._startDatepicker) {
+      this._startDatepicker.destroy();
+      this._startDatepicker = null;
     }
 
-    this._startTimeDatepicker = flatpickr(
+    this._startDatepicker = flatpickr(
       this.getElement().querySelector('input[name=event-start-time]'),
       {
-        dateFormat: 'y/m/d H:i',
+        dateFormat: "d/m/y H:i",
         enableTime: true,
         default: this._data.startTime,
         onChange: this._startTimeChangeHandler,
@@ -184,20 +186,20 @@ export default class EditPoint extends SmartView {
     );
   }
 
-  _setEndTimePicker() {
-    if (this._endTimeDatepicker) {
-      this._endTimeDatepicker.destroy();
-      this._endTimeDatepicker = null;
+  _setEndDatepicker() {
+    if (this._endDatepicker) {
+      this._endDatepicker.destroy();
+      this._endDatepicker = null;
     }
 
-    this._endTimeDatepicker = flatpickr(
+    this._endDatepicker = flatpickr(
       this.getElement().querySelector('input[name=event-end-time]'),
       {
-        dateFormat: 'y/m/d H:i',
+        dateFormat: 'd/m/y H:i',
         enableTime: true,
         default: this._data.endTime,
         minDate: this._data.startTime,
-        onChange: this._endStartChangeHandler,
+        onChange: this._endTimeChangeHandler,
       },
     );
   }
@@ -205,13 +207,13 @@ export default class EditPoint extends SmartView {
   _startTimeChangeHandler([userDate]) {
     this.updateData({
       startTime: userDate,
-    });
+    }, true);
   }
 
-  _endStartChangeHandler([userDate]) {
+  _endTimeChangeHandler([userDate]) {
     this.updateData({
       endTime: userDate,
-    });
+    }, true);
   }
 
   _radioInputHandler(evt) {
@@ -247,12 +249,9 @@ export default class EditPoint extends SmartView {
       evt.target.reportValidity();
       return;
     }
-    this.updateData(
-      {
+    this.updateData({
         basePrice: evt.target.value,
-      },
-      true,
-    );
+      }, true);
   }
 
   _formSubmitHandler(evt) {
