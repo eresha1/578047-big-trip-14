@@ -3,6 +3,7 @@ import {MinCount, MaxCount} from '../mock/const.js';
 
 export const generateOffersList = (allOffers, types) => {
   const offerList = [];
+  let j = 1;
   types.map((type) => {
     const offerCount = getRandomInteger(
       MinCount.OFFER_COUNT,
@@ -11,13 +12,16 @@ export const generateOffersList = (allOffers, types) => {
     const offerTypes = {};
     let i = 0;
     const offers = new Array(offerCount).fill('').map(() => ({
-      title: allOffers[i],
+      title: allOffers[i][0],
       price: getRandomInteger(MinCount.OFFER_PRICE, MaxCount.OFFER_PRICE) * 10,
-      id: i++,
+      id: `${allOffers[i][1].toLowerCase()}-${j}`,
+      i: i++,
     }));
     offerTypes.type = type;
     offerTypes.offers = offers;
     offerList.push(offerTypes);
+    j++;
   });
+
   return offerList;
 };

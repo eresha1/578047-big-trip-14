@@ -8,6 +8,8 @@ import {
   offersType,
   createDestinationMarkup
 } from '../utils/points.js';
+import flatpickr from 'flatpickr';
+import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 const getTypeImage = (type) =>
   type
@@ -29,7 +31,9 @@ const createEditPointTemplate = (data) => {
   const destinations = DESTINATION;
   const icon = type.toLowerCase();
 
+  // const timeStartValue = flatpickr.formatDate(startTime, `d/m/y H:i`);
   const timeStartValue = humanizeFullDate(startTime);
+  // const timeEndValue = flatpickr.formatDate(endTime, `d/m/y H:i`);
   const timeEndValue = humanizeFullDate(endTime);
 
   return `<li class="trip-events__item">
@@ -87,7 +91,7 @@ const createEditPointTemplate = (data) => {
     <section class="event__details">
         ${offersType(offers, isOffers)}
         ${createDestinationMarkup(destinationInfo, isDestinationInfo)}
-  </form>;
+  </form>
   </li>`;
 };
 
@@ -95,14 +99,21 @@ export default class EditPoint extends SmartView {
   constructor(point) {
     super();
     this._data = EditPoint.parsePointToState(point);
+    this._startDatepicker = null;
+    this._endDatepicker = null;
 
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._formClickHandler = this._formClickHandler.bind(this);
     this._radioInputHandler = this._radioInputHandler.bind(this);
     this._destinationInputHandler = this._destinationInputHandler.bind(this);
     this._priceChangeHandler = this._priceChangeHandler.bind(this);
+    this._offersChangeHandler = this._offersChangeHandler.bind(this);
+    this._startTimeChangeHandler = this._startTimeChangeHandler.bind(this);
+    this._endTimeChangeHandler = this._endTimeChangeHandler.bind(this);
 
     this._setInnerHandlers();
+    this._setStartDatepicker();
+    this._setEndDatepicker();
   }
 
   reset(point) {
@@ -115,6 +126,8 @@ export default class EditPoint extends SmartView {
 
   restoreHandlers() {
     this._setInnerHandlers();
+    this._setStartDatepicker();
+    this._setEndDatepicker();
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setFormRollupBtnClickHandler(this._callback.formClick);
   }
@@ -133,14 +146,84 @@ export default class EditPoint extends SmartView {
     this.getElement()
       .querySelector('.event__input--price')
       .addEventListener('input', this._priceChangeHandler);
+
+    if (this._data.offers.length) {
+      this.getElement()
+        .querySelector('.event__available-offers')
+        .addEventListener('change', this._offersChangeHandler);
+    }
+  }
+
+  _offersChangeHandler(evt) {
+    evt.preventDefault();
+    const changedOfferIndex = this._data.offers.findIndex((offer) => offer.id === evt.target.id);
+    const update = this._data.offers.slice();
+    update[changedOfferIndex] = Object.assign(
+      {},
+      this._data.offers[changedOfferIndex],
+      {isChecked: evt.target.checked},
+    );
+
+    this.updateData({
+      offers: update,
+    }, true);
+  }
+
+  _setStartDatepicker() {
+    if (this._startDatepicker) {
+      this._startDatepicker.destroy();
+      this._startDatepicker = null;
+    }
+
+    this._startDatepicker = flatpickr(
+      this.getElement().querySelector('input[name=event-start-time]'),
+      {
+        dateFormat: 'd/m/y H:i',
+        enableTime: true,
+        defaultDate: this._data.startTime,
+        onChange: this._startTimeChangeHandler,
+      },
+    );
+  }
+
+  _setEndDatepicker() {
+    if (this._endDatepicker) {
+      this._endDatepicker.destroy();
+      this._endDatepicker = null;
+    }
+
+    this._endDatepicker = flatpickr(
+      this.getElement().querySelector('input[name=event-end-time]'),
+      {
+        dateFormat: 'd/m/y H:i',
+        enableTime: true,
+        default: this._data.endTime,
+        minDate: this._data.startTime,
+        onChange: this._endTimeChangeHandler,
+      },
+    );
+  }
+
+  _startTimeChangeHandler([userDate]) {
+    this.updateData({
+      startTime: userDate,
+    }, true);
+  }
+
+  _endTimeChangeHandler([userDate]) {
+    this.updateData({
+      endTime: userDate,
+    }, true);
   }
 
   _radioInputHandler(evt) {
-    this._data.type = evt.target.value;
+    const newType = evt.target.value;
+    const newOffers = getPossibleOffers(newType);
     this.updateData({
-      type: evt.target.value,
+      type: newType,
       // isChecked: (this._data.type === evt.target.value),
-      offers: getPossibleOffers(this._data.type),
+      isChecked: evt.target.checked,
+      offers: newOffers,
     });
   }
 
@@ -166,12 +249,9 @@ export default class EditPoint extends SmartView {
       evt.target.reportValidity();
       return;
     }
-    this.updateData(
-      {
-        basePrice: evt.target.value,
-      },
-      true,
-    );
+    this.updateData({
+      basePrice: evt.target.value,
+    }, true);
   }
 
   _formSubmitHandler(evt) {
