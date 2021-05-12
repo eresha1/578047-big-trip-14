@@ -1,4 +1,5 @@
 import TripPresenter from './presenter/trip.js';
+import PointsModel from './model/points.js';
 import NavigationView from './view/navigation.js';
 import FiltersView from './view/filters.js';
 import { generateRoutePoint } from './mock/point.js';
@@ -9,6 +10,10 @@ import { filtersTitle, navigationItemsTitle } from './utils/const.js';
 const POINTS_COUNT = 2;
 const points = new Array(POINTS_COUNT).fill().map(generateRoutePoint);
 const sortPoints = getSortStartDates(points);
+
+const pointsModel = new PointsModel();
+pointsModel.setPoints(points)
+
 const headerMainElement = document.querySelector('.trip-main');
 const controlsElement = headerMainElement.querySelector('.trip-controls');
 const navigationElement = controlsElement.querySelector('.trip-controls__navigation');
@@ -19,5 +24,6 @@ const pageMainElement = document.querySelector('.page-main .trip-events');
 render(navigationElement, new NavigationView(navigationItemsTitle), RenderPosition.BEFORE_END);
 render(filtersBlock, new FiltersView(filtersTitle), RenderPosition.BEFORE_END);
 
-const tripPresenter = new TripPresenter(headerMainElement, pageMainElement);
+const tripPresenter = new TripPresenter(headerMainElement, pageMainElement, pointsModel);
+
 tripPresenter.init(sortPoints);

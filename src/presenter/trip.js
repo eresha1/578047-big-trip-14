@@ -12,7 +12,8 @@ import { updateItem } from '../utils/common.js';
 import { SortType } from '../utils/const.js';
 
 export default class Trip {
-  constructor(headerContainer, mainContainer) {
+  constructor(headerContainer, mainContainer, pointsModel) {
+    this._pointsModel = pointsModel;
     this._headerContainer = headerContainer;
     this._mainContainer = mainContainer;
     this._pointPresenter = {};
@@ -45,6 +46,10 @@ export default class Trip {
 
     this._renderTripInfo();
     this._renderPointsSection();
+  }
+
+  _getPoints() {
+    return this._pointsModel.getPoints();
   }
 
   _handleSortTypeChange(sortType) {
