@@ -7,7 +7,7 @@ import { getSortStartDates } from './utils/common.js';
 import { RenderPosition, render } from './utils/render.js';
 import { filtersTitle, navigationItemsTitle } from './utils/const.js';
 
-const POINTS_COUNT = 2;
+const POINTS_COUNT = 4;
 const points = new Array(POINTS_COUNT).fill().map(generateRoutePoint);
 const sortPoints = getSortStartDates(points);
 
@@ -26,4 +26,4 @@ render(filtersBlock, new FiltersView(filtersTitle), RenderPosition.BEFORE_END);
 
 const tripPresenter = new TripPresenter(headerMainElement, pageMainElement, pointsModel);
 
-tripPresenter.init(sortPoints);
+tripPresenter.init();
