@@ -1,7 +1,9 @@
 import TripPresenter from './presenter/trip.js';
+import FilterPresenter from './presenter/filter.js';
 import PointsModel from './model/points.js';
+import FilterModel from './model/filter.js';
 import NavigationView from './view/navigation.js';
-import FiltersView from './view/filters.js';
+// import FiltersView from './view/filters.js';
 import { generateRoutePoint } from './mock/point.js';
 import { getSortStartDates } from './utils/common.js';
 import { RenderPosition, render } from './utils/render.js';
@@ -12,7 +14,9 @@ const points = new Array(POINTS_COUNT).fill().map(generateRoutePoint);
 const sortPoints = getSortStartDates(points);
 
 const pointsModel = new PointsModel();
-pointsModel.setPoints(points)
+pointsModel.setPoints(points);
+
+const filterModel = new FilterModel();
 
 const headerMainElement = document.querySelector('.trip-main');
 const controlsElement = headerMainElement.querySelector('.trip-controls');
@@ -22,8 +26,11 @@ const filtersBlock = controlsElement.querySelector('.trip-controls__filters');
 const pageMainElement = document.querySelector('.page-main .trip-events');
 
 render(navigationElement, new NavigationView(navigationItemsTitle), RenderPosition.BEFORE_END);
-render(filtersBlock, new FiltersView(filtersTitle), RenderPosition.BEFORE_END);
+// render(filtersBlock, new FiltersView(filtersTitle), RenderPosition.BEFORE_END);
 
-const tripPresenter = new TripPresenter(headerMainElement, pageMainElement, pointsModel);
+const tripPresenter = new TripPresenter(headerMainElement, pageMainElement, pointsModel, filterModel);
 
+const filterPresenter = new FilterPresenter(filtersBlock, pointsModel, filterModel);
+
+filterPresenter.init();
 tripPresenter.init();

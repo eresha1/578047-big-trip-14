@@ -33,3 +33,15 @@ export const sortPointsByPrice = (a, b) => {
 
 //   return [...items.slice(0, index), update, ...items.slice(index + 1)];
 // };
+
+
+export const getPointFuture = (startTime) => {
+ const aaa = dayjs().diff(dayjs(startTime)) < 0;
+ console.log(aaa)
+ return aaa
+};
+
+export const getPointPast = (endTime) => {
+  return dayjs().diff(dayjs(endTime)) > 0;
+};
+

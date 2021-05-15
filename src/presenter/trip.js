@@ -10,10 +10,12 @@ import ListEmptyView from '../view/list-empty.js';
 import { RenderPosition, render, remove } from '../utils/render.js';
 import { updateItem, sortPointsByDate, sortPointsByPrice, sortPointsByTime } from '../utils/common.js';
 import { SortType, UpdateType, UserAction } from '../utils/const.js';
+import {filter} from '../utils/filter.js';
 
 export default class Trip {
-  constructor(headerContainer, mainContainer, pointsModel) {
+  constructor(headerContainer, mainContainer, pointsModel, filterModel) {
     this._pointsModel = pointsModel;
+    this._filterModel = filterModel;
     this._headerContainer = headerContainer;
     this._mainContainer = mainContainer;
     this._pointPresenter = {};
@@ -34,15 +36,20 @@ export default class Trip {
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
-    // this._points = this._getPoints();;
+    // this._points = this._getPoints();
   }
 
   init() {
     // this._points = points.slice();
     // this._sourcedPoints = points.slice();
-    this._pointsModel.addObserver(this._handleModelEvent)
 
-    this._renderBoard()
+    console.log(this._pointsModel)
+    console.log(this._filterModel)
+    this._pointsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
+
+
+    this._renderBoard(this._pointsModel)
 
     // this._infoComponent = new InfoView(points);
     // this._costComponent = new CostView(points);
@@ -57,16 +64,21 @@ export default class Trip {
   }
 
   _getPoints() {
+    const filterType = this._filterModel.getFilter();
+    const points = this._pointsModel.getPoints();
+    const filtredPoints = filter[filterType](points);
 
     switch (this._currentSortType) {
       case SortType.DEFAULT:
-        return this._pointsModel.getPoints().slice().sort(sortPointsByDate);
+        return filtredPoints.sort(sortPointsByDate);
+        // return this._pointsModel.getPoints().slice().sort(sortPointsByDate);
       case SortType.TIME:
-        return this._pointsModel.getPoints().slice().sort(sortPointsByTime);
+        return filtredPoints.sort(sortPointsByTime);
+        // return this._pointsModel.getPoints().slice().sort(sortPointsByTime);
       case SortType.PRICE:
-        return this._pointsModel.getPoints().slice().sort(sortPointsByPrice);
+        return filtredPoints.sort(sortPointsByPrice);
       }
-    return this._pointsModel.getPoints();
+    return filtredPoints;
   }
 
   _handleSortTypeChange(sortType) {
@@ -128,9 +140,9 @@ export default class Trip {
       case UpdateType.MAJOR:
         // - обновить всю доску (например, при переключении фильтра)
         console.log("MAJOR")
-        this._clearPointsSection({resetSortType: true});
-        this._renderPointsList();
-        // console.log("MAJOR")
+        this._clearPointsSection(true);
+        this._renderPointsSection();
+        console.log("MAJOR")
         break;
     }
   }
@@ -199,7 +211,7 @@ export default class Trip {
     this._renderPointsList();
   }
 
-  _clearPointsSection({resetSortType = false} = {}) {
+  _clearPointsSection(resetSortType = false) {
     Object.values(this._pointPresenter).forEach((presenter) =>
       presenter.destroy(),
     );

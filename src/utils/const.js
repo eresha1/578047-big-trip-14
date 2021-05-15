@@ -1,14 +1,20 @@
-export const filtersTitle = [
-  {
-    title: 'Everything',
-  },
-  {
-    title: 'Future',
-  },
-  {
-    title: 'Past',
-  },
-];
+export const FilterType = {
+  EVERYTHING: 'Everything',
+  FUTURE: 'Future',
+  PAST: 'Past',
+};
+
+// export const filtersTitle = [
+//   {
+//     title: 'Everything',
+//   },
+//   {
+//     title: 'Future',
+//   },
+//   {
+//     title: 'Past',
+//   },
+// ];
 
 export const navigationItemsTitle = [
   {
