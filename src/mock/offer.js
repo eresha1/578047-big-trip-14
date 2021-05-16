@@ -14,6 +14,7 @@ export const generateOffersList = (allOffers, types) => {
     const offers = new Array(offerCount).fill('').map(() => ({
       title: allOffers[i][0],
       price: getRandomInteger(MinCount.OFFER_PRICE, MaxCount.OFFER_PRICE) * 10,
+      // typeOffer: type.toLowerCase(),
       id: `${allOffers[i][1].toLowerCase()}-${j}`,
       i: i++,
     }));

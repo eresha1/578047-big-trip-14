@@ -134,14 +134,15 @@ export default class Trip {
         // - обновить список (например, когда задача ушла в архив)
         console.log('MINOR')
         this._clearPointsSection();
-        this._renderPointsSection();
+        this._renderBoard();
+        // this._renderTripInfo();
         // console.log("MINOR")
         break;
       case UpdateType.MAJOR:
         // - обновить всю доску (например, при переключении фильтра)
         console.log("MAJOR")
         this._clearPointsSection(true);
-        this._renderPointsSection();
+        this._renderBoard();
         console.log("MAJOR")
         break;
     }
@@ -153,23 +154,28 @@ export default class Trip {
     );
   }
 
-  _renderTripInfo() {
-    render(
-      this._headerContainer,
-      this._mainInfoComponent,
-      RenderPosition.AFTER_BEGIN,
-    );
+  _renderTripInfo(points) {
+    render(this._headerContainer, this._mainInfoComponent, RenderPosition.AFTER_BEGIN);
+    this._renderInfo(points);
+    this._renderCost(points); 
+  }
 
-    render(
-      this._mainInfoComponent,
-      this._infoComponent,
-      RenderPosition.BEFORE_END,
-    );
-    render(
-      this._mainInfoComponent,
-      this._costComponent,
-      RenderPosition.BEFORE_END,
-    );
+  _renderCost(points) {
+    if (this._costComponent !== null) {
+      this._costComponent = null;
+    }
+
+    this._costComponent = new CostView(points);
+    render(this._mainInfoComponent, this._costComponent, RenderPosition.BEFORE_END,);
+  }
+
+  _renderInfo(points) {
+    if (this._infoComponent !== null) {
+      this._infoComponent = null;
+    }
+
+    this._infoComponent = new InfoView(points);
+    render(this._mainInfoComponent, this._infoComponent, RenderPosition.BEFORE_END);
   }
 
   _renderSort() {
@@ -219,6 +225,8 @@ export default class Trip {
 
     remove(this._sortComponent);
     remove(this._listEmptyComponent);
+    remove(this._costComponent);
+    remove(this._infoComponent);
 
     if (resetSortType) {
       this._currentSortType = SortType.DEFAULT;
@@ -238,16 +246,16 @@ export default class Trip {
 
   _renderBoard() {
     const points = this._getPoints().slice();
-    // console.log(points)
-    this._infoComponent = new InfoView(points);
-    this._costComponent = new CostView(points);
+    // // console.log(points)
+    // this._infoComponent = new InfoView(points);
+    // this._costComponent = new CostView(points);
 
     if (points.length === 0) {
       this._renderListEmpty();
       return;
     }
 
-    this._renderTripInfo();
+    this._renderTripInfo(points);
     this._renderPointsSection();
 
   }
