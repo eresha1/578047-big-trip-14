@@ -15,6 +15,15 @@ export const getTotalCost = (points) => {
   return totalCoast
 };
 
+export const getOffers = (point) => { console.log(point.offers)
+  if (point.offers) {
+    const checkedOffers = point.offers.filter(({isChecked}) => isChecked)
+    console.log(checkedOffers)
+    return checkedOffers
+  }
+};
+
+
 // export const getTotalCost = (points) => {
 //   return points.reduce((sum, element) => {
 //     return sum + element.basePrice;

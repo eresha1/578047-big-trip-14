@@ -16,6 +16,7 @@ export const generateOffersList = (allOffers, types) => {
       price: getRandomInteger(MinCount.OFFER_PRICE, MaxCount.OFFER_PRICE) * 10,
       // typeOffer: type.toLowerCase(),
       id: `${allOffers[i][1].toLowerCase()}-${j}`,
+      isChecked: true,
       i: i++,
     }));
     offerTypes.type = type;
