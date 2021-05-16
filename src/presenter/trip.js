@@ -1,4 +1,5 @@
 import PointPresenter from './point.js';
+import PointNewPresenter from './point-new.js';
 
 import MainInfoView from '../view/main-info.js';
 import InfoView from '../view/info.js';
@@ -8,8 +9,8 @@ import PointsListView from '../view/points-list.js';
 import ListEmptyView from '../view/list-empty.js';
 
 import { RenderPosition, render, remove } from '../utils/render.js';
-import { updateItem, sortPointsByDate, sortPointsByPrice, sortPointsByTime } from '../utils/common.js';
-import { SortType, UpdateType, UserAction } from '../utils/const.js';
+import { sortPointsByDate, sortPointsByPrice, sortPointsByTime } from '../utils/common.js';
+import { SortType, UpdateType, UserAction, FilterType } from '../utils/const.js';
 import {filter} from '../utils/filter.js';
 
 export default class Trip {
@@ -37,19 +38,22 @@ export default class Trip {
     this._handleModeChange = this._handleModeChange.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     // this._points = this._getPoints();
+
+    this._pointsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
+
+    this._pointNewPresenter = new PointNewPresenter(this._pointsListComponent, this._handleViewAction);
   }
 
   init() {
     // this._points = points.slice();
     // this._sourcedPoints = points.slice();
 
-    console.log(this._pointsModel)
-    console.log(this._filterModel)
-    this._pointsModel.addObserver(this._handleModelEvent);
-    this._filterModel.addObserver(this._handleModelEvent);
+    // console.log(this._pointsModel)
+    // console.log(this._filterModel)
 
 
-    this._renderBoard(this._pointsModel)
+    this._renderBoard()
 
     // this._infoComponent = new InfoView(points);
     // this._costComponent = new CostView(points);
@@ -61,6 +65,13 @@ export default class Trip {
 
     // this._renderTripInfo();
     // this._renderPointsSection();
+  }
+
+
+  createPoint() {
+    this._currentSortType = SortType.DEFAULT;
+    this._filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this._pointNewPresenter.init();
   }
 
   _getPoints() {
@@ -87,7 +98,7 @@ export default class Trip {
     }
 
     this._currentSortType = sortType;
-    this._clearPointsSection();
+    this._clearBoard();
     this._renderPointsSection();
   }
 
@@ -133,7 +144,7 @@ export default class Trip {
       case UpdateType.MINOR:
         // - обновить список (например, когда задача ушла в архив)
         console.log('MINOR')
-        this._clearPointsSection();
+        this._clearBoard();
         this._renderBoard();
         // this._renderTripInfo();
         // console.log("MINOR")
@@ -141,7 +152,7 @@ export default class Trip {
       case UpdateType.MAJOR:
         // - обновить всю доску (например, при переключении фильтра)
         console.log("MAJOR")
-        this._clearPointsSection(true);
+        this._clearBoard(true);
         this._renderBoard();
         console.log("MAJOR")
         break;
@@ -149,6 +160,7 @@ export default class Trip {
   }
 
   _handleModeChange() {
+    this._pointNewPresenter.destroy();
     Object.values(this._pointPresenter).forEach((presenter) =>
       presenter.resetView(),
     );
@@ -157,7 +169,7 @@ export default class Trip {
   _renderTripInfo(points) {
     render(this._headerContainer, this._mainInfoComponent, RenderPosition.AFTER_BEGIN);
     this._renderInfo(points);
-    this._renderCost(points); 
+    this._renderCost(points);
   }
 
   _renderCost(points) {
@@ -217,7 +229,8 @@ export default class Trip {
     this._renderPointsList();
   }
 
-  _clearPointsSection(resetSortType = false) {
+  _clearBoard(resetSortType = false) {
+    this._pointNewPresenter.destroy();
     Object.values(this._pointPresenter).forEach((presenter) =>
       presenter.destroy(),
     );
@@ -233,7 +246,7 @@ export default class Trip {
     }
   }
 
-  // _clearPointsSection() {
+  // _clearBoard() {
   //   Object.values(this._pointPresenter).forEach((presenter) =>
   //     presenter.destroy(),
   //   );

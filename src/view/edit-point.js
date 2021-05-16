@@ -103,6 +103,7 @@ export default class EditPoint extends SmartView {
     this._endDatepicker = null;
 
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
+    this._formDeleteClickHandler = this._formDeleteClickHandler.bind(this);
     this._formClickHandler = this._formClickHandler.bind(this);
     this._radioInputHandler = this._radioInputHandler.bind(this);
     this._destinationInputHandler = this._destinationInputHandler.bind(this);
@@ -114,6 +115,19 @@ export default class EditPoint extends SmartView {
     this._setInnerHandlers();
     this._setStartDatepicker();
     this._setEndDatepicker();
+  }
+
+  removeElement() {
+    super.removeElement();
+
+    if (this._startDatepicker) {
+      this._startDatepicker.destroy();
+      this._startDatepicker = null;
+    }
+    if (this._endDatepicker) {
+      this._endDatepicker.destroy();
+      this._endDatepicker = null;
+    }
   }
 
   reset(point) {
@@ -130,6 +144,7 @@ export default class EditPoint extends SmartView {
     this._setEndDatepicker();
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setFormRollupBtnClickHandler(this._callback.formClick);
+    this.setDeleteClickHandler(this._callback.deleteClick);
   }
 
   _setInnerHandlers() {
@@ -276,6 +291,16 @@ export default class EditPoint extends SmartView {
     this.getElement()
       .querySelector('.event__rollup-btn')
       .addEventListener('click', this._formClickHandler);
+  }
+
+  _formDeleteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.deleteClick(EditPoint.parseStateToPoint(this._data));
+  }
+
+  setDeleteClickHandler(callback) {
+    this._callback.deleteClick = callback;
+    this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formDeleteClickHandler);
   }
 
   static parsePointToState(point) {
