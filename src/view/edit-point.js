@@ -8,6 +8,7 @@ import {
   offersType,
   createDestinationMarkup
 } from '../utils/points.js';
+import he from 'he';
 import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
@@ -58,8 +59,7 @@ const createEditPointTemplate = (data) => {
         <label class="event__label  event__type-output" for="event-destination-${id}">
           ${type}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value="${
-  destinationInfo.destination
+        <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value="${he.encode(destinationInfo.destination)
 }" list="destination-list-${id}">
         <datalist id="destination-list-${id}">
         ${createOptionValueMarkup(destinations)}
@@ -149,39 +149,44 @@ export default class EditPoint extends SmartView {
 
   _setInnerHandlers() {
     this.getElement()
-      .querySelectorAll('input[type=radio]')
+      .querySelectorAll("input[type=radio]")
       .forEach((item) =>
-        item.addEventListener('change', this._radioInputHandler),
+        item.addEventListener("change", this._radioInputHandler)
       );
 
     this.getElement()
-      .querySelector('.event__input--destination')
-      .addEventListener('change', this._destinationInputHandler);
+      .querySelector(".event__input--destination")
+      .addEventListener("change", this._destinationInputHandler);
 
     this.getElement()
-      .querySelector('.event__input--price')
-      .addEventListener('input', this._priceChangeHandler);
+      .querySelector(".event__input--price")
+      .addEventListener("input", this._priceChangeHandler);
 
     if (this._data.offers.length) {
       this.getElement()
-        .querySelector('.event__available-offers')
-        .addEventListener('change', this._offersChangeHandler);
+        .querySelector(".event__available-offers")
+        .addEventListener("change", this._offersChangeHandler);
     }
   }
 
   _offersChangeHandler(evt) {
     evt.preventDefault();
-    const changedOfferIndex = this._data.offers.findIndex((offer) => offer.id === evt.target.id);
+    const changedOfferIndex = this._data.offers.findIndex(
+      (offer) => offer.id === evt.target.id
+    );
     const update = this._data.offers.slice();
     update[changedOfferIndex] = Object.assign(
       {},
       this._data.offers[changedOfferIndex],
-      {isChecked: evt.target.checked},
+      { isChecked: evt.target.checked }
     );
 
-    this.updateData({
-      offers: update,
-    }, true);
+    this.updateData(
+      {
+        offers: update,
+      },
+      true
+    );
   }
 
   _setStartDatepicker() {
@@ -191,13 +196,13 @@ export default class EditPoint extends SmartView {
     }
 
     this._startDatepicker = flatpickr(
-      this.getElement().querySelector('input[name=event-start-time]'),
+      this.getElement().querySelector("input[name=event-start-time]"),
       {
-        dateFormat: 'd/m/y H:i',
+        dateFormat: "d/m/y H:i",
         enableTime: true,
         defaultDate: this._data.startTime,
         onChange: this._startTimeChangeHandler,
-      },
+      }
     );
   }
 
@@ -208,27 +213,33 @@ export default class EditPoint extends SmartView {
     }
 
     this._endDatepicker = flatpickr(
-      this.getElement().querySelector('input[name=event-end-time]'),
+      this.getElement().querySelector("input[name=event-end-time]"),
       {
-        dateFormat: 'd/m/y H:i',
+        dateFormat: "d/m/y H:i",
         enableTime: true,
         default: this._data.endTime,
         minDate: this._data.startTime,
         onChange: this._endTimeChangeHandler,
-      },
+      }
     );
   }
 
   _startTimeChangeHandler([userDate]) {
-    this.updateData({
-      startTime: userDate,
-    }, true);
+    this.updateData(
+      {
+        startTime: userDate,
+      },
+      true
+    );
   }
 
   _endTimeChangeHandler([userDate]) {
-    this.updateData({
-      endTime: userDate,
-    }, true);
+    this.updateData(
+      {
+        endTime: userDate,
+      },
+      true
+    );
   }
 
   _radioInputHandler(evt) {
@@ -243,30 +254,41 @@ export default class EditPoint extends SmartView {
   }
 
   _destinationInputHandler(evt) {
-    evt.preventDefault();
-    const destinationsList = getDestinationsList();
-
-    for (const key of destinationsList) {
-      if (key.destination === evt.target.value) {
-        this._data.destinationInfo = key;
+    if (!DESTINATION.includes(evt.target.value)) {
+      evt.target.setCustomValidity('Choose one of the suggested directions');
+    } else {
+      evt.target.setCustomValidity('');
+      evt.preventDefault();
+      const destinationsList = getDestinationsList();
+      for (const key of destinationsList) {
+        if (key.destination === evt.target.value) {
+          this._data.destinationInfo = key;
+        }
       }
+      this.updateData({
+        destination: this._data.destinationInfo.destination,
+      });
     }
-
-    this.updateData({
-      destination: this._data.destinationInfo.destination,
-    });
+    evt.target.reportValidity();
   }
 
   _priceChangeHandler(evt) {
     evt.preventDefault();
-    if (!new RegExp(/^-?[1-9]\d{0,5}$/).test(evt.target.value)) {
+    if (
+      !new RegExp(/^-?[1-9]\d{0,5}$/).test(evt.target.value) ||
+      evt.target.value < 1
+    ) {
       evt.target.setCustomValidity('Enter a positive integer.');
-      evt.target.reportValidity();
-      return;
+    } else {
+      evt.target.setCustomValidity('');
+      this.updateData(
+        {
+          basePrice: evt.target.value,
+        },
+        true
+      );
     }
-    this.updateData({
-      basePrice: evt.target.value,
-    }, true);
+    evt.target.reportValidity();
   }
 
   _formSubmitHandler(evt) {
@@ -277,8 +299,8 @@ export default class EditPoint extends SmartView {
   setFormSubmitHandler(callback) {
     this._callback.formSubmit = callback;
     this.getElement()
-      .querySelector('form')
-      .addEventListener('submit', this._formSubmitHandler);
+      .querySelector("form")
+      .addEventListener("submit", this._formSubmitHandler);
   }
 
   _formClickHandler(evt) {
@@ -289,8 +311,8 @@ export default class EditPoint extends SmartView {
   setFormRollupBtnClickHandler(callback) {
     this._callback.formClick = callback;
     this.getElement()
-      .querySelector('.event__rollup-btn')
-      .addEventListener('click', this._formClickHandler);
+      .querySelector(".event__rollup-btn")
+      .addEventListener("click", this._formClickHandler);
   }
 
   _formDeleteClickHandler(evt) {
@@ -300,7 +322,9 @@ export default class EditPoint extends SmartView {
 
   setDeleteClickHandler(callback) {
     this._callback.deleteClick = callback;
-    this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formDeleteClickHandler);
+    this.getElement()
+      .querySelector(".event__reset-btn")
+      .addEventListener("click", this._formDeleteClickHandler);
   }
 
   static parsePointToState(point) {
