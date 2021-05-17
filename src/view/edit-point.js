@@ -7,15 +7,17 @@ import {
   createOptionValueMarkup,
   offersType,
   createDestinationMarkup
-} from '../utils/points.js';
+} from './points.js';
 import he from 'he';
 import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 const getTypeImage = (type) =>
-  type
-    ? `<img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon ${type}">`
-    : '';
+  `<img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon ${type}">`;
+// const getTypeImage = (type) =>
+//   type
+//     ? `<img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon ${type}">`
+//     : '';
 
 const createEditPointTemplate = (data) => {
   const {
@@ -32,9 +34,8 @@ const createEditPointTemplate = (data) => {
   const destinations = DESTINATION;
   const icon = type.toLowerCase();
 
-  // const timeStartValue = flatpickr.formatDate(startTime, `d/m/y H:i`);
   const timeStartValue = humanizeFullDate(startTime);
-  // const timeEndValue = flatpickr.formatDate(endTime, `d/m/y H:i`);
+
   const timeEndValue = humanizeFullDate(endTime);
 
   return `<li class="trip-events__item">
@@ -149,23 +150,23 @@ export default class EditPoint extends SmartView {
 
   _setInnerHandlers() {
     this.getElement()
-      .querySelectorAll("input[type=radio]")
+      .querySelectorAll('input[type=radio]')
       .forEach((item) =>
-        item.addEventListener("change", this._radioInputHandler)
+        item.addEventListener('change', this._radioInputHandler)
       );
 
     this.getElement()
-      .querySelector(".event__input--destination")
-      .addEventListener("change", this._destinationInputHandler);
+      .querySelector('.event__input--destination')
+      .addEventListener('change', this._destinationInputHandler);
 
     this.getElement()
-      .querySelector(".event__input--price")
-      .addEventListener("input", this._priceChangeHandler);
+      .querySelector('.event__input--price')
+      .addEventListener('input', this._priceChangeHandler);
 
     if (this._data.offers.length) {
       this.getElement()
-        .querySelector(".event__available-offers")
-        .addEventListener("change", this._offersChangeHandler);
+        .querySelector('.event__available-offers')
+        .addEventListener('change', this._offersChangeHandler);
     }
   }
 
@@ -247,7 +248,6 @@ export default class EditPoint extends SmartView {
     const newOffers = getPossibleOffers(newType);
     this.updateData({
       type: newType,
-      // isChecked: (this._data.type === evt.target.value),
       isChecked: evt.target.checked,
       offers: newOffers,
     });

@@ -11,7 +11,6 @@ export default class Points extends Observer {
   }
 
   getPoints() {
-    console.log(this._points)
     return this._points;
   }
 
@@ -27,7 +26,6 @@ export default class Points extends Observer {
       update,
       ...this._points.slice(index + 1),
     ];
-console.log(update)
     this._notify(updateType, update);
   }
 

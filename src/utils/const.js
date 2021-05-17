@@ -4,18 +4,6 @@ export const FilterType = {
   PAST: 'Past',
 };
 
-// export const filtersTitle = [
-//   {
-//     title: 'Everything',
-//   },
-//   {
-//     title: 'Future',
-//   },
-//   {
-//     title: 'Past',
-//   },
-// ];
-
 export const navigationItemsTitle = [
   {
     title: 'Table',
@@ -69,4 +57,18 @@ export const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+};
+
+export const EMPTY_POINT = {
+  type: 'bus',
+  offers: [],
+  destinationInfo: {
+    destination: '',
+    description: '',
+    photoPlace: [],
+  },
+  dateFrom: new Date,
+  dateTo: new Date,
+  basePrice: '',
+  isFavorite: false,
 };

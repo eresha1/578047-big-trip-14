@@ -3,15 +3,12 @@ import FilterPresenter from './presenter/filter.js';
 import PointsModel from './model/points.js';
 import FilterModel from './model/filter.js';
 import NavigationView from './view/navigation.js';
-// import FiltersView from './view/filters.js';
 import { generateRoutePoint } from './mock/point.js';
-// import { getSortStartDates } from './utils/common.js';
 import { RenderPosition, render } from './utils/render.js';
-import { filtersTitle, navigationItemsTitle } from './utils/const.js';
+import { navigationItemsTitle } from './utils/const.js';
 
 const POINTS_COUNT = 4;
 const points = new Array(POINTS_COUNT).fill().map(generateRoutePoint);
-// const sortPoints = getSortStartDates(points);
 
 const pointsModel = new PointsModel();
 pointsModel.setPoints(points);
@@ -26,7 +23,6 @@ const filtersBlock = controlsElement.querySelector('.trip-controls__filters');
 const pageMainElement = document.querySelector('.page-main .trip-events');
 
 render(navigationElement, new NavigationView(navigationItemsTitle), RenderPosition.BEFORE_END);
-// render(filtersBlock, new FiltersView(filtersTitle), RenderPosition.BEFORE_END);
 
 const tripPresenter = new TripPresenter(headerMainElement, pageMainElement, pointsModel, filterModel);
 
@@ -35,10 +31,8 @@ const filterPresenter = new FilterPresenter(filtersBlock, pointsModel, filterMod
 filterPresenter.init();
 tripPresenter.init();
 
-document.querySelector(`.trip-main__event-add-btn`).addEventListener(`click`, (evt) => {
+document.querySelector('.trip-main__event-add-btn').addEventListener(`click`, (evt) => {
   evt.preventDefault();
-  // evt.target.disabled = true;
   tripPresenter.createPoint();
-
-  console.log('hhhhhhhhhhh')
+  evt.target.disabled = true;
 });

@@ -4,14 +4,20 @@ export const getTotalCost = (points) => {
   let totalCoast = 0;
   if (points.length) {
     const totalPrice = points.reduce((sum, point) => {
-    return sum + +point.basePrice;
-  }, 0);
+      return sum + +point.basePrice;
+    }, 0);
 
-  const totalPriceOffers = points.reduce((sumAll, {offers}) =>  sumAll + offers.filter(({isChecked}) => isChecked).reduce((sum, {price}) => sum + price, 0), 0);
-  console.log(totalPriceOffers)
-  totalCoast = totalPrice + totalPriceOffers;
+    const totalPriceOffers = points.reduce(
+      (sumAll, { offers }) =>
+        sumAll +
+        offers
+          .filter(({ isChecked }) => isChecked)
+          .reduce((sum, { price }) => sum + price, 0),
+      0
+    ); 
+    totalCoast = totalPrice + totalPriceOffers;
   }
-  return totalCoast
+  return totalCoast;
 };
 
 export const getOffers = (point) => {

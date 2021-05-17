@@ -34,8 +34,6 @@ export default class Sorting extends AbstractView {
   }
 
   getTemplate() {
-
-  console.log(this._currentSortType)
     return createSortingTemplate(this._currentSortType);
   }
 
@@ -44,7 +42,6 @@ export default class Sorting extends AbstractView {
       return;
     }
     evt.preventDefault();
-    console.log(evt.target.dataset.sortType)
     this._callback.sortTypeChange(evt.target.dataset.sortType);
   }
 

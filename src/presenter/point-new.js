@@ -1,16 +1,16 @@
 import EditPointView from '../view/edit-point.js';
 
 import { RenderPosition, render, remove } from '../utils/render.js';
-import {UserAction, UpdateType} from '../utils/const.js';
+import {UserAction, UpdateType, EMPTY_POINT} from '../utils/const.js';
 import {generateID} from '../utils/random.js';
+
 
 export default class PointNew {
   constructor(pointListContainer, changeData) {
     this._pointListContainer = pointListContainer;
     this._changeData = changeData;
 
-    this._editPointComponent = null;
-    // this._destroyCallback = null;
+    this._newPointComponent = null;
 
 
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
@@ -21,38 +21,30 @@ export default class PointNew {
   }
 
   init() {
-    // this._destroyCallback = callback;
-
-    if (this._editPointComponent !== null) {
+    if (this._newPointComponent !== null) {
       return;
     }
 
-    this._editPointComponent = new EditPointView();
-    this._editPointComponent.setFormSubmitHandler(this._handleFormSubmit);
-    this._editPointComponent.setDeleteClickHandler(this._handleDeleteClick);
-    this._editPointComponent.setFormRollupBtnClickHandler(this._handleFormClick);
+    this._newPointComponent = new EditPointView(EMPTY_POINT);
+    this._newPointComponent.setFormSubmitHandler(this._handleFormSubmit);
+    this._newPointComponent.setDeleteClickHandler(this._handleDeleteClick);
+    this._newPointComponent.setFormRollupBtnClickHandler(this._handleFormClick);
 
-    render(this._pointListContainer, this._editPointComponent, RenderPosition.AFTER_BEGIN);
+    render(this._pointListContainer, this._newPointComponent, RenderPosition.AFTER_BEGIN);
 
     document.addEventListener('keydown', this._escKeyDownHandler);
   }
 
   destroy() {
-    if (this._editPointComponent !== null) {
-      return
+    if (this._newPointComponent === null) {
+      return;
     }
 
-      remove(this._editPointComponent);
-      this._editPointComponent = null;
-
-      // if (this._destroyCallback !== null) {
-      //   this._destroyCallback();
-      // }
-      document.querySelector(`.trip-main__event-add-btn`).disabled = false;
-      document.removeEventListener(`keydown`, this._escKeyDownHandler);
-
+    remove(this._newPointComponent);
+    this._newPointComponent = null;
+    document.querySelector('.trip-main__event-add-btn').disabled = false;
+    document.removeEventListener('keydown', this._escKeyDownHandler);
   }
-
 
   _handleFormSubmit(point) {
     this._changeData(
@@ -60,6 +52,7 @@ export default class PointNew {
       UpdateType.MINOR,
       Object.assign({id: generateID()}, point)
     );
+
     this.destroy();
   }
 
@@ -68,8 +61,6 @@ export default class PointNew {
   }
 
   _handleFormClick() {
-    // this._editPointComponent.reset(this._point);
-    // this._replaceFormToPoint();
     this.destroy();
   }
 
