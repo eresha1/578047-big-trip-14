@@ -152,7 +152,7 @@ export default class EditPoint extends SmartView {
     this.getElement()
       .querySelectorAll('input[type=radio]')
       .forEach((item) =>
-        item.addEventListener('change', this._radioInputHandler)
+        item.addEventListener('change', this._radioInputHandler),
       );
 
     this.getElement()
@@ -173,20 +173,20 @@ export default class EditPoint extends SmartView {
   _offersChangeHandler(evt) {
     evt.preventDefault();
     const changedOfferIndex = this._data.offers.findIndex(
-      (offer) => offer.id === evt.target.id
+      (offer) => offer.id === evt.target.id,
     );
     const update = this._data.offers.slice();
     update[changedOfferIndex] = Object.assign(
       {},
       this._data.offers[changedOfferIndex],
-      { isChecked: evt.target.checked }
+      { isChecked: evt.target.checked },
     );
 
     this.updateData(
       {
         offers: update,
       },
-      true
+      true,
     );
   }
 
@@ -197,13 +197,13 @@ export default class EditPoint extends SmartView {
     }
 
     this._startDatepicker = flatpickr(
-      this.getElement().querySelector("input[name=event-start-time]"),
+      this.getElement().querySelector('input[name=event-start-time]'),
       {
-        dateFormat: "d/m/y H:i",
+        dateFormat: 'd/m/y H:i',
         enableTime: true,
         defaultDate: this._data.startTime,
         onChange: this._startTimeChangeHandler,
-      }
+      },
     );
   }
 
@@ -214,14 +214,14 @@ export default class EditPoint extends SmartView {
     }
 
     this._endDatepicker = flatpickr(
-      this.getElement().querySelector("input[name=event-end-time]"),
+      this.getElement().querySelector('input[name=event-end-time]'),
       {
-        dateFormat: "d/m/y H:i",
+        dateFormat: 'd/m/y H:i',
         enableTime: true,
         default: this._data.endTime,
         minDate: this._data.startTime,
         onChange: this._endTimeChangeHandler,
-      }
+      },
     );
   }
 
@@ -230,7 +230,7 @@ export default class EditPoint extends SmartView {
       {
         startTime: userDate,
       },
-      true
+      true,
     );
   }
 
@@ -239,7 +239,7 @@ export default class EditPoint extends SmartView {
       {
         endTime: userDate,
       },
-      true
+      true,
     );
   }
 
@@ -285,7 +285,7 @@ export default class EditPoint extends SmartView {
         {
           basePrice: evt.target.value,
         },
-        true
+        true,
       );
     }
     evt.target.reportValidity();
@@ -299,8 +299,8 @@ export default class EditPoint extends SmartView {
   setFormSubmitHandler(callback) {
     this._callback.formSubmit = callback;
     this.getElement()
-      .querySelector("form")
-      .addEventListener("submit", this._formSubmitHandler);
+      .querySelector('form')
+      .addEventListener('submit', this._formSubmitHandler);
   }
 
   _formClickHandler(evt) {
@@ -311,8 +311,8 @@ export default class EditPoint extends SmartView {
   setFormRollupBtnClickHandler(callback) {
     this._callback.formClick = callback;
     this.getElement()
-      .querySelector(".event__rollup-btn")
-      .addEventListener("click", this._formClickHandler);
+      .querySelector('.event__rollup-btn')
+      .addEventListener('click', this._formClickHandler);
   }
 
   _formDeleteClickHandler(evt) {
@@ -323,8 +323,8 @@ export default class EditPoint extends SmartView {
   setDeleteClickHandler(callback) {
     this._callback.deleteClick = callback;
     this.getElement()
-      .querySelector(".event__reset-btn")
-      .addEventListener("click", this._formDeleteClickHandler);
+      .querySelector('.event__reset-btn')
+      .addEventListener('click', this._formDeleteClickHandler);
   }
 
   static parsePointToState(point) {

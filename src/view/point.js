@@ -12,7 +12,7 @@ import {getOffers} from '../utils/common.js';
 
 
 const createOffersTemplate = (point) => {
-  const offers = getOffers(point)
+  const offers = getOffers(point);
   return offers
     .map((offer) => {
       return `<li class="event__offer">

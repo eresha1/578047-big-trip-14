@@ -93,10 +93,8 @@ export default class Trip {
   }
 
   _handleModelEvent(updateType, data) {
-    console.log(updateType, data);
     switch (updateType) {
       case UpdateType.PATCH:
-        console.log('PATCH')
         this._pointPresenter[data.id].init(data);
         break;
       case UpdateType.MINOR:

@@ -12,9 +12,7 @@ export const getTotalCost = (points) => {
         sumAll +
         offers
           .filter(({ isChecked }) => isChecked)
-          .reduce((sum, { price }) => sum + price, 0),
-      0
-    ); 
+          .reduce((sum, { price }) => sum + price, 0), 0);
     totalCoast = totalPrice + totalPriceOffers;
   }
   return totalCoast;
@@ -22,8 +20,8 @@ export const getTotalCost = (points) => {
 
 export const getOffers = (point) => {
   if (point.offers) {
-    const checkedOffers = point.offers.filter(({isChecked}) => isChecked)
-    return checkedOffers
+    const checkedOffers = point.offers.filter(({isChecked}) => isChecked);
+    return checkedOffers;
   }
 };
 
@@ -50,23 +48,8 @@ export const sortPointsByPrice = (a, b) => {
   return a.basePrice - b.basePrice;
 };
 
-// export const updateItem = (items, update) => {
-//   const index = items.findIndex((item) => {
-//     item.id === update.id;
-//   });
-
-//   if(index === -1) {
-//     return items;
-//   }
-
-//   return [...items.slice(0, index), update, ...items.slice(index + 1)];
-// };
-
-
 export const getPointFuture = (startTime) => {
- const aaa = dayjs().diff(dayjs(startTime)) < 0;
- console.log(aaa)
- return aaa
+  return dayjs().diff(dayjs(startTime)) < 0;
 };
 
 export const getPointPast = (endTime) => {
