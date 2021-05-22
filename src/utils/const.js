@@ -4,14 +4,11 @@ export const FilterType = {
   PAST: 'Past',
 };
 
-export const navigationItemsTitle = [
-  {
-    title: 'Table',
-  },
-  {
-    title: 'Stats',
-  },
-];
+export const NavigationItem = {
+  TABLE: 'Table',
+  STATS: 'Stats',
+  NEW_EVENT: 'New event'
+  };
 
 export const SortType = {
   DEFAULT: 'day',

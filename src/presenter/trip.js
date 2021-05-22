@@ -36,19 +36,36 @@ export default class Trip {
     this._handleModeChange = this._handleModeChange.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
-    this._pointsModel.addObserver(this._handleModelEvent);
-    this._filterModel.addObserver(this._handleModelEvent);
+    // this._pointsModel.addObserver(this._handleModelEvent);
+    // this._filterModel.addObserver(this._handleModelEvent);
 
     this._pointNewPresenter = new PointNewPresenter(this._pointsListComponent, this._handleViewAction);
+    console.log(mainContainer)
+    console.log(this._pointsListComponent)
   }
 
   init() {
+    this._pointsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
+
     this._renderBoard();
   }
 
+  destroy() {
+    this._clearBoard({resetSortType: true});
+
+    remove(this._pointsListComponent);
+    console.log(this._pointsListComponent)
+
+    this._pointsModel.removeObserver(this._handleModelEvent);
+    this._filterModel.removeObserver(this._handleModelEvent);
+  }
+
+
+
   createPoint() {
-    this._currentSortType = SortType.DEFAULT;
-    this._filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    // this._currentSortType = SortType.DEFAULT;
+    // this._filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this._pointNewPresenter.init();
   }
 
@@ -167,10 +184,8 @@ export default class Trip {
 
   _renderPointsList() {
     const points = this._getPoints().slice();
-    // console.log(points)
     render(this._mainContainer, this._pointsListComponent, RenderPosition.BEFORE_END);
     this._renderPoints(points);
-    // points.forEach((point) => this._renderPoint(point));
   }
 
   _renderPointsSection() {
@@ -209,5 +224,14 @@ export default class Trip {
 
     this._renderTripInfo(points);
     this._renderPointsSection();
+  }
+
+
+  hide() {
+    this._mainContainer.classList.add(`trip-events--hidden`);
+  }
+
+  show() {
+    this._mainContainer.classList.remove(`trip-events--hidden`);
   }
 }

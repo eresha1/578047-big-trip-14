@@ -19,6 +19,8 @@ import {
 
 import { generateOffersList } from './offer.js';
 
+import {getPossibleOffers} from '../utils/common.js'
+
 const getDestinationImages = (arrayLength, destination) => {
   return new Array(arrayLength).fill('').map(() => ({
     src: `http://picsum.photos/248/152?r=${Math.random()}`,
@@ -60,17 +62,9 @@ const getStartDate = () => {
   return dayjs().add(daysGap, 'day').add(hour, 'hours').add(min, 'm').toDate();
 };
 
-const offersList = generateOffersList(OFFERS, typePoints);
+export const offersList = generateOffersList(OFFERS, typePoints);
+console.log(offersList)
 
-export const getPossibleOffers = (type) => {
-  let offers = [];
-  offersList.forEach((item) => {
-    if (Object.values(item)[0].toLowerCase() === type) {
-      offers = Object.values(item)[1];
-    }
-  });
-  return offers;
-};
 
 export const generateRoutePoint = () => {
   const type = getRandomElement(typePoints);
@@ -82,7 +76,7 @@ export const generateRoutePoint = () => {
     .add(getRandomInteger(10, 2000), 'minute')
     .toDate();
   const basePrice = getRandomInteger(MinCount.PRICE, MaxCount.PRICE) * 10;
-  const offers = getPossibleOffers(type.toLowerCase());
+  const offers = getPossibleOffers(type.toLowerCase(), offersList);
 
   const isFavorite = generateRandomBoolean();
   return {

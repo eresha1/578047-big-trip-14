@@ -1,7 +1,8 @@
-import SmartView from '../view/smart.js';
+import SmartView from './smart.js';
 import { typePoints, DESTINATION } from '../mock/const.js';
 import { humanizeFullDate } from '../utils/time-format';
-import { getPossibleOffers, getDestinationsList } from '../mock/point.js';
+import { getDestinationsList, offersList } from '../mock/point.js';
+import { getPossibleOffers } from '../utils/common.js';
 import {
   createInputTypeItemMarkup,
   createOptionValueMarkup,
@@ -28,8 +29,8 @@ const createEditPointTemplate = (data) => {
     basePrice,
     destinationInfo,
     offers,
-    isOffers,
-    isDestinationInfo,
+    // isOffers,
+    // isDestinationInfo,
   } = data;
   const destinations = DESTINATION;
   const icon = type.toLowerCase();
@@ -90,8 +91,8 @@ const createEditPointTemplate = (data) => {
       </button>
     </header>
     <section class="event__details">
-        ${offersType(offers, isOffers)}
-        ${createDestinationMarkup(destinationInfo, isDestinationInfo)}
+      ${offersType(offers)}
+      ${createDestinationMarkup(destinationInfo)}
   </form>
   </li>`;
 };
@@ -245,7 +246,7 @@ export default class EditPoint extends SmartView {
 
   _radioInputHandler(evt) {
     const newType = evt.target.value;
-    const newOffers = getPossibleOffers(newType);
+    const newOffers = getPossibleOffers(newType, offersList);
     this.updateData({
       type: newType,
       isChecked: evt.target.checked,
@@ -329,18 +330,18 @@ export default class EditPoint extends SmartView {
 
   static parsePointToState(point) {
     return Object.assign({}, point, {
-      isOffers: point.offers.length > 0,
-      isDestinationInfo:
-        point.destinationInfo.description.length > 0 &&
-        point.destinationInfo.photoPlace.length > 0,
+      // isOffers: point.offers.length > 0,
+      // isDestinationInfo:
+      //   point.destinationInfo.description.length > 0 &&
+      //   point.destinationInfo.photoPlace.length > 0,
     });
   }
 
   static parseStateToPoint(data) {
     data = Object.assign({}, data);
 
-    delete data.isOffers;
-    delete data.isDestinationInfo;
+    // delete data.isOffers;
+    // delete data.isDestinationInfo;
 
     return data;
   }

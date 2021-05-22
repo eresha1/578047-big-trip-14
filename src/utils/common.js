@@ -56,3 +56,13 @@ export const getPointPast = (endTime) => {
   return dayjs().diff(dayjs(endTime)) > 0;
 };
 
+
+export const getPossibleOffers = (type, allOffers) => {
+  let offers = [];
+  allOffers.forEach((item) => {
+    if (Object.values(item)[0].toLowerCase() === type) {
+      offers = Object.values(item)[1];
+    }
+  });
+  return offers;
+};

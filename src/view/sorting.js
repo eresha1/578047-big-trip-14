@@ -3,9 +3,7 @@ import {SortsTitle}  from '../utils/const.js';
 
 const createSortingItemMarkup = (sortType, currentSortType) => {
 
-  const {title, type, isDisabled} = sortType;
-  // console.log(title)
-  // console.log(currentSortType)
+  const {title, type, isDisabled} = sortType; 
   const dataAtr = `data-sort-type="${type}"`;
 
   return `<div class="trip-sort__item    trip-sort__item--${title}">
