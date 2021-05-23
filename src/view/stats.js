@@ -24,13 +24,19 @@ export default class Statistics extends SmartView {
 
     this._moneyChart = null;
     this._typeChart = null;
+    this._timeChart = null;
 
     this._setCharts();
   }
 
   removeElement() {
     super.removeElement();
-    this._removeCharts();
+
+    if (this._moneyChart !== null || this._typeChart !== null || this._timeChart !== null) {
+      this._moneyChart = null;
+      this._typeChart = null;
+      this._timeChart = null;
+    }
   }
 
   getTemplate() {

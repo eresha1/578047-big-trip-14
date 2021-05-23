@@ -18,7 +18,7 @@ const makeUniqItemsArr = (items) => {
 
 const getCountTypes = (points) => {
   const pointsByType = makeUniqItemsArr(points);
-  return pointsByType.map((item) => item.length);
+  return pointsByType.map((item) => item.length).sort((a, b) => b - a);
 };
 
 export const renderTypeChart = (typeCtx, points) => {
@@ -104,12 +104,13 @@ const getMoneyByType = (points) => {
   const pointsByType = makeUniqItemsArr(points);
   return pointsByType.map((items) => {
     return items.reduce((acc, item) => acc + item.basePrice, 0);
-  });
+  }).sort((a, b) => b - a);
 };
 
 export const renderMoneyChart = (moneyCtx, points) => {
   const uniqTypes = makeUniqItemsType(points);
   const moneyByTypes = getMoneyByType(points);
+
   const typeLabels = uniqTypes.map((point) => point.toUpperCase());
 
   moneyCtx.height = BAR_HEIGHT * uniqTypes.length - 1;
@@ -186,16 +187,12 @@ export const renderMoneyChart = (moneyCtx, points) => {
   });
 };
 
-export const getDuration = (startTime, endTime) => {
-  return dayjs(endTime).diff(startTime, 'minute');
-};
-
 const getTimeByType = (points) => {
   const pointsByType = makeUniqItemsArr(points);
   return pointsByType.map((items) => {
     return items.reduce(
       (acc, item) => acc + dayjs(item.endTime).diff(item.startTime, 'minute'), 0);
-  });
+  }).sort((a, b) => b - a);
 };
 
 export const renderTimeChart = (timeCtx, points) => {
