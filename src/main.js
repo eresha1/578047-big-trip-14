@@ -32,7 +32,6 @@ const navigationComponent = new NavigationView();
 render(navigationElement, navigationComponent, RenderPosition.BEFORE_END);
 
 const tripPresenter = new TripPresenter(headerElement, tripEventsElement, pointsModel, filterModel);
-;
 
 const statsComponent = new StatsView(pointsModel.getPoints());
 
@@ -44,7 +43,7 @@ filterPresenter.init();
 tripPresenter.init();
 
 const handleMenuClick = (menuItem) => {
-  navigationComponent.setMenuItem(menuItem)
+  navigationComponent.setMenuItem(menuItem);
   switch (menuItem) {
     case NavigationItem.TABLE:
       // tripPresenter.init();

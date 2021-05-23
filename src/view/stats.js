@@ -1,7 +1,5 @@
-import dayjs from 'dayjs';
-import Chart from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
 import SmartView from './smart.js';
+import {renderMoneyChart, renderTypeChart, renderTimeChart} from '../utils/stats.js';
 
 const createStatisticsTemplate = () => {
   return `<section class="statistics visually-hidden">
@@ -22,11 +20,12 @@ export default class Statistics extends SmartView {
   constructor(points) {
     super();
 
-    this._points = points;
+    this._data  = points;
 
+    this._moneyChart = null;
+    this._typeChart = null;
 
     this._setCharts();
-    console.log(this.getElement().className)
   }
 
   removeElement() {
@@ -43,6 +42,18 @@ export default class Statistics extends SmartView {
   }
 
   _setCharts() {
-    // Нужно отрисовать два графика
+    if (this._moneyChart !== null || this._typeChart !== null || this._timeChart !== null) {
+      this._moneyChart = null;
+      this._typeChart = null;
+      this._timeChart = null;
+    }
+
+    const moneyCtx = this.getElement().querySelector('.statistics__chart--money');
+    const typeCtx = this.getElement().querySelector('.statistics__chart--transport');
+    const timeCtx = this.getElement().querySelector('.statistics__chart--time');
+
+    this._typeChart = renderTypeChart(typeCtx, this._data);
+    this._moneyChart = renderMoneyChart(moneyCtx, this._data);
+    this._timeChart = renderTimeChart(timeCtx, this._data);
   }
 }

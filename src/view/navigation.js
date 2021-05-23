@@ -52,12 +52,12 @@ export default class Navigation extends AbstractView {
   }
 
   setMenuItem(menuItem) {
-    const activeItem = this.getElement().querySelector(`.trip-tabs__btn--active`);
+    const activeItem = this.getElement().querySelector('.trip-tabs__btn--active');
     const item = this.getElement().querySelector(`a[data-menu-item=${menuItem}]`);
 
     if (activeItem !== item) {
-      activeItem.classList.remove(`trip-tabs__btn--active`);
-      item.classList.add(`trip-tabs__btn--active`);
+      activeItem.classList.remove('trip-tabs__btn--active');
+      item.classList.add('trip-tabs__btn--active');
     }
   }
 }

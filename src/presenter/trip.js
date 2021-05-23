@@ -10,7 +10,7 @@ import ListEmptyView from '../view/list-empty.js';
 
 import { RenderPosition, render, remove } from '../utils/render.js';
 import { sortPointsByDate, sortPointsByPrice, sortPointsByTime } from '../utils/common.js';
-import { SortType, UpdateType, UserAction, FilterType } from '../utils/const.js';
+import { SortType, UpdateType, UserAction } from '../utils/const.js';
 import {filter} from '../utils/filter.js';
 
 export default class Trip {
@@ -40,8 +40,6 @@ export default class Trip {
     // this._filterModel.addObserver(this._handleModelEvent);
 
     this._pointNewPresenter = new PointNewPresenter(this._pointsListComponent, this._handleViewAction);
-    console.log(mainContainer)
-    console.log(this._pointsListComponent)
   }
 
   init() {
@@ -55,13 +53,10 @@ export default class Trip {
     this._clearBoard({resetSortType: true});
 
     remove(this._pointsListComponent);
-    console.log(this._pointsListComponent)
 
     this._pointsModel.removeObserver(this._handleModelEvent);
     this._filterModel.removeObserver(this._handleModelEvent);
   }
-
-
 
   createPoint() {
     // this._currentSortType = SortType.DEFAULT;
@@ -228,10 +223,10 @@ export default class Trip {
 
 
   hide() {
-    this._mainContainer.classList.add(`trip-events--hidden`);
+    this._mainContainer.classList.add('trip-events--hidden');
   }
 
   show() {
-    this._mainContainer.classList.remove(`trip-events--hidden`);
+    this._mainContainer.classList.remove('trip-events--hidden');
   }
 }

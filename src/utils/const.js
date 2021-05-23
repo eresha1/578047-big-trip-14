@@ -7,8 +7,8 @@ export const FilterType = {
 export const NavigationItem = {
   TABLE: 'Table',
   STATS: 'Stats',
-  NEW_EVENT: 'New event'
-  };
+  NEW_EVENT: 'New event',
+};
 
 export const SortType = {
   DEFAULT: 'day',
@@ -69,3 +69,5 @@ export const EMPTY_POINT = {
   basePrice: '',
   isFavorite: false,
 };
+
+export const BAR_HEIGHT = 55;

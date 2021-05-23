@@ -19,7 +19,7 @@ import {
 
 import { generateOffersList } from './offer.js';
 
-import {getPossibleOffers} from '../utils/common.js'
+import {getPossibleOffers} from '../utils/common.js';
 
 const getDestinationImages = (arrayLength, destination) => {
   return new Array(arrayLength).fill('').map(() => ({
@@ -63,8 +63,6 @@ const getStartDate = () => {
 };
 
 export const offersList = generateOffersList(OFFERS, typePoints);
-console.log(offersList)
-
 
 export const generateRoutePoint = () => {
   const type = getRandomElement(typePoints);
