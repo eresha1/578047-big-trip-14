@@ -87,7 +87,8 @@ export default class Trip {
 
     this._currentSortType = sortType;
     this._clearBoard();
-    this._renderPointsSection();
+    // this._renderPointsSection();
+    this._renderBoard();
   }
 
   _handleViewAction(actionType, updateType, update) {
