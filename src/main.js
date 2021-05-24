@@ -7,9 +7,23 @@ import StatsView from './view/stats.js';
 import { generateRoutePoint } from './mock/point.js';
 import { RenderPosition, render } from './utils/render.js';
 import { NavigationItem, UpdateType, FilterType } from './utils/const.js';
+import Api from './api.js';
+
+const AUTHORIZATION = 'Basic ojfg32423husi98adgfn';
+const END_POINT = 'https://14.ecmascript.pages.academy/big-trip';
 
 const POINTS_COUNT = 4;
 const points = new Array(POINTS_COUNT).fill().map(generateRoutePoint);
+
+const api = new Api(END_POINT, AUTHORIZATION);
+
+api.getPoints().then((points) => {
+  console.log(points);
+  // Есть проблема: cтруктура объекта похожа, но некоторые ключи называются иначе,
+  // а ещё на сервере используется snake_case, а у нас camelCase.
+  // Можно, конечно, переписать часть нашего клиентского приложения, но зачем?
+  // Есть вариант получше - паттерн "Адаптер"
+});
 
 const pointsModel = new PointsModel();
 pointsModel.setPoints(points);
@@ -20,7 +34,6 @@ const headerElement = document.querySelector('.trip-main');
 const controlsElement = headerElement.querySelector('.trip-controls');
 const navigationElement = controlsElement.querySelector('.trip-controls__navigation');
 const filtersElement = controlsElement.querySelector('.trip-controls__filters');
-
 
 const pageContainerElement = document.querySelector('.page-main .page-body__container');
 

@@ -1,4 +1,5 @@
 import Observer from '../utils/observer.js';
+import dayjs from "dayjs";
 
 export default class Points extends Observer {
   constructor() {
@@ -51,5 +52,45 @@ export default class Points extends Observer {
     ];
 
     this._notify(updateType);
+  }
+
+  static adaptToClient(point) {
+    const adaptedPoint = Object.assign(
+        {},
+        point,
+        {
+          basePrice: point.base_price,
+          isFavourite: point.is_favorite,
+          startTime: dayjs(point.date_from),
+          endTime: dayjs(point.date_to)
+        }
+    );
+
+    delete adaptedPoint.base_price;
+    delete adaptedPoint.is_favorite;
+    delete adaptedPoint.date_from;
+    delete adaptedPoint.date_to;
+
+    return adaptedPoint;
+  }
+
+  static adaptToServer(point) {
+    const adaptedPoint = Object.assign(
+        {},
+        point,
+        {
+          "base_price": point.basePrice,
+          "is_favorite": point.isFavourite,
+          "date_from": point.startTime.toISOString(),
+          "date_to": point.endTime.toISOString()
+        }
+    );
+
+    delete adaptedPoint.price;
+    delete adaptedPoint.isFavourite;
+    delete adaptedPoint.startDate;
+    delete adaptedPoint.endDate;
+
+    return adaptedPoint;
   }
 }
