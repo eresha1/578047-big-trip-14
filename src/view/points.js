@@ -40,15 +40,13 @@ export const createOffersMarkup = (offers) => {
     .join('\n');
 };
 
-export const offersType = (offers, isOffers) => {
-  return `${isOffers
-    ? `<section class="event__section  event__section--offers">
-        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-        <div class="event__available-offers">
-        ${createOffersMarkup(offers)}
-        </div>
-      </section>`
-    : ''}`;
+export const offersType = (offers) => {
+  return `${offers.length > 0 ? `<section class="event__section  event__section--offers">
+    <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+    <div class="event__available-offers">
+    ${createOffersMarkup(offers)}
+    </div>
+  </section>` :  ''}`;
 };
 
 export const createPhotoListMarkup = (photosList) => {
@@ -61,9 +59,10 @@ export const createPhotoListMarkup = (photosList) => {
     .join('\n');
 };
 
-export const createDestinationMarkup = (destination, isDestinationInfo) => {
+export const createDestinationMarkup = (destination) => {
   const { description, photoPlace } = destination;
-  return `${isDestinationInfo
+  return `${description.length > 0 &&
+    photoPlace.length > 0
     ? `<section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
         <p class="event__destination-description">${description}</p>

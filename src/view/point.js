@@ -8,7 +8,11 @@ import {
   getDurationFormat
 } from '../utils/time-format.js';
 
-const createOffersTemplate = (offers) => {
+import {getOffers} from '../utils/common.js';
+
+
+const createOffersTemplate = (point) => {
+  const offers = getOffers(point);
   return offers
     .map((offer) => {
       return `<li class="event__offer">
@@ -27,7 +31,7 @@ const createPointTemplate = (point) => {
     endTime,
     basePrice,
     destinationInfo,
-    offers,
+    // offers,
     isFavorite,
   } = point;
 
@@ -62,7 +66,7 @@ const createPointTemplate = (point) => {
     </p>
     <h4 class="visually-hidden">Offers:</h4>
     <ul class="event__selected-offers">
-      ${createOffersTemplate(offers)}
+      ${createOffersTemplate(point)}
     </ul>
     <button class="event__favorite-btn
     ${isFavorite === true ? 'event__favorite-btn--active' : ''}

@@ -2,6 +2,7 @@ import PointView from '../view/point.js';
 import EditPointView from '../view/edit-point.js';
 
 import { RenderPosition, render, replace, remove } from '../utils/render.js';
+import {UserAction, UpdateType} from '../utils/const.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -21,6 +22,7 @@ export default class Point {
     this._handlePointClick = this._handlePointClick.bind(this);
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleFormClick = this._handleFormClick.bind(this);
+    this._handleDeleteClick = this._handleDeleteClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
   }
@@ -38,6 +40,7 @@ export default class Point {
     this._pointComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._editPointComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._editPointComponent.setFormRollupBtnClickHandler(this._handleFormClick);
+    this._editPointComponent.setDeleteClickHandler(this._handleDeleteClick);
 
 
     if (prevPointComponent === null || prevEditPointComponent === null) {
@@ -77,6 +80,8 @@ export default class Point {
 
   _handleFavoriteClick() {
     this._changeData(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
       Object.assign(
         {},
         this._point,
@@ -96,9 +101,21 @@ export default class Point {
     this._replaceFormToPoint();
   }
 
-  _handleFormSubmit(point) {
-    this._changeData(point);
+  _handleFormSubmit(update) {
+    this._changeData(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      update,
+    );
     this._replaceFormToPoint();
+  }
+
+  _handleDeleteClick(point) {
+    this._changeData(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point,
+    );
   }
 
   _escKeyDownHandler(evt) {

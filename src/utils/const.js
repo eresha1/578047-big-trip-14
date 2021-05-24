@@ -1,23 +1,14 @@
-export const filtersTitle = [
-  {
-    title: 'Everything',
-  },
-  {
-    title: 'Future',
-  },
-  {
-    title: 'Past',
-  },
-];
+export const FilterType = {
+  EVERYTHING: 'Everything',
+  FUTURE: 'Future',
+  PAST: 'Past',
+};
 
-export const navigationItemsTitle = [
-  {
-    title: 'Table',
-  },
-  {
-    title: 'Stats',
-  },
-];
+export const NavigationItem = {
+  TABLE: 'Table',
+  STATS: 'Stats',
+  NEW_EVENT: 'New event',
+};
 
 export const SortType = {
   DEFAULT: 'day',
@@ -32,7 +23,6 @@ export const SortsTitle = [
   {
     title: 'day',
     type: SortType.DEFAULT,
-    // isChecked: true,
   },
   {
     title: 'event',
@@ -54,3 +44,30 @@ export const SortsTitle = [
   },
 ];
 
+export const UserAction = {
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT',
+};
+
+export const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+export const EMPTY_POINT = {
+  type: 'bus',
+  offers: [],
+  destinationInfo: {
+    destination: '',
+    description: '',
+    photoPlace: [],
+  },
+  dateFrom: new Date,
+  dateTo: new Date,
+  basePrice: '',
+  isFavorite: false,
+};
+
+export const BAR_HEIGHT = 55;
