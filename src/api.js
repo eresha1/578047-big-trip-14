@@ -1,4 +1,5 @@
 import PointsModel from './model/points.js';
+import {getOffers} from './utils/common.js'
 
 const Method = {
   GET: 'GET',
@@ -10,6 +11,13 @@ const SuccessHTTPStatusRange = {
   MAX: 299,
 };
 
+const Url = {
+  POINTS: 'points',
+  OFFERS: 'offers',
+  DESTINATIONS: 'destinations',
+};
+
+
 export default class Api {
   constructor(endPoint, authorization) {
     this._endPoint = endPoint;
@@ -17,17 +25,31 @@ export default class Api {
   }
 
   getPoints() {
-    return this._load({url: 'points'})
-    .then(Api.toJSON)
-    .then((points) => points.map(PointsModel.adaptToClient));
+    return this._load({url: Url.POINTS})
+      .then(Api.toJSON)
+      .then((points) => points.map(PointsModel.adaptToClient));
   }
+
+  getOffers() {
+    return this._load({url: Url.OFFERS})
+      .then(Api.toJSON)
+      // .then((offers) => getOffers(offers));
+      .then((offers) => offers);
+    }
+
+  getDestinations() {
+    return this._load({url: Url.DESTINATIONS})
+    .then(Api.toJSON)
+    .then((destinations) => destinations);
+  }
+
 
   updatePoint(point) {
     return this._load({
       url: `points/${point.id}`,
       method: Method.PUT,
       body: JSON.stringify(PointsModel.adaptToServer(point)),
-      headers: new Headers({'Content-Type': 'application/json'}),
+      headers: new Headers({ 'Content-Type': 'application/json' }),
     })
       .then(Api.toJSON)
       .then(PointsModel.adaptToClient);
@@ -37,14 +59,12 @@ export default class Api {
     url,
     method = Method.GET,
     body = null,
-    headers = new Headers(),
-  }) {
+    headers = new Headers() }) {
     headers.append('Authorization', this._authorization);
 
     return fetch(
       `${this._endPoint}/${url}`,
-      {method, body, headers},
-    )
+      { method, body, headers })
       .then(Api.checkStatus)
       .catch(Api.catchError);
   }

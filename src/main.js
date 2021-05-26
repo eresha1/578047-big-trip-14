@@ -4,7 +4,6 @@ import PointsModel from './model/points.js';
 import FilterModel from './model/filter.js';
 import NavigationView from './view/navigation.js';
 import StatsView from './view/stats.js';
-import { generateRoutePoint } from './mock/point.js';
 import { RenderPosition, render } from './utils/render.js';
 import { NavigationItem, UpdateType, FilterType } from './utils/const.js';
 import Api from './api.js';
@@ -12,23 +11,6 @@ import Api from './api.js';
 const AUTHORIZATION = 'Basic ojfg32423husi98adgfn';
 const END_POINT = 'https://14.ecmascript.pages.academy/big-trip';
 
-const POINTS_COUNT = 4;
-const points = new Array(POINTS_COUNT).fill().map(generateRoutePoint);
-
-const api = new Api(END_POINT, AUTHORIZATION);
-
-api.getPoints().then((points) => {
-  console.log(points);
-  // Есть проблема: cтруктура объекта похожа, но некоторые ключи называются иначе,
-  // а ещё на сервере используется snake_case, а у нас camelCase.
-  // Можно, конечно, переписать часть нашего клиентского приложения, но зачем?
-  // Есть вариант получше - паттерн "Адаптер"
-});
-
-const pointsModel = new PointsModel();
-pointsModel.setPoints(points);
-
-const filterModel = new FilterModel();
 
 const headerElement = document.querySelector('.trip-main');
 const controlsElement = headerElement.querySelector('.trip-controls');
@@ -44,34 +26,44 @@ const addEventButton = headerElement.querySelector('.trip-main__event-add-btn');
 const navigationComponent = new NavigationView();
 render(navigationElement, navigationComponent, RenderPosition.BEFORE_END);
 
-const tripPresenter = new TripPresenter(headerElement, tripEventsElement, pointsModel, filterModel);
+const api = new Api(END_POINT, AUTHORIZATION);
+
+
+const pointsModel = new PointsModel();
+const filterModel = new FilterModel();
+
 
 const statsComponent = new StatsView(pointsModel.getPoints());
 
 render(pageContainerElement, statsComponent, RenderPosition.BEFORE_END);
 
+
+
+const tripPresenter = new TripPresenter(headerElement, tripEventsElement, pointsModel, filterModel, api);
 const filterPresenter = new FilterPresenter(filtersElement, pointsModel, filterModel);
 
 filterPresenter.init();
 tripPresenter.init();
 
+
 const handleMenuClick = (menuItem) => {
   navigationComponent.setMenuItem(menuItem);
   switch (menuItem) {
     case NavigationItem.TABLE:
-      // tripPresenter.init();
+      tripPresenter.init();
       tripPresenter.show();
       statsComponent.hide('visually-hidden');
       filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
       break;
     case NavigationItem.STATS:
-      // tripPresenter.destroy();
+      tripPresenter.destroy();
       tripPresenter.hide();
       statsComponent.show('visually-hidden');
       filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
       break;
   }
 };
+
 
 navigationComponent.setMenuClickHandler(handleMenuClick);
 
@@ -87,4 +79,37 @@ addEventButton.addEventListener('click', (evt) => {
 
   tripPresenter.createPoint();
   evt.target.disabled = true;
+});
+
+
+api.getDestinations()
+  .then((destination) => {
+    pointsModel.setDestination(UpdateType.INIT, destination);
+  })
+  .catch(() => {
+    pointsModel.setDestination(UpdateType.INIT, []);
+  });
+
+api.getOffers()
+  .then((offers) => {
+    pointsModel.setOffers(UpdateType.INIT, offers);
+  })
+  .catch(() => {
+    pointsModel.setOffers(UpdateType.INIT, []);
+  });
+
+api.getPoints()
+  .then((points) => {
+  console.log(pointsModel);
+  console.log(points);
+  pointsModel.setPoints(UpdateType.INIT, points);
+
+  // navigationComponent.setMenuClickHandler(handleMenuClick);
+
+// render(pageContainerElement, statsComponent, RenderPosition.BEFORE_END);
+// render(navigationElement, navigationComponent, RenderPosition.BEFORE_END);
+
+})
+.catch(() => {
+  pointsModel.setPoints(UpdateType.INIT, []);
 });
