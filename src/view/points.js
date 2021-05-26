@@ -22,15 +22,14 @@ export const createOptionValueMarkup = (destinations) => {
 };
 
 export const createOffersMarkup = (offers) => {
-
   return offers
-    .map((offer) => {
-      const {title, price, id} = offer;
+    .map((offer, id) => {
+      const {title, price} = offer;
       const isOfferChecked = offer.isChecked ? 'checked' : '';
 
       return `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="${id}" type="checkbox" name="event-offer-${id}" ${isOfferChecked ? 'checked' : ''}>
-        <label class="event__offer-label" for="${id}">
+        <input class="event__offer-checkbox  visually-hidden" id="${id + 1}" type="checkbox" name="event-offer-${id + 1}" ${isOfferChecked ? 'checked' : ''}>
+        <label class="event__offer-label" for="${id + 1}">
         <span class="event__offer-title">${title}</span>
         &plus;
         &euro;&nbsp;<span class="event__offer-price">${price}</span>

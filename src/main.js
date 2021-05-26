@@ -64,7 +64,6 @@ const handleMenuClick = (menuItem) => {
   }
 };
 
-
 navigationComponent.setMenuClickHandler(handleMenuClick);
 
 addEventButton.addEventListener('click', (evt) => {
@@ -103,11 +102,6 @@ api.getPoints()
   console.log(pointsModel);
   console.log(points);
   pointsModel.setPoints(UpdateType.INIT, points);
-
-  // navigationComponent.setMenuClickHandler(handleMenuClick);
-
-// render(pageContainerElement, statsComponent, RenderPosition.BEFORE_END);
-// render(navigationElement, navigationComponent, RenderPosition.BEFORE_END);
 
 })
 .catch(() => {

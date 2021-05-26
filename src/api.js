@@ -33,14 +33,14 @@ export default class Api {
   getOffers() {
     return this._load({url: Url.OFFERS})
       .then(Api.toJSON)
-      // .then((offers) => getOffers(offers));
-      .then((offers) => offers);
+      .then((offers) => getOffers(offers));
+      // .then((offers) => offers);
     }
 
   getDestinations() {
     return this._load({url: Url.DESTINATIONS})
     .then(Api.toJSON)
-    .then((destinations) => destinations);
+    // .then((destinations) => destinations);
   }
 
 

@@ -1,5 +1,5 @@
 import Observer from '../utils/observer.js';
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
 
 export default class Points extends Observer {
   constructor() {
@@ -79,8 +79,16 @@ export default class Points extends Observer {
         {
           basePrice: point.base_price,
           isFavourite: point.is_favorite,
-          startTime: dayjs(point.date_from),
-          endTime: dayjs(point.date_to)
+          startTime: point.date_from !== null ? new Date(point.date_from) : point.date_from,
+          // startTime: dayjs(point.date_from),
+          endTime: point.adaptedPoint !== null ? new Date(point.date_to) : point.date_to,
+          // endTime: dayjs(point.date_to),
+          destinationInfo: {
+            destination: point.destination.name,
+            description: point.destination.description,
+            photoPlace: point.destination.pictures
+          },
+
         }
     );
 
@@ -88,6 +96,7 @@ export default class Points extends Observer {
     delete adaptedPoint.is_favorite;
     delete adaptedPoint.date_from;
     delete adaptedPoint.date_to;
+    delete adaptedPoint.destination;
 
     return adaptedPoint;
   }
@@ -97,10 +106,15 @@ export default class Points extends Observer {
         {},
         point,
         {
-          "base_price": point.basePrice,
-          "is_favorite": point.isFavourite,
-          "date_from": point.startTime.toISOString(),
-          "date_to": point.endTime.toISOString()
+          'base_price': point.basePrice,
+          'is_favorite': point.isFavourite,
+          'date_from': point.startTime.toISOString(),
+          'date_to': point.endTime.toISOString(),
+          'destination': {
+            name: point.destinationInfo.destination,
+            description: point.destinationInfo.description,
+            pictures: point.destinationInfo.photoPlace
+          }
         }
     );
 
@@ -108,6 +122,7 @@ export default class Points extends Observer {
     delete adaptedPoint.isFavourite;
     delete adaptedPoint.startDate;
     delete adaptedPoint.endDate;
+    delete adaptedPoint.destinationInfo;
 
     return adaptedPoint;
   }

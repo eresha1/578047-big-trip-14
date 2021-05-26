@@ -31,7 +31,6 @@ const createPointTemplate = (point) => {
     endTime,
     basePrice,
     destinationInfo,
-    // offers,
     isFavorite,
   } = point;
 
