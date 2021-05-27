@@ -19,9 +19,11 @@ const Url = {
 
 
 export default class Api {
-  constructor(endPoint, authorization) {
+  constructor(endPoint, authorization, storage) {
     this._endPoint = endPoint;
     this._authorization = authorization;
+    this._storage = storage;
+    console.log(storage)
   }
 
   getPoints() {
@@ -33,7 +35,7 @@ export default class Api {
   getOffers() {
     return this._load({url: Url.OFFERS})
       .then(Api.toJSON)
-      .then((offers) => getOffers(offers));
+      // .then((offers) => getOffers(offers));
       // .then((offers) => offers);
     }
 
@@ -43,6 +45,26 @@ export default class Api {
     // .then((destinations) => destinations);
   }
 
+
+  getAllData() {
+    return Promise.all([
+      this.getDestinations(),
+      this.getOffers(),
+      this.getPoints(),
+    ])
+      .then(([destinations, offers, points]) => {
+        this._storage.setDestinations(destinations);
+        this._storage.setOffers(offers);
+        return points;
+      })
+      .catch(() => {
+        this._storage.setDestinations([]);
+        this._storage.setOffers([]);
+        document
+          .querySelector('.trip-main__event-add-btn')
+          .setAttribute('disabled', 'disabled');
+      });
+  }
 
   updatePoint(point) {
     return this._load({

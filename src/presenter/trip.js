@@ -15,7 +15,7 @@ import { SortType, UpdateType, UserAction } from '../utils/const.js';
 import {filter} from '../utils/filter.js';
 
 export default class Trip {
-  constructor(headerContainer, mainContainer, pointsModel, filterModel, api) {
+  constructor(headerContainer, mainContainer, pointsModel, filterModel, api, storage) {
     this._pointsModel = pointsModel;
     this._filterModel = filterModel;
     this._headerContainer = headerContainer;
@@ -24,6 +24,7 @@ export default class Trip {
     this._currentSortType = SortType.DEFAULT;
     this._isLoading = true;
     this._api = api;
+    this._storage = storage;
 
     this._mainInfoComponent = new MainInfoView();
     this._pointsListComponent = new PointsListView();
@@ -178,6 +179,9 @@ export default class Trip {
       this._pointsListComponent,
       this._handleViewAction,
       this._handleModeChange,
+      this._storage,
+
+
     );
     pointPresenter.init(point);
     this._pointPresenter[point.id] = pointPresenter;

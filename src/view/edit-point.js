@@ -98,12 +98,14 @@ const createEditPointTemplate = (data) => {
 };
 
 export default class EditPoint extends SmartView {
-  constructor(point) {
+  constructor(point, storage) {
     super();
     this._data = EditPoint.parsePointToState(point);
     this._startDatepicker = null;
     this._endDatepicker = null;
 
+    this._storage = storage;
+    console.log()
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._formDeleteClickHandler = this._formDeleteClickHandler.bind(this);
     this._formClickHandler = this._formClickHandler.bind(this);
@@ -246,7 +248,10 @@ export default class EditPoint extends SmartView {
 
   _radioInputHandler(evt) {
     const newType = evt.target.value;
-    const newOffers = getPossibleOffers(newType, offersList);
+    const newOffers = getPossibleOffers(newType, this._storage.getOffers());
+    // const newOffers = getPossibleOffers(newType, offersList);
+
+    console.log(newOffers)
     this.updateData({
       type: newType,
       isChecked: evt.target.checked,
@@ -260,7 +265,10 @@ export default class EditPoint extends SmartView {
     } else {
       evt.target.setCustomValidity('');
       evt.preventDefault();
-      const destinationsList = getDestinationsList();
+      // const destinationsList = getDestinationsList();
+      const destinationsList = this._storage.getDestinations();
+      console.log(this._storage.getDestinations())
+      console.log(destinationsList)
       for (const key of destinationsList) {
         if (key.destination === evt.target.value) {
           this._data.destinationInfo = key;
