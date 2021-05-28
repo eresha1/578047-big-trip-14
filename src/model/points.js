@@ -82,12 +82,13 @@ export default class Points extends Observer {
           startTime: point.date_from !== null ? new Date(point.date_from) : point.date_from,
           // startTime: dayjs(point.date_from),
           endTime: point.adaptedPoint !== null ? new Date(point.date_to) : point.date_to,
+          destinationInfo: point.destination,
           // endTime: dayjs(point.date_to),
-          destinationInfo: {
-            destination: point.destination.name,
-            description: point.destination.description,
-            photoPlace: point.destination.pictures
-          },
+          // destinationInfo: {
+          //   destination: point.destination.name,
+          //   description: point.destination.description,
+          //   photoPlace: point.destination.pictures
+          // },
 
         }
     );
@@ -110,11 +111,12 @@ export default class Points extends Observer {
           'is_favorite': point.isFavourite,
           'date_from': point.startTime.toISOString(),
           'date_to': point.endTime.toISOString(),
-          'destination': {
-            name: point.destinationInfo.destination,
-            description: point.destinationInfo.description,
-            pictures: point.destinationInfo.photoPlace
-          }
+          'destination': point.destinationInfo,
+          // 'destination': {
+          //   name: point.destinationInfo.destination,
+          //   description: point.destinationInfo.description,
+          //   pictures: point.destinationInfo.photoPlace
+          // }
         }
     );
 

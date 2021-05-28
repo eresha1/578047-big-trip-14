@@ -26,7 +26,7 @@ export default class PointNew {
       return;
     }
 
-    this._newPointComponent = new EditPointView(EMPTY_POINT, storage);
+    this._newPointComponent = new EditPointView(EMPTY_POINT, this._storage);
     this._newPointComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._newPointComponent.setDeleteClickHandler(this._handleDeleteClick);
     this._newPointComponent.setFormRollupBtnClickHandler(this._handleFormClick);

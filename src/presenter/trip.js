@@ -181,7 +181,6 @@ export default class Trip {
       this._handleModeChange,
       this._storage,
 
-
     );
     pointPresenter.init(point);
     this._pointPresenter[point.id] = pointPresenter;

@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { storage } from '../main.js';
 
 export const getTotalCost = (points) => {
   let totalCoast = 0;
@@ -65,4 +66,16 @@ export const getPossibleOffers = (type, allOffers) => {
     }
   });
   return offers;
+};
+
+export const getDestinationNames = (destinations) => {
+  return destinations.map((item) => {
+    return item.name
+  });
+};
+
+export const gettypePoints = (offers) => {
+  return offers.map((item) => {
+    return item.type
+  });
 };

@@ -35,6 +35,8 @@ const api = new Api(END_POINT, AUTHORIZATION, storage);
 const pointsModel = new PointsModel();
 const filterModel = new FilterModel();
 
+console.log(pointsModel.getPoints())
+
 const statsComponent = new StatsView(pointsModel.getPoints());
 
 render(pageContainerElement, statsComponent, RenderPosition.BEFORE_END);
@@ -102,3 +104,7 @@ api
       //   tripEventsBoardPresenter.createTripEvent(handleTaskNewFormClose);
       });
 
+
+      // export {
+      //   storage
+      // };

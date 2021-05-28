@@ -59,15 +59,15 @@ export const createPhotoListMarkup = (photosList) => {
 };
 
 export const createDestinationMarkup = (destination) => {
-  const { description, photoPlace } = destination;
+  const { description, pictures } = destination;
   return `${description.length > 0 &&
-    photoPlace.length > 0
+    pictures.length > 0
     ? `<section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
         <p class="event__destination-description">${description}</p>
         <div class="event__photos-container">
           <div class="event__photos-tape">
-            ${createPhotoListMarkup(photoPlace)}
+            ${createPhotoListMarkup(pictures)}
           </div>
         </div>
       </section>`
