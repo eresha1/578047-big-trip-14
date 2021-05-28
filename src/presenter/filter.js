@@ -64,5 +64,12 @@ export default class Filter {
 
     this._filterModel.setFilter(UpdateType.MAJOR, filterType);
   }
+  
+  disable() {
+    const inputs = this._filterComponent.getElement().querySelectorAll('.trip-filters__filter-input');
+    inputs.forEach((input) => {
+      input.disabled = true;
+    });
+  }
 
 }

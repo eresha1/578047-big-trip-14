@@ -107,7 +107,7 @@ export default class EditPoint extends SmartView {
     this._endDatepicker = null;
 
     this._storage = storage;
-    console.log()
+    
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._formDeleteClickHandler = this._formDeleteClickHandler.bind(this);
     this._formClickHandler = this._formClickHandler.bind(this);
@@ -187,19 +187,10 @@ export default class EditPoint extends SmartView {
       item.id = index + 1;
     })
 
-    // this._data.offers.forEach(
-    //   (offer) => {
-    //     console.log( offer.id);
-    //   console.log( evt.target.id)
-    //   console.log(offer.id === +evt.target.id)
-    //   });
     const changedOfferIndex = this._data.offers.findIndex(
       (offer) => offer.id === +evt.target.id,
     );
 
-    // console.log(this._data.offers)
-    // console.log(evt.target.id)
-    // console.log(changedOfferIndex)
     const update = this._data.offers.slice();
     update[changedOfferIndex] = Object.assign(
       {},
@@ -282,18 +273,12 @@ export default class EditPoint extends SmartView {
   }
 
   _destinationInputHandler(evt) {
-    // if (!DESTINATION.includes(evt.target.value))
-    console.log(getDestinationNames(this._storage.getDestinations()))
-    console.log(evt.target.value)
     if (!getDestinationNames(this._storage.getDestinations()).includes(evt.target.value)) {
       evt.target.setCustomValidity('Choose one of the suggested directions');
     } else {
       evt.target.setCustomValidity('');
       evt.preventDefault();
-      // const destinationsList = getDestinationsList();
       const destinationsList = this._storage.getDestinations();
-      console.log(this._storage.getDestinations())
-      console.log(destinationsList)
       for (const key of destinationsList) {
         if (key.name === evt.target.value) {
           this._data.destinationInfo = key;
@@ -363,18 +348,11 @@ export default class EditPoint extends SmartView {
 
   static parsePointToState(point) {
     return Object.assign({}, point, {
-      // isOffers: point.offers.length > 0,
-      // isDestinationInfo:
-      //   point.destinationInfo.description.length > 0 &&
-      //   point.destinationInfo.pictures.length > 0,
     });
   }
 
   static parseStateToPoint(data) {
     data = Object.assign({}, data);
-
-    // delete data.isOffers;
-    // delete data.isDestinationInfo;
 
     return data;
   }

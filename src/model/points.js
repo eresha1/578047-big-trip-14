@@ -1,5 +1,4 @@
 import Observer from '../utils/observer.js';
-// import dayjs from 'dayjs';
 
 export default class Points extends Observer {
   constructor() {
@@ -17,21 +16,6 @@ export default class Points extends Observer {
     return this._points;
   }
 
-  // setDestination(updateType, destinations) {
-  //   this._destinationList = destinations.slice();
-  // }
-
-  // getDestination() {
-  //   return this._destinationList;
-  // }
-
-  // setOffers(updateType, offers) {
-  //   this._offerList = offers.slice();
-  // }
-
-  // getOffers() {
-  //   return this._offerList;
-  // }
 
   updatePoint(updateType, update) {
     const index = this._points.findIndex((point) => point.id === update.id);
