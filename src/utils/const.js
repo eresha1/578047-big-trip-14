@@ -54,15 +54,16 @@ export const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  INIT: 'INIT',
 };
 
 export const EMPTY_POINT = {
   type: 'bus',
   offers: [],
   destinationInfo: {
-    destination: '',
+    name: '',
     description: '',
-    photoPlace: [],
+    pictures: [],
   },
   dateFrom: new Date,
   dateTo: new Date,

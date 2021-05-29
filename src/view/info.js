@@ -5,12 +5,12 @@ const createInfoTitleMarkup = (points) => {
   let route = '';
   if (points.length > 3) {
     route =
-      points[0].destinationInfo.destination +
+      points[0].destinationInfo.name +
       '&nbsp;&mdash;&nbsp;&hellip;&nbsp;&mdash;&nbsp;' +
-      points[points.length - 1].destinationInfo.destination;
+      points[points.length - 1].destinationInfo.name;
   } else {
     route = points
-      .map((point) => point.destinationInfo.destination)
+      .map((point) => point.destinationInfo.name)
       .join('&nbsp;&mdash;&nbsp;');
   }
   return route;

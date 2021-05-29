@@ -1,8 +1,10 @@
 import SmartView from './smart.js';
-import { typePoints, DESTINATION } from '../mock/const.js';
+// import { typePoints, DESTINATION } from '../mock/const.js';
+// import { storage } from '../main.js';
+
 import { humanizeFullDate } from '../utils/time-format';
-import { getDestinationsList, offersList } from '../mock/point.js';
-import { getPossibleOffers } from '../utils/common.js';
+// import { getDestinationsList, offersList } from '../mock/point.js';
+import { getPossibleOffers, getDestinationNames, gettypePoints } from '../utils/common.js';
 import {
   createInputTypeItemMarkup,
   createOptionValueMarkup,
@@ -20,7 +22,7 @@ const getTypeImage = (type) =>
 //     ? `<img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon ${type}">`
 //     : '';
 
-const createEditPointTemplate = (data) => {
+const createEditPointTemplate = (data, destinationNames, typePoints) => {
   const {
     id,
     type,
@@ -32,7 +34,7 @@ const createEditPointTemplate = (data) => {
     // isOffers,
     // isDestinationInfo,
   } = data;
-  const destinations = DESTINATION;
+
   const icon = type.toLowerCase();
 
   const timeStartValue = humanizeFullDate(startTime);
@@ -61,10 +63,10 @@ const createEditPointTemplate = (data) => {
         <label class="event__label  event__type-output" for="event-destination-${id}">
           ${type}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value="${he.encode(destinationInfo.destination)
+        <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value="${he.encode(destinationInfo.name)
 }" list="destination-list-${id}">
         <datalist id="destination-list-${id}">
-        ${createOptionValueMarkup(destinations)}
+        ${createOptionValueMarkup(destinationNames)}
         </datalist>
       </div>
 
@@ -98,11 +100,13 @@ const createEditPointTemplate = (data) => {
 };
 
 export default class EditPoint extends SmartView {
-  constructor(point) {
+  constructor(point, storage) {
     super();
     this._data = EditPoint.parsePointToState(point);
     this._startDatepicker = null;
     this._endDatepicker = null;
+
+    this._storage = storage;
 
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._formDeleteClickHandler = this._formDeleteClickHandler.bind(this);
@@ -137,7 +141,11 @@ export default class EditPoint extends SmartView {
   }
 
   getTemplate() {
-    return createEditPointTemplate(this._data);
+    const destinationNames = getDestinationNames(this._storage.getDestinations());
+
+    const typePoints = gettypePoints(this._storage.getOffers());
+
+    return createEditPointTemplate(this._data, destinationNames, typePoints);
   }
 
   restoreHandlers() {
@@ -173,9 +181,14 @@ export default class EditPoint extends SmartView {
 
   _offersChangeHandler(evt) {
     evt.preventDefault();
+    this._data.offers.forEach((item, index) =>  {
+      item.id = index + 1;
+    });
+
     const changedOfferIndex = this._data.offers.findIndex(
-      (offer) => offer.id === evt.target.id,
+      (offer) => offer.id === +evt.target.id,
     );
+
     const update = this._data.offers.slice();
     update[changedOfferIndex] = Object.assign(
       {},
@@ -246,7 +259,8 @@ export default class EditPoint extends SmartView {
 
   _radioInputHandler(evt) {
     const newType = evt.target.value;
-    const newOffers = getPossibleOffers(newType, offersList);
+    const newOffers = getPossibleOffers(newType, this._storage.getOffers());
+
     this.updateData({
       type: newType,
       isChecked: evt.target.checked,
@@ -255,19 +269,19 @@ export default class EditPoint extends SmartView {
   }
 
   _destinationInputHandler(evt) {
-    if (!DESTINATION.includes(evt.target.value)) {
+    if (!getDestinationNames(this._storage.getDestinations()).includes(evt.target.value)) {
       evt.target.setCustomValidity('Choose one of the suggested directions');
     } else {
       evt.target.setCustomValidity('');
       evt.preventDefault();
-      const destinationsList = getDestinationsList();
+      const destinationsList = this._storage.getDestinations();
       for (const key of destinationsList) {
-        if (key.destination === evt.target.value) {
+        if (key.name === evt.target.value) {
           this._data.destinationInfo = key;
         }
       }
       this.updateData({
-        destination: this._data.destinationInfo.destination,
+        name: this._data.destinationInfo.name,
       });
     }
     evt.target.reportValidity();
@@ -330,18 +344,11 @@ export default class EditPoint extends SmartView {
 
   static parsePointToState(point) {
     return Object.assign({}, point, {
-      // isOffers: point.offers.length > 0,
-      // isDestinationInfo:
-      //   point.destinationInfo.description.length > 0 &&
-      //   point.destinationInfo.photoPlace.length > 0,
     });
   }
 
   static parseStateToPoint(data) {
     data = Object.assign({}, data);
-
-    // delete data.isOffers;
-    // delete data.isDestinationInfo;
 
     return data;
   }

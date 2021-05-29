@@ -31,7 +31,6 @@ const createPointTemplate = (point) => {
     endTime,
     basePrice,
     destinationInfo,
-    // offers,
     isFavorite,
   } = point;
 
@@ -52,7 +51,7 @@ const createPointTemplate = (point) => {
     <div class="event__type">
       <img class="event__type-icon" width="42" height="42" src="img/icons/${icon}.png" alt="Event ${icon} icon">
     </div>
-    <h3 class="event__title">${type} ${destinationInfo.destination}</h3>
+    <h3 class="event__title">${type} ${destinationInfo.name}</h3>
     <div class="event__schedule">
       <p class="event__time">
         <time class="event__start-time" datetime="${dateStartAttribute}T${timeStartAttribute}">${timeStartAttribute}</time>

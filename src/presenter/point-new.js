@@ -6,12 +6,12 @@ import {generateID} from '../utils/random.js';
 
 
 export default class PointNew {
-  constructor(pointListContainer, changeData) {
+  constructor(pointListContainer, changeData, storage) {
     this._pointListContainer = pointListContainer;
     this._changeData = changeData;
+    this._storage = storage;
 
     this._newPointComponent = null;
-
 
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
@@ -24,8 +24,7 @@ export default class PointNew {
     if (this._newPointComponent !== null) {
       return;
     }
-
-    this._newPointComponent = new EditPointView(EMPTY_POINT);
+    this._newPointComponent = new EditPointView(EMPTY_POINT, this._storage);
     this._newPointComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._newPointComponent.setDeleteClickHandler(this._handleDeleteClick);
     this._newPointComponent.setFormRollupBtnClickHandler(this._handleFormClick);

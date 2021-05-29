@@ -25,13 +25,6 @@ export const getOffers = (point) => {
   }
 };
 
-
-// export const getTotalCost = (points) => {
-//   return points.reduce((sum, element) => {
-//     return sum + +element.basePrice;
-//   }, 0);
-// };
-
 export const getSortStartDates = (points) => {
   return points.slice().sort((a, b) => a.startTime - b.startTime);
 };
@@ -65,4 +58,16 @@ export const getPossibleOffers = (type, allOffers) => {
     }
   });
   return offers;
+};
+
+export const getDestinationNames = (destinations) => {
+  return destinations.map((item) => {
+    return item.name;
+  });
+};
+
+export const gettypePoints = (offers) => {
+  return offers.map((item) => {
+    return item.type;
+  });
 };
