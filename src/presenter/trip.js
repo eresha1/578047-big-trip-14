@@ -41,9 +41,6 @@ export default class Trip {
     this._handleModeChange = this._handleModeChange.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
-    // this._pointsModel.addObserver(this._handleModelEvent);
-    // this._filterModel.addObserver(this._handleModelEvent);
-
     this._pointNewPresenter = new PointNewPresenter(this._pointsListComponent, this._handleViewAction, storage);
   }
 
@@ -231,7 +228,7 @@ export default class Trip {
     if (this._isLoading) {
       this._renderLoading();
       return;
-  }
+    }
     const points = this._getPoints().slice();
 
     if (points.length === 0) {

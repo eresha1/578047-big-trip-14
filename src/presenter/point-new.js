@@ -12,7 +12,6 @@ export default class PointNew {
     this._storage = storage;
 
     this._newPointComponent = null;
-    console.log(this._storage)
 
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
@@ -25,7 +24,6 @@ export default class PointNew {
     if (this._newPointComponent !== null) {
       return;
     }
-console.log(this._storage)
     this._newPointComponent = new EditPointView(EMPTY_POINT, this._storage);
     this._newPointComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._newPointComponent.setDeleteClickHandler(this._handleDeleteClick);

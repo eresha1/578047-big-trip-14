@@ -1,5 +1,4 @@
 import PointsModel from './model/points.js';
-import {getOffers} from './utils/common.js'
 
 const Method = {
   GET: 'GET',
@@ -17,13 +16,11 @@ const Url = {
   DESTINATIONS: 'destinations',
 };
 
-
 export default class Api {
   constructor(endPoint, authorization, storage) {
     this._endPoint = endPoint;
     this._authorization = authorization;
     this._storage = storage;
-    console.log(storage)
   }
 
   getPoints() {
@@ -34,15 +31,12 @@ export default class Api {
 
   getOffers() {
     return this._load({url: Url.OFFERS})
-      .then(Api.toJSON)
-      // .then((offers) => getOffers(offers));
-      // .then((offers) => offers);
-    }
+      .then(Api.toJSON);
+  }
 
   getDestinations() {
     return this._load({url: Url.DESTINATIONS})
-    .then(Api.toJSON)
-    // .then((destinations) => destinations);
+      .then(Api.toJSON);
   }
 
 

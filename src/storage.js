@@ -15,7 +15,6 @@ export default class Store {
 
   setOffers(offers) {
     this._offers = offers;
-    console.log(offers)
     // offers.forEach((offer) => this._offers.set(offer.type, offer.offers));
   }
 

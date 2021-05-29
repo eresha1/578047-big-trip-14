@@ -30,24 +30,14 @@ const api = new Api(END_POINT, AUTHORIZATION, storage);
 const pointsModel = new PointsModel();
 const filterModel = new FilterModel();
 
-console.log(pointsModel.getPoints())
-
 const navigationComponent = new NavigationView();
 render(navigationElement, navigationComponent, RenderPosition.BEFORE_END);
-
-// const statsComponent = new StatsView(pointsModel.getPoints());
-// render(pageContainerElement, statsComponent, RenderPosition.BEFORE_END);
-
 
 const tripPresenter = new TripPresenter(headerElement, tripEventsElement, pointsModel, filterModel, api, storage);
 const filterPresenter = new FilterPresenter(filtersElement, pointsModel, filterModel);
 
 filterPresenter.init();
 tripPresenter.init();
-
-// const statsComponent = new StatsView(pointsModel.getPoints());
-// render(pageContainerElement, statsComponent, RenderPosition.BEFORE_END);
-
 
 let statsComponent = null;
 
@@ -69,8 +59,6 @@ const handleMenuClick = (menuItem) => {
       statsComponent = new StatsView(pointsModel.getPoints());
       render(pageContainerElement, statsComponent, RenderPosition.BEFORE_END);
       statsComponent.show('visually-hidden');
-
-      console.log(statsComponent)
       break;
   }
 };
@@ -94,20 +82,9 @@ addEventButton.addEventListener('click', (evt) => {
 api
   .getAllData()
   .then((points) => {
-    console.log(pointsModel)
     pointsModel.setPoints(UpdateType.INIT, points);
-    })
-    .catch(() => {
-        pointsModel.setPoints(UpdateType.INIT, []);
-    })
-    .finally(() => {
-      // filterPresenter.init();
-      // tripPresenter.init();
-      // navigationComponent.setMenuClickHandler(handleMenuClick);
-      // newEventButtonComponent.setClickHandler(() => {
-      //   tripEventsBoardPresenter.destroy();
-      //   filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
-      //   tripEventsBoardPresenter.init();
-      //   tripEventsBoardPresenter.createTripEvent(handleTaskNewFormClose);
-      });
+  })
+  .catch(() => {
+    pointsModel.setPoints(UpdateType.INIT, []);
+  });
 

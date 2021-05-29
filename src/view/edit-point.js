@@ -107,7 +107,7 @@ export default class EditPoint extends SmartView {
     this._endDatepicker = null;
 
     this._storage = storage;
-    
+
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._formDeleteClickHandler = this._formDeleteClickHandler.bind(this);
     this._formClickHandler = this._formClickHandler.bind(this);
@@ -141,10 +141,9 @@ export default class EditPoint extends SmartView {
   }
 
   getTemplate() {
-   const destinationNames = getDestinationNames(this._storage.getDestinations());
+    const destinationNames = getDestinationNames(this._storage.getDestinations());
 
-  const typePoints = gettypePoints(this._storage.getOffers());
-  // console.log(typePoints)
+    const typePoints = gettypePoints(this._storage.getOffers());
 
     return createEditPointTemplate(this._data, destinationNames, typePoints);
   }
@@ -182,10 +181,9 @@ export default class EditPoint extends SmartView {
 
   _offersChangeHandler(evt) {
     evt.preventDefault();
-    console.log(this._data.offers)
     this._data.offers.forEach((item, index) =>  {
       item.id = index + 1;
-    })
+    });
 
     const changedOfferIndex = this._data.offers.findIndex(
       (offer) => offer.id === +evt.target.id,
@@ -262,9 +260,7 @@ export default class EditPoint extends SmartView {
   _radioInputHandler(evt) {
     const newType = evt.target.value;
     const newOffers = getPossibleOffers(newType, this._storage.getOffers());
-    // const newOffers = getPossibleOffers(newType, offersList);
 
-    console.log(newOffers)
     this.updateData({
       type: newType,
       isChecked: evt.target.checked,
