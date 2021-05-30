@@ -3,13 +3,13 @@ import { humanizeFullDate } from '../utils/time-format';
 import {
   getPossibleOffers,
   getDestinationNames,
-  gettypePoints,
+  gettypePoints
 } from '../utils/common.js';
 import {
   createInputTypeItemMarkup,
   createOptionValueMarkup,
   offersType,
-  createDestinationMarkup,
+  createDestinationMarkup
 } from './points.js';
 import he from 'he';
 import flatpickr from 'flatpickr';
@@ -27,8 +27,6 @@ const createEditPointTemplate = (data, destinationNames, typePoints) => {
     basePrice,
     destinationInfo,
     offers,
-    // isOffers,
-    // isDestinationInfo,
     isDisabled,
     isSaving,
     isDeleting,
@@ -48,9 +46,7 @@ const createEditPointTemplate = (data, destinationNames, typePoints) => {
           <span class="visually-hidden">Choose event type</span>
           ${getTypeImage(icon)}
         </label>
-        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${id}" type="checkbox" ${
-    isDisabled ? "disabled" : ""
-  }>
+        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${id}" type="checkbox" ${isDisabled ? 'disabled' : ''}>
         <div class="event__type-list">
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Event type</legend>
@@ -63,9 +59,7 @@ const createEditPointTemplate = (data, destinationNames, typePoints) => {
         <label class="event__label  event__type-output" for="event-destination-${id}">
           ${type}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value="${he.encode(
-    destinationInfo.name
-  )}" list="destination-list-${id}" ${isDisabled ? "disabled" : ""}>
+        <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value="${he.encode(destinationInfo.name)}" list="destination-list-${id}" ${isDisabled ? 'disabled' : ''}>
         <datalist id="destination-list-${id}">
         ${createOptionValueMarkup(destinationNames)}
         </datalist>
@@ -73,14 +67,10 @@ const createEditPointTemplate = (data, destinationNames, typePoints) => {
 
       <div class="event__field-group  event__field-group--time">
         <label class="visually-hidden" for="event-start-time-${id}">From</label>
-        <input class="event__input  event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" value="${timeStartValue}" ${
-    isDisabled ? "disabled" : ""
-  }>
+        <input class="event__input  event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" value="${timeStartValue}" ${isDisabled ? 'disabled' : ''}>
         &mdash;
         <label class="visually-hidden" for="event-end-time-${id}">To</label>
-        <input class="event__input  event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" value="${timeEndValue}" ${
-    isDisabled ? "disabled" : ""
-  }>
+        <input class="event__input  event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" value="${timeEndValue}" ${isDisabled ? 'disabled' : ''}>
       </div>
 
       <div class="event__field-group  event__field-group--price">
@@ -88,20 +78,13 @@ const createEditPointTemplate = (data, destinationNames, typePoints) => {
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-${id}" type="text" name="event-price" value="${basePrice}" ${
-    isDisabled ? "disabled" : ""
-  }>
+        <input class="event__input  event__input--price" id="event-price-${id}" type="text" name="event-price" value="${basePrice}" ${isDisabled ? 'disabled' : ''}>
       </div>
 
-      <button class="event__save-btn  btn  btn--blue" type="submit" ${
-        isDisabled ? "disabled" : ""
-      }>${isSaving ? "Saving..." : "Save"}</button>
-      <button class="event__reset-btn" type="reset" ${
-        isDisabled ? "disabled" : ""
-      }>${isDeleting ? "Deleting..." : "Delete"}</button>
-      <button class="event__rollup-btn" type="button" ${
-        isDisabled ? "disabled" : ""
-      }>
+      <button class="event__save-btn  btn  btn--blue" type="submit" ${isDisabled ? 'disabled' : ''}>
+      ${isSaving ? 'Saving...' : 'Save'}</button>
+      <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>${isDeleting ? 'Deleting...' : 'Delete'}</button>
+      <button class="event__rollup-btn" type="button" ${isDisabled ? 'disabled' : ''}>
         <span class="visually-hidden">Open event</span>
       </button>
     </header>
@@ -155,7 +138,7 @@ export default class EditPoint extends SmartView {
 
   getTemplate() {
     const destinationNames = getDestinationNames(
-      this._storage.getDestinations()
+      this._storage.getDestinations(),
     );
 
     const typePoints = gettypePoints(this._storage.getOffers());
@@ -174,23 +157,22 @@ export default class EditPoint extends SmartView {
 
   _setInnerHandlers() {
     this.getElement()
-      .querySelectorAll("input[type=radio]")
-      .forEach((item) =>
-        item.addEventListener("change", this._radioInputHandler)
+      .querySelectorAll('input[type=radio]')
+      .forEach((item) => item.addEventListener('change', this._radioInputHandler),
       );
 
     this.getElement()
-      .querySelector(".event__input--destination")
-      .addEventListener("change", this._destinationInputHandler);
+      .querySelector('.event__input--destination')
+      .addEventListener('change', this._destinationInputHandler);
 
     this.getElement()
-      .querySelector(".event__input--price")
-      .addEventListener("input", this._priceChangeHandler);
+      .querySelector('.event__input--price')
+      .addEventListener('input', this._priceChangeHandler);
 
     if (this._data.offers.length) {
       this.getElement()
-        .querySelector(".event__available-offers")
-        .addEventListener("change", this._offersChangeHandler);
+        .querySelector('.event__available-offers')
+        .addEventListener('change', this._offersChangeHandler);
     }
   }
 
@@ -201,21 +183,21 @@ export default class EditPoint extends SmartView {
     });
 
     const changedOfferIndex = this._data.offers.findIndex(
-      (offer) => offer.id === +evt.target.id
+      (offer) => offer.id === +evt.target.id,
     );
 
     const update = this._data.offers.slice();
     update[changedOfferIndex] = Object.assign(
       {},
       this._data.offers[changedOfferIndex],
-      { isChecked: evt.target.checked }
+      { isChecked: evt.target.checked },
     );
 
     this.updateData(
       {
         offers: update,
       },
-      true
+      true,
     );
   }
 
@@ -226,13 +208,13 @@ export default class EditPoint extends SmartView {
     }
 
     this._startDatepicker = flatpickr(
-      this.getElement().querySelector("input[name=event-start-time]"),
+      this.getElement().querySelector('input[name=event-start-time]'),
       {
-        dateFormat: "d/m/y H:i",
+        dateFormat: 'd/m/y H:i',
         enableTime: true,
         defaultDate: this._data.startTime,
         onChange: this._startTimeChangeHandler,
-      }
+      },
     );
   }
 
@@ -243,14 +225,14 @@ export default class EditPoint extends SmartView {
     }
 
     this._endDatepicker = flatpickr(
-      this.getElement().querySelector("input[name=event-end-time]"),
+      this.getElement().querySelector('input[name=event-end-time]'),
       {
-        dateFormat: "d/m/y H:i",
+        dateFormat: 'd/m/y H:i',
         enableTime: true,
         default: this._data.endTime,
         minDate: this._data.startTime,
         onChange: this._endTimeChangeHandler,
-      }
+      },
     );
   }
 
@@ -259,7 +241,7 @@ export default class EditPoint extends SmartView {
       {
         startTime: userDate,
       },
-      true
+      true,
     );
   }
 
@@ -268,7 +250,7 @@ export default class EditPoint extends SmartView {
       {
         endTime: userDate,
       },
-      true
+      true,
     );
   }
 
@@ -286,12 +268,12 @@ export default class EditPoint extends SmartView {
   _destinationInputHandler(evt) {
     if (
       !getDestinationNames(this._storage.getDestinations()).includes(
-        evt.target.value
+        evt.target.value,
       )
     ) {
-      evt.target.setCustomValidity("Choose one of the suggested directions");
+      evt.target.setCustomValidity('Choose one of the suggested directions');
     } else {
-      evt.target.setCustomValidity("");
+      evt.target.setCustomValidity('');
       evt.preventDefault();
       const destinationsList = this._storage.getDestinations();
       for (const key of destinationsList) {
@@ -307,20 +289,19 @@ export default class EditPoint extends SmartView {
   }
 
   _priceChangeHandler(evt) {
-    console.log(evt.target.value < 1);
     evt.preventDefault();
     if (
       !new RegExp(/^-?[1-9]\d{0,5}$/).test(evt.target.value) ||
       evt.target.value < 1
     ) {
-      evt.target.setCustomValidity("Enter a positive integer.");
+      evt.target.setCustomValidity('Enter a positive integer.');
     } else {
-      evt.target.setCustomValidity("");
+      evt.target.setCustomValidity('');
       this.updateData(
         {
           basePrice: +evt.target.value,
         },
-        true
+        true,
       );
     }
     evt.target.reportValidity();
@@ -334,8 +315,8 @@ export default class EditPoint extends SmartView {
   setFormSubmitHandler(callback) {
     this._callback.formSubmit = callback;
     this.getElement()
-      .querySelector("form")
-      .addEventListener("submit", this._formSubmitHandler);
+      .querySelector('form')
+      .addEventListener('submit', this._formSubmitHandler);
   }
 
   _formClickHandler(evt) {
@@ -346,8 +327,8 @@ export default class EditPoint extends SmartView {
   setFormRollupBtnClickHandler(callback) {
     this._callback.formClick = callback;
     this.getElement()
-      .querySelector(".event__rollup-btn")
-      .addEventListener("click", this._formClickHandler);
+      .querySelector('.event__rollup-btn')
+      .addEventListener('click', this._formClickHandler);
   }
 
   _formDeleteClickHandler(evt) {
@@ -358,8 +339,8 @@ export default class EditPoint extends SmartView {
   setDeleteClickHandler(callback) {
     this._callback.deleteClick = callback;
     this.getElement()
-      .querySelector(".event__reset-btn")
-      .addEventListener("click", this._formDeleteClickHandler);
+      .querySelector('.event__reset-btn')
+      .addEventListener('click', this._formDeleteClickHandler);
   }
 
   static parsePointToState(point) {
@@ -372,9 +353,10 @@ export default class EditPoint extends SmartView {
 
   static parseStateToPoint(data) {
     data = Object.assign({}, data);
-      delete data.isDisabled;
-      delete data.isSaving;
-      delete data.isDeleting;
+
+    delete data.isDisabled;
+    delete data.isSaving;
+    delete data.isDeleting;
 
     return data;
   }
