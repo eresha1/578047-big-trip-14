@@ -59,7 +59,7 @@ const createEditPointTemplate = (data, destinationNames, typePoints) => {
         <label class="event__label  event__type-output" for="event-destination-${id}">
           ${type}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value="${he.encode(destinationInfo.name)}" list="destination-list-${id}" ${isDisabled ? 'disabled' : ''}>
+        <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value="${he.encode(destinationInfo.name)}" list="destination-list-${id}" ${isDisabled ? 'disabled' : ''} required>
         <datalist id="destination-list-${id}">
         ${createOptionValueMarkup(destinationNames)}
         </datalist>
@@ -78,7 +78,7 @@ const createEditPointTemplate = (data, destinationNames, typePoints) => {
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-${id}" type="text" name="event-price" value="${basePrice}" ${isDisabled ? 'disabled' : ''}>
+        <input class="event__input  event__input--price" id="event-price-${id}" type="text" name="event-price" value="${basePrice}" ${isDisabled ? 'disabled' : ''} required>
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit" ${isDisabled ? 'disabled' : ''}>
