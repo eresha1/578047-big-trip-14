@@ -1,10 +1,10 @@
 import SmartView from './smart.js';
-// import { typePoints, DESTINATION } from '../mock/const.js';
-// import { storage } from '../main.js';
-
 import { humanizeFullDate } from '../utils/time-format';
-// import { getDestinationsList, offersList } from '../mock/point.js';
-import { getPossibleOffers, getDestinationNames, gettypePoints } from '../utils/common.js';
+import {
+  getPossibleOffers,
+  getDestinationNames,
+  gettypePoints
+} from '../utils/common.js';
 import {
   createInputTypeItemMarkup,
   createOptionValueMarkup,
@@ -17,10 +17,6 @@ import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 const getTypeImage = (type) =>
   `<img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon ${type}">`;
-// const getTypeImage = (type) =>
-//   type
-//     ? `<img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon ${type}">`
-//     : '';
 
 const createEditPointTemplate = (data, destinationNames, typePoints) => {
   const {
@@ -31,8 +27,9 @@ const createEditPointTemplate = (data, destinationNames, typePoints) => {
     basePrice,
     destinationInfo,
     offers,
-    // isOffers,
-    // isDestinationInfo,
+    isDisabled,
+    isSaving,
+    isDeleting,
   } = data;
 
   const icon = type.toLowerCase();
@@ -49,8 +46,7 @@ const createEditPointTemplate = (data, destinationNames, typePoints) => {
           <span class="visually-hidden">Choose event type</span>
           ${getTypeImage(icon)}
         </label>
-        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${id}" type="checkbox">
-
+        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${id}" type="checkbox" ${isDisabled ? 'disabled' : ''}>
         <div class="event__type-list">
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Event type</legend>
@@ -63,8 +59,7 @@ const createEditPointTemplate = (data, destinationNames, typePoints) => {
         <label class="event__label  event__type-output" for="event-destination-${id}">
           ${type}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value="${he.encode(destinationInfo.name)
-}" list="destination-list-${id}">
+        <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value="${he.encode(destinationInfo.name)}" list="destination-list-${id}" ${isDisabled ? 'disabled' : ''} required>
         <datalist id="destination-list-${id}">
         ${createOptionValueMarkup(destinationNames)}
         </datalist>
@@ -72,10 +67,10 @@ const createEditPointTemplate = (data, destinationNames, typePoints) => {
 
       <div class="event__field-group  event__field-group--time">
         <label class="visually-hidden" for="event-start-time-${id}">From</label>
-        <input class="event__input  event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" value="${timeStartValue}">
+        <input class="event__input  event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" value="${timeStartValue}" ${isDisabled ? 'disabled' : ''}>
         &mdash;
         <label class="visually-hidden" for="event-end-time-${id}">To</label>
-        <input class="event__input  event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" value="${timeEndValue}">
+        <input class="event__input  event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" value="${timeEndValue}" ${isDisabled ? 'disabled' : ''}>
       </div>
 
       <div class="event__field-group  event__field-group--price">
@@ -83,17 +78,18 @@ const createEditPointTemplate = (data, destinationNames, typePoints) => {
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-${id}" type="text" name="event-price" value="${basePrice}">
+        <input class="event__input  event__input--price" id="event-price-${id}" type="text" name="event-price" value="${basePrice}" ${isDisabled ? 'disabled' : ''} required>
       </div>
 
-      <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-      <button class="event__reset-btn" type="reset">Delete</button>
-      <button class="event__rollup-btn" type="button">
+      <button class="event__save-btn  btn  btn--blue" type="submit" ${isDisabled ? 'disabled' : ''}>
+      ${isSaving ? 'Saving...' : 'Save'}</button>
+      <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>${isDeleting ? 'Deleting...' : 'Delete'}</button>
+      <button class="event__rollup-btn" type="button" ${isDisabled ? 'disabled' : ''}>
         <span class="visually-hidden">Open event</span>
       </button>
     </header>
     <section class="event__details">
-      ${offersType(offers)}
+      ${offersType(offers, isDisabled)}
       ${createDestinationMarkup(destinationInfo)}
   </form>
   </li>`;
@@ -141,7 +137,9 @@ export default class EditPoint extends SmartView {
   }
 
   getTemplate() {
-    const destinationNames = getDestinationNames(this._storage.getDestinations());
+    const destinationNames = getDestinationNames(
+      this._storage.getDestinations(),
+    );
 
     const typePoints = gettypePoints(this._storage.getOffers());
 
@@ -160,8 +158,7 @@ export default class EditPoint extends SmartView {
   _setInnerHandlers() {
     this.getElement()
       .querySelectorAll('input[type=radio]')
-      .forEach((item) =>
-        item.addEventListener('change', this._radioInputHandler),
+      .forEach((item) => item.addEventListener('change', this._radioInputHandler),
       );
 
     this.getElement()
@@ -181,7 +178,7 @@ export default class EditPoint extends SmartView {
 
   _offersChangeHandler(evt) {
     evt.preventDefault();
-    this._data.offers.forEach((item, index) =>  {
+    this._data.offers.forEach((item, index) => {
       item.id = index + 1;
     });
 
@@ -269,7 +266,11 @@ export default class EditPoint extends SmartView {
   }
 
   _destinationInputHandler(evt) {
-    if (!getDestinationNames(this._storage.getDestinations()).includes(evt.target.value)) {
+    if (
+      !getDestinationNames(this._storage.getDestinations()).includes(
+        evt.target.value,
+      )
+    ) {
       evt.target.setCustomValidity('Choose one of the suggested directions');
     } else {
       evt.target.setCustomValidity('');
@@ -298,7 +299,7 @@ export default class EditPoint extends SmartView {
       evt.target.setCustomValidity('');
       this.updateData(
         {
-          basePrice: evt.target.value,
+          basePrice: +evt.target.value,
         },
         true,
       );
@@ -344,11 +345,18 @@ export default class EditPoint extends SmartView {
 
   static parsePointToState(point) {
     return Object.assign({}, point, {
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false,
     });
   }
 
   static parseStateToPoint(data) {
     data = Object.assign({}, data);
+
+    delete data.isDisabled;
+    delete data.isSaving;
+    delete data.isDeleting;
 
     return data;
   }

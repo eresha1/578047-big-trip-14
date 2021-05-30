@@ -62,7 +62,7 @@ export default class Points extends Observer {
       point,
       {
         basePrice: point.base_price,
-        isFavourite: point.is_favorite,
+        isFavorite: point.is_favorite,
         startTime: point.date_from !== null ? new Date(point.date_from) : point.date_from,
         endTime: point.adaptedPoint !== null ? new Date(point.date_to) : point.date_to,
         destinationInfo: point.destination,
@@ -84,17 +84,17 @@ export default class Points extends Observer {
       point,
       {
         'base_price': point.basePrice,
-        'is_favorite': point.isFavourite,
-        'date_from': point.startTime.toISOString(),
-        'date_to': point.endTime.toISOString(),
+        'is_favorite': point.isFavorite,
+        'date_from': point.startTime instanceof Date ? point.startTime.toISOString() : null,
+        'date_to': point.endTime instanceof Date ? point.endTime.toISOString() : null,
         'destination': point.destinationInfo,
       },
     );
 
-    delete adaptedPoint.price;
-    delete adaptedPoint.isFavourite;
-    delete adaptedPoint.startDate;
-    delete adaptedPoint.endDate;
+    delete adaptedPoint.basePrice;
+    delete adaptedPoint.isFavorite;
+    delete adaptedPoint.startTime;
+    delete adaptedPoint.endTime;
     delete adaptedPoint.destinationInfo;
 
     return adaptedPoint;

@@ -58,17 +58,18 @@ export const UpdateType = {
 };
 
 export const EMPTY_POINT = {
+  id: '',
   type: 'bus',
   offers: [],
+  basePrice: '',
+  isFavorite: false,
   destinationInfo: {
     name: '',
     description: '',
     pictures: [],
   },
-  dateFrom: new Date,
-  dateTo: new Date,
-  basePrice: '',
-  isFavorite: false,
+  startTime: new Date,
+  endTime: new Date,
 };
 
 export const BAR_HEIGHT = 55;

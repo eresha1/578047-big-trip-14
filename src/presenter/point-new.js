@@ -2,7 +2,7 @@ import EditPointView from '../view/edit-point.js';
 
 import { RenderPosition, render, remove } from '../utils/render.js';
 import {UserAction, UpdateType, EMPTY_POINT} from '../utils/const.js';
-import {generateID} from '../utils/random.js';
+// import {generateID} from '../utils/random.js';
 
 
 export default class PointNew {
@@ -45,11 +45,32 @@ export default class PointNew {
     document.removeEventListener('keydown', this._escKeyDownHandler);
   }
 
+  setSaving() {
+    this._newPointComponent.updateData({
+      isDisabled: true,
+      isSaving: true,
+    });
+  }
+
+  setAborting() {
+    const resetFormState = () => {
+      this._newPointComponent.updateData({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this._newPointComponent.shake(resetFormState);
+  }
+
+
   _handleFormSubmit(point) {
     this._changeData(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
-      Object.assign({id: generateID()}, point),
+      // Object.assign({id: generateID()}, point),
+      point,
     );
 
     this.destroy();
