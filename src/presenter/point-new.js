@@ -52,6 +52,19 @@ export default class PointNew {
     });
   }
 
+  setAborting() {
+    const resetFormState = () => {
+      this._newPointComponent.updateData({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this._newPointComponent.shake(resetFormState);
+  }
+
+
   _handleFormSubmit(point) {
     this._changeData(
       UserAction.ADD_POINT,

@@ -1,30 +1,22 @@
-import SmartView from "./smart.js";
-// import { typePoints, DESTINATION } from '../mock/const.js';
-// import { storage } from '../main.js';
-
-import { humanizeFullDate } from "../utils/time-format";
-// import { getDestinationsList, offersList } from '../mock/point.js';
+import SmartView from './smart.js';
+import { humanizeFullDate } from '../utils/time-format';
 import {
   getPossibleOffers,
   getDestinationNames,
   gettypePoints,
-} from "../utils/common.js";
+} from '../utils/common.js';
 import {
   createInputTypeItemMarkup,
   createOptionValueMarkup,
   offersType,
   createDestinationMarkup,
-} from "./points.js";
-import he from "he";
-import flatpickr from "flatpickr";
-import "../../node_modules/flatpickr/dist/flatpickr.min.css";
+} from './points.js';
+import he from 'he';
+import flatpickr from 'flatpickr';
+import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 const getTypeImage = (type) =>
   `<img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon ${type}">`;
-// const getTypeImage = (type) =>
-//   type
-//     ? `<img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon ${type}">`
-//     : '';
 
 const createEditPointTemplate = (data, destinationNames, typePoints) => {
   const {
@@ -59,7 +51,6 @@ const createEditPointTemplate = (data, destinationNames, typePoints) => {
         <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${id}" type="checkbox" ${
     isDisabled ? "disabled" : ""
   }>
-
         <div class="event__type-list">
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Event type</legend>

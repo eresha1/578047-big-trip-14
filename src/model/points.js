@@ -75,8 +75,6 @@ export default class Points extends Observer {
     delete adaptedPoint.date_to;
     delete adaptedPoint.destination;
 
-    console.log(adaptedPoint)
-
     return adaptedPoint;
   }
 
@@ -99,7 +97,6 @@ export default class Points extends Observer {
     delete adaptedPoint.endTime;
     delete adaptedPoint.destinationInfo;
 
-    console.log(adaptedPoint)
     return adaptedPoint;
   }
 }
