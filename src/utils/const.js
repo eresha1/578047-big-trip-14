@@ -65,8 +65,8 @@ export const EMPTY_POINT = {
     description: '',
     pictures: [],
   },
-  dateFrom: new Date,
-  dateTo: new Date,
+  startTime: new Date,
+  endTime: new Date,
   basePrice: '',
   isFavorite: false,
 };
