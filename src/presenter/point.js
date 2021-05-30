@@ -9,6 +9,11 @@ const Mode = {
   EDITING: 'EDITING',
 };
 
+export const State = {
+  SAVING: 'SAVING',
+  DELETING: 'DELETING',
+};
+
 export default class Point {
   constructor(pointListContainer, changeData, changeMode, storage) {
     this._pointListContainer = pointListContainer;
@@ -55,6 +60,7 @@ export default class Point {
 
     if (this._mode === Mode.EDITING) {
       replace(this._editPointComponent, prevEditPointComponent);
+      this._mode = Mode.DEFAULT;
     }
 
     remove(prevPointComponent);
@@ -64,6 +70,23 @@ export default class Point {
   destroy() {
     remove(this._pointComponent);
     remove(this._editPointComponent);
+  }
+
+  setViewState(state) {
+    switch (state) {
+      case State.SAVING:
+        this._editPointComponent.updateData({
+          isDisabled: true,
+          isSaving: true,
+        });
+        break;
+      case State.DELETING:
+        this._editPointComponent.updateData({
+          isDisabled: true,
+          isDeleting: true,
+        });
+        break;
+    }
   }
 
   _replacePointToForm() {
@@ -108,7 +131,7 @@ export default class Point {
       UpdateType.MINOR,
       update,
     );
-    this._replaceFormToPoint();
+    // this._replaceFormToPoint();
   }
 
   _handleDeleteClick(point) {
