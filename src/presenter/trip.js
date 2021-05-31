@@ -15,14 +15,7 @@ import { SortType, UpdateType, UserAction } from '../utils/const.js';
 import {filter} from '../utils/filter.js';
 
 export default class Trip {
-  constructor(
-    headerContainer,
-    mainContainer,
-    pointsModel,
-    filterModel,
-    api,
-    storage,
-  ) {
+  constructor(headerContainer, mainContainer, pointsModel, filterModel, api, storage) {
     this._pointsModel = pointsModel;
     this._filterModel = filterModel;
     this._headerContainer = headerContainer;

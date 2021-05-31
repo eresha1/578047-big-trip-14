@@ -71,5 +71,4 @@ export default class Filter {
       input.disabled = true;
     });
   }
-
 }

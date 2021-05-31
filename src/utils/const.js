@@ -18,7 +18,6 @@ export const SortType = {
   OFFERS: 'offers',
 };
 
-
 export const SortsTitle = [
   {
     title: 'day',
@@ -73,3 +72,5 @@ export const EMPTY_POINT = {
 };
 
 export const BAR_HEIGHT = 55;
+
+export const SHAKE_ANIMATION_TIMEOUT = 600;

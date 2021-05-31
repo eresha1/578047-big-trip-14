@@ -49,7 +49,6 @@ export const getPointPast = (endTime) => {
   return dayjs().diff(dayjs(endTime)) > 0;
 };
 
-
 export const getPossibleOffers = (type, allOffers) => {
   let offers = [];
   allOffers.forEach((item) => {
@@ -71,3 +70,4 @@ export const gettypePoints = (offers) => {
     return item.type;
   });
 };
+
