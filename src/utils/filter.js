@@ -1,5 +1,4 @@
 import {FilterType} from '../utils/const';
-// import {getPointFuture, getPointPast} from '../utils/common.js';
 import dayjs from 'dayjs';
 
 export const filter = {

@@ -143,7 +143,6 @@ export default class Point {
       UpdateType.MINOR,
       update,
     );
-    // this._replaceFormToPoint();
   }
 
   _handleDeleteClick(point) {

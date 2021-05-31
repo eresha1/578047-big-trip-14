@@ -45,16 +45,12 @@ const handleMenuClick = (menuItem) => {
   navigationComponent.setMenuItem(menuItem);
   switch (menuItem) {
     case NavigationItem.TABLE:
-      // tripPresenter.init();
-      // statsComponent.hide('visually-hidden');
       remove(statsComponent);
       tripPresenter.show();
       filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
       break;
     case NavigationItem.STATS:
       tripPresenter.hide();
-      // tripPresenter.destroy();
-      // filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
       filterPresenter.disable();
       statsComponent = new StatsView(pointsModel.getPoints());
       render(pageContainerElement, statsComponent, RenderPosition.BEFORE_END);
