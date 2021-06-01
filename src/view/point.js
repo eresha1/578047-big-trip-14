@@ -101,7 +101,7 @@ export default class Point extends AbstractView {
       .querySelector('.event__favorite-btn')
       .addEventListener('click', this._favoriteClickHandler);
   }
-  
+
   _btnClickHandler(evt) {
     evt.preventDefault();
     this._callback.btnClick();

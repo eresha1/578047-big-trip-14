@@ -148,7 +148,7 @@ export default class Point {
     );
   }
 
-  _escKeyDownHandler(evt) { 
+  _escKeyDownHandler(evt) {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       this._editPointComponent.reset(this._point);
       this._replaceFormToPoint();

@@ -3,12 +3,11 @@ import {getInfoDate} from '../utils/time-format.js';
 
 const createInfoTitleMarkup = (points) => {
   return points.length > 3
-    ? points[0].destinationInfo.name +
-        "&nbsp;&mdash;&nbsp;&hellip;&nbsp;&mdash;&nbsp;" +
-        points[points.length - 1].destinationInfo.name
-    : points
-        .map((point) => point.destinationInfo.name)
-        .join("&nbsp;&mdash;&nbsp;");
+    ?  `${points[0].destinationInfo.name} &mdash;&nbsp;&hellip;&nbsp;&mdash; ${points[points.length - 1].destinationInfo.name}`
+    :
+    points
+      .map((point) => point.destinationInfo.name)
+      .join('&nbsp;&mdash;&nbsp;');
 };
 
 const createInfoDatesMarkup = (points) => {

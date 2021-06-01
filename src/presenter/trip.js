@@ -41,11 +41,7 @@ export default class Trip {
     this._handleModeChange = this._handleModeChange.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
-    this._pointNewPresenter = new PointNewPresenter(
-      this._pointsListComponent,
-      this._handleViewAction,
-      storage
-    );
+    this._pointNewPresenter = new PointNewPresenter(this._pointsListComponent, this._handleViewAction, storage);
   }
 
   _getPoints() {
@@ -85,19 +81,15 @@ export default class Trip {
   }
 
   hide() {
-    this._mainContainer.classList.add("trip-events--hidden");
+    this._mainContainer.classList.add('trip-events--hidden');
   }
 
   show() {
-    this._mainContainer.classList.remove("trip-events--hidden");
+    this._mainContainer.classList.remove('trip-events--hidden');
   }
 
   _renderTripInfo(points) {
-    render(
-      this._headerContainer,
-      this._mainInfoComponent,
-      RenderPosition.AFTER_BEGIN
-    );
+    render(this._headerContainer, this._mainInfoComponent, RenderPosition.AFTER_BEGIN);
     this._renderInfo(points);
     this._renderCost(points);
   }
@@ -109,11 +101,7 @@ export default class Trip {
     }
 
     this._costComponent = new CostView(points);
-    render(
-      this._mainInfoComponent,
-      this._costComponent,
-      RenderPosition.BEFORE_END
-    );
+    render(this._mainInfoComponent, this._costComponent, RenderPosition.BEFORE_END);
   }
 
   _renderInfo(points) {
@@ -138,12 +126,7 @@ export default class Trip {
   }
 
   _renderPoint(point) {
-    const pointPresenter = new PointPresenter(
-      this._pointsListComponent,
-      this._handleViewAction,
-      this._handleModeChange,
-      this._storage
-    );
+    const pointPresenter = new PointPresenter(this._pointsListComponent, this._handleViewAction, this._handleModeChange, this._storage);
     pointPresenter.init(point);
     this._pointPresenter[point.id] = pointPresenter;
   }
@@ -154,11 +137,7 @@ export default class Trip {
 
   _renderPointsList() {
     const points = this._getPoints().slice();
-    render(
-      this._mainContainer,
-      this._pointsListComponent,
-      RenderPosition.BEFORE_END
-    );
+    render(this._mainContainer, this._pointsListComponent, RenderPosition.BEFORE_END);
     this._renderPoints(points);
   }
 
@@ -168,19 +147,11 @@ export default class Trip {
   }
 
   _renderLoading() {
-    render(
-      this._boardComponent,
-      this._loadingComponent,
-      RenderPosition.AFTERBEGIN
-    );
+    render(this._boardComponent, this._loadingComponent, RenderPosition.AFTERBEGIN);
   }
 
   _renderListEmpty() {
-    render(
-      this._mainContainer,
-      this._listEmptyComponent,
-      RenderPosition.BEFORE_END
-    );
+    render(this._mainContainer, this._listEmptyComponent, RenderPosition.BEFORE_END);
   }
 
   _renderBoard() {
@@ -202,8 +173,7 @@ export default class Trip {
   _clearBoard(resetSortType = false) {
     this._pointNewPresenter.destroy();
     Object.values(this._pointPresenter).forEach((presenter) =>
-      presenter.destroy()
-    );
+      presenter.destroy());
     this._pointPresenter = {};
 
     remove(this._sortComponent);
@@ -216,7 +186,7 @@ export default class Trip {
       this._currentSortType = SortType.DEFAULT;
     }
   }
-  
+
   _handleSortTypeChange(sortType) {
     if (this._currentSortType === sortType) {
       return;
@@ -230,18 +200,14 @@ export default class Trip {
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.UPDATE_POINT:
-        this._pointPresenter[update.id].setViewState(
-          PointPresenterViewState.SAVING
-        );
+        this._pointPresenter[update.id].setViewState(PointPresenterViewState.SAVING);
         this._api
           .updatePoint(update)
           .then((response) => {
             this._pointsModel.updatePoint(updateType, response);
           })
           .catch(() => {
-            this._pointPresenter[update.id].setViewState(
-              PointPresenterViewState.ABORTING
-            );
+            this._pointPresenter[update.id].setViewState(PointPresenterViewState.ABORTING);
           });
         break;
       case UserAction.ADD_POINT:
@@ -256,9 +222,7 @@ export default class Trip {
           });
         break;
       case UserAction.DELETE_POINT:
-        this._pointPresenter[update.id].setViewState(
-          PointPresenterViewState.DELETING
-        );
+        this._pointPresenter[update.id].setViewState(PointPresenterViewState.DELETING);
 
         this._api
           .deletePoint(update)
@@ -266,9 +230,7 @@ export default class Trip {
             this._pointsModel.deletePoint(updateType, update);
           })
           .catch(() => {
-            this._pointPresenter[update.id].setViewState(
-              PointPresenterViewState.ABORTING
-            );
+            this._pointPresenter[update.id].setViewState(PointPresenterViewState.ABORTING);
           });
         break;
     }
@@ -298,7 +260,6 @@ export default class Trip {
   _handleModeChange() {
     this._pointNewPresenter.destroy();
     Object.values(this._pointPresenter).forEach((presenter) =>
-      presenter.resetView()
-    );
+      presenter.resetView());
   }
 }

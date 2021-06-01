@@ -36,6 +36,10 @@ export default class Navigation extends AbstractView {
 
   _menuClickHandler(evt) {
     evt.preventDefault();
+    if (evt.target.classList.contains('trip-tabs__btn--active') ||
+      !evt.target.classList.contains('trip-tabs__btn')) {
+      return;
+    }
     this._callback.menuClick(evt.target.dataset.menuItem);
   }
 }

@@ -33,7 +33,7 @@ export const getDurationFormat = (duration) => {
   if (duration >= 1440) {
     return (`${days}D ${hours}H ${minutes}M`);
   } else if (duration >= 60) {
-      return `${hours}H ${minutes}M`;
+    return `${hours}H ${minutes}M`;
   } else {
     return `${minutes}M`;
   }
@@ -42,5 +42,8 @@ export const getDurationFormat = (duration) => {
 export const getInfoDate = (startTime, endTime) => {
   const startDate = dayjs(startTime);
   const endDate = dayjs(endTime);
-  return startDate.month() === endDate.month() ? startDate.format('MMM DD') + '&nbsp;&mdash;&nbsp;' + endDate.format('DD') : startDate.format('MMM DD') + '&nbsp;&mdash;&nbsp;' + endDate.format('MMM DD');
+
+  return startDate.month() === endDate.month()
+    ? `${dayjs(startTime).format('MMM DD')} &mdash; ${dayjs(endTime).format('DD')}`
+    : `${dayjs(startTime).format('MMM DD')} &mdash; ${dayjs(endTime).format('MMM DD')}`;
 };
