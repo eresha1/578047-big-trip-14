@@ -41,7 +41,6 @@ export default class Api {
       .then(Api.toJSON);
   }
 
-
   getAllData() {
     return Promise.all([
       this.getDestinations(),

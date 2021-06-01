@@ -26,7 +26,6 @@ const addEventButton = headerElement.querySelector('.trip-main__event-add-btn');
 const storage = new Storage();
 const api = new Api(END_POINT, AUTHORIZATION, storage);
 
-
 const pointsModel = new PointsModel();
 const filterModel = new FilterModel();
 

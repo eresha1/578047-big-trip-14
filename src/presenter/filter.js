@@ -19,23 +19,6 @@ export default class Filter {
     this._filterModel.addObserver(this._handleModelEvent);
   }
 
-  init() {
-    const filters = this._getFilters();
-    const prevFilterComponent = this._filterComponent;
-
-    this._filterComponent = new FilterView(filters, this._filterModel.getFilter());
-
-    this._filterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
-
-    if (prevFilterComponent === null) {
-      render(this._filterContainer, this._filterComponent, RenderPosition.BEFORE_END);
-      return;
-    }
-
-    replace(this._filterComponent, prevFilterComponent);
-    remove(prevFilterComponent);
-  }
-
   _getFilters() {
     return [
       {
@@ -53,6 +36,30 @@ export default class Filter {
     ];
   }
 
+  init() {
+    const filters = this._getFilters();
+    const prevFilterComponent = this._filterComponent;
+
+    this._filterComponent = new FilterView(filters, this._filterModel.getFilter());
+
+    this._filterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
+
+    if (prevFilterComponent === null) {
+      render(this._filterContainer, this._filterComponent, RenderPosition.BEFORE_END);
+      return;
+    }
+
+    replace(this._filterComponent, prevFilterComponent);
+    remove(prevFilterComponent);
+  }
+
+  disable() {
+    const inputs = this._filterComponent.getElement().querySelectorAll('.trip-filters__filter-input');
+    inputs.forEach((input) => {
+      input.disabled = true;
+    });
+  }
+
   _handleModelEvent() {
     this.init();
   }
@@ -61,14 +68,6 @@ export default class Filter {
     if (this._filterModel.getFilter() === filterType) {
       return;
     }
-
     this._filterModel.setFilter(UpdateType.MAJOR, filterType);
-  }
-
-  disable() {
-    const inputs = this._filterComponent.getElement().querySelectorAll('.trip-filters__filter-input');
-    inputs.forEach((input) => {
-      input.disabled = true;
-    });
   }
 }

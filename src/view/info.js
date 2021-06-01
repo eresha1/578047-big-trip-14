@@ -2,18 +2,13 @@ import AbstractView  from '../view/abstract.js';
 import {getInfoDate} from '../utils/time-format.js';
 
 const createInfoTitleMarkup = (points) => {
-  let route = '';
-  if (points.length > 3) {
-    route =
-      points[0].destinationInfo.name +
-      '&nbsp;&mdash;&nbsp;&hellip;&nbsp;&mdash;&nbsp;' +
-      points[points.length - 1].destinationInfo.name;
-  } else {
-    route = points
-      .map((point) => point.destinationInfo.name)
-      .join('&nbsp;&mdash;&nbsp;');
-  }
-  return route;
+  return points.length > 3
+    ? points[0].destinationInfo.name +
+        "&nbsp;&mdash;&nbsp;&hellip;&nbsp;&mdash;&nbsp;" +
+        points[points.length - 1].destinationInfo.name
+    : points
+        .map((point) => point.destinationInfo.name)
+        .join("&nbsp;&mdash;&nbsp;");
 };
 
 const createInfoDatesMarkup = (points) => {

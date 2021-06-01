@@ -56,6 +56,18 @@ export const UpdateType = {
   INIT: 'INIT',
 };
 
+export const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING',
+  ADDING: 'ADDING',
+};
+
+export const State = {
+  SAVING: 'SAVING',
+  DELETING: 'DELETING',
+  ABORTING: 'ABORTING',
+};
+
 export const EMPTY_POINT = {
   id: '',
   type: 'bus',

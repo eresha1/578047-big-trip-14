@@ -2,18 +2,7 @@ import PointView from '../view/point.js';
 import EditPointView from '../view/edit-point.js';
 
 import { RenderPosition, render, replace, remove } from '../utils/render.js';
-import {UserAction, UpdateType} from '../utils/const.js';
-
-const Mode = {
-  DEFAULT: 'DEFAULT',
-  EDITING: 'EDITING',
-};
-
-export const State = {
-  SAVING: 'SAVING',
-  DELETING: 'DELETING',
-  ABORTING: 'ABORTING',
-};
+import {UserAction, UpdateType, Mode, State} from '../utils/const.js';
 
 export default class Point {
   constructor(pointListContainer, changeData, changeMode, storage) {
@@ -32,6 +21,34 @@ export default class Point {
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+  }
+
+  setViewState(state) {
+    const resetFormState = () => {
+      this._editPointComponent.updateData({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+    switch (state) {
+      case State.SAVING:
+        this._editPointComponent.updateData({
+          isDisabled: true,
+          isSaving: true,
+        });
+        break;
+      case State.DELETING:
+        this._editPointComponent.updateData({
+          isDisabled: true,
+          isDeleting: true,
+        });
+        break;
+      case State.ABORTING:
+        this._pointComponent.shake(resetFormState);
+        this._editPointComponent.shake(resetFormState);
+        break;
+    }
   }
 
   init(point) {
@@ -73,31 +90,9 @@ export default class Point {
     remove(this._editPointComponent);
   }
 
-  setViewState(state) {
-    const resetFormState = () => {
-      this._editPointComponent.updateData({
-        isDisabled: false,
-        isSaving: false,
-        isDeleting: false,
-      });
-    };
-    switch (state) {
-      case State.SAVING:
-        this._editPointComponent.updateData({
-          isDisabled: true,
-          isSaving: true,
-        });
-        break;
-      case State.DELETING:
-        this._editPointComponent.updateData({
-          isDisabled: true,
-          isDeleting: true,
-        });
-        break;
-      case State.ABORTING:
-        this._pointComponent.shake(resetFormState);
-        this._editPointComponent.shake(resetFormState);
-        break;
+  resetView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._replaceFormToPoint();
     }
   }
 
@@ -153,17 +148,13 @@ export default class Point {
     );
   }
 
-  _escKeyDownHandler(evt) {
+  _escKeyDownHandler(evt) { 
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       this._editPointComponent.reset(this._point);
       this._replaceFormToPoint();
       document.removeEventListener('keydown', this._escKeyDownHandler);
     }
   }
-
-  resetView() {
-    if (this._mode !== Mode.DEFAULT) {
-      this._replaceFormToPoint();
-    }
-  }
 }
+
+export { State };

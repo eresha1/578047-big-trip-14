@@ -1,5 +1,4 @@
 export const createInputTypeItemMarkup = (types, currentType) => {
-
   return types
     .map((type, id) => {
       const isChecked = (type === currentType)? 'checked':'';

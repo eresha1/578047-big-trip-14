@@ -44,28 +44,8 @@ export default class Trip {
     this._pointNewPresenter = new PointNewPresenter(
       this._pointsListComponent,
       this._handleViewAction,
-      storage,
+      storage
     );
-  }
-
-  init() {
-    this._pointsModel.addObserver(this._handleModelEvent);
-    this._filterModel.addObserver(this._handleModelEvent);
-
-    this._renderBoard();
-  }
-
-  destroy() {
-    this._clearBoard({ resetSortType: true });
-
-    remove(this._pointsListComponent);
-
-    this._pointsModel.removeObserver(this._handleModelEvent);
-    this._filterModel.removeObserver(this._handleModelEvent);
-  }
-
-  createPoint() {
-    this._pointNewPresenter.init();
   }
 
   _getPoints() {
@@ -84,6 +64,159 @@ export default class Trip {
     return filtredPoints;
   }
 
+  createPoint() {
+    this._pointNewPresenter.init();
+  }
+
+  init() {
+    this._pointsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
+
+    this._renderBoard();
+  }
+
+  destroy() {
+    this._clearBoard({ resetSortType: true });
+
+    remove(this._pointsListComponent);
+
+    this._pointsModel.removeObserver(this._handleModelEvent);
+    this._filterModel.removeObserver(this._handleModelEvent);
+  }
+
+  hide() {
+    this._mainContainer.classList.add("trip-events--hidden");
+  }
+
+  show() {
+    this._mainContainer.classList.remove("trip-events--hidden");
+  }
+
+  _renderTripInfo(points) {
+    render(
+      this._headerContainer,
+      this._mainInfoComponent,
+      RenderPosition.AFTER_BEGIN
+    );
+    this._renderInfo(points);
+    this._renderCost(points);
+  }
+
+
+  _renderCost(points) {
+    if (this._costComponent !== null) {
+      this._costComponent = null;
+    }
+
+    this._costComponent = new CostView(points);
+    render(
+      this._mainInfoComponent,
+      this._costComponent,
+      RenderPosition.BEFORE_END
+    );
+  }
+
+  _renderInfo(points) {
+    if (this._infoComponent !== null) {
+      this._infoComponent = null;
+    }
+
+    this._infoComponent = new InfoView(points);
+    render(this._mainInfoComponent, this._infoComponent, RenderPosition.BEFORE_END);
+  }
+
+  _renderSort() {
+    if (this._sortComponent !== null) {
+      this._sortComponent = null;
+    }
+
+    this._sortComponent = new SortingView(this._currentSortType);
+
+    this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
+
+    render(this._mainContainer, this._sortComponent, RenderPosition.BEFORE_END);
+  }
+
+  _renderPoint(point) {
+    const pointPresenter = new PointPresenter(
+      this._pointsListComponent,
+      this._handleViewAction,
+      this._handleModeChange,
+      this._storage
+    );
+    pointPresenter.init(point);
+    this._pointPresenter[point.id] = pointPresenter;
+  }
+
+  _renderPoints(points) {
+    points.forEach((point) => this._renderPoint(point));
+  }
+
+  _renderPointsList() {
+    const points = this._getPoints().slice();
+    render(
+      this._mainContainer,
+      this._pointsListComponent,
+      RenderPosition.BEFORE_END
+    );
+    this._renderPoints(points);
+  }
+
+  _renderPointsSection() {
+    this._renderSort();
+    this._renderPointsList();
+  }
+
+  _renderLoading() {
+    render(
+      this._boardComponent,
+      this._loadingComponent,
+      RenderPosition.AFTERBEGIN
+    );
+  }
+
+  _renderListEmpty() {
+    render(
+      this._mainContainer,
+      this._listEmptyComponent,
+      RenderPosition.BEFORE_END
+    );
+  }
+
+  _renderBoard() {
+    if (this._isLoading) {
+      this._renderLoading();
+      return;
+    }
+    const points = this._getPoints().slice();
+
+    if (points.length === 0) {
+      this._renderListEmpty();
+      return;
+    }
+
+    this._renderTripInfo(points);
+    this._renderPointsSection();
+  }
+
+  _clearBoard(resetSortType = false) {
+    this._pointNewPresenter.destroy();
+    Object.values(this._pointPresenter).forEach((presenter) =>
+      presenter.destroy()
+    );
+    this._pointPresenter = {};
+
+    remove(this._sortComponent);
+    remove(this._listEmptyComponent);
+    remove(this._costComponent);
+    remove(this._infoComponent);
+    remove(this._loadingComponent);
+
+    if (resetSortType) {
+      this._currentSortType = SortType.DEFAULT;
+    }
+  }
+  
   _handleSortTypeChange(sortType) {
     if (this._currentSortType === sortType) {
       return;
@@ -98,7 +231,7 @@ export default class Trip {
     switch (actionType) {
       case UserAction.UPDATE_POINT:
         this._pointPresenter[update.id].setViewState(
-          PointPresenterViewState.SAVING,
+          PointPresenterViewState.SAVING
         );
         this._api
           .updatePoint(update)
@@ -107,7 +240,7 @@ export default class Trip {
           })
           .catch(() => {
             this._pointPresenter[update.id].setViewState(
-              PointPresenterViewState.ABORTING,
+              PointPresenterViewState.ABORTING
             );
           });
         break;
@@ -124,7 +257,7 @@ export default class Trip {
         break;
       case UserAction.DELETE_POINT:
         this._pointPresenter[update.id].setViewState(
-          PointPresenterViewState.DELETING,
+          PointPresenterViewState.DELETING
         );
 
         this._api
@@ -134,7 +267,7 @@ export default class Trip {
           })
           .catch(() => {
             this._pointPresenter[update.id].setViewState(
-              PointPresenterViewState.ABORTING,
+              PointPresenterViewState.ABORTING
             );
           });
         break;
@@ -165,119 +298,7 @@ export default class Trip {
   _handleModeChange() {
     this._pointNewPresenter.destroy();
     Object.values(this._pointPresenter).forEach((presenter) =>
-      presenter.resetView(),
+      presenter.resetView()
     );
-  }
-
-  _renderTripInfo(points) {
-    render(this._headerContainer, this._mainInfoComponent, RenderPosition.AFTER_BEGIN);
-    this._renderInfo(points);
-    this._renderCost(points);
-  }
-
-  _renderCost(points) {
-    if (this._costComponent !== null) {
-      this._costComponent = null;
-    }
-
-    this._costComponent = new CostView(points);
-    render(this._mainInfoComponent, this._costComponent, RenderPosition.BEFORE_END);
-  }
-
-  _renderInfo(points) {
-    if (this._infoComponent !== null) {
-      this._infoComponent = null;
-    }
-
-    this._infoComponent = new InfoView(points);
-    render(this._mainInfoComponent, this._infoComponent, RenderPosition.BEFORE_END);
-  }
-
-  _renderSort() {
-    if (this._sortComponent !== null) {
-      this._sortComponent = null;
-    }
-
-    this._sortComponent = new SortingView(this._currentSortType);
-
-    this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
-
-    render(this._mainContainer, this._sortComponent, RenderPosition.BEFORE_END);
-  }
-
-  _renderPoint(point) {
-    const pointPresenter = new PointPresenter(
-      this._pointsListComponent,
-      this._handleViewAction,
-      this._handleModeChange,
-      this._storage,
-    );
-    pointPresenter.init(point);
-    this._pointPresenter[point.id] = pointPresenter;
-  }
-
-  _renderPoints(points) {
-    points.forEach((point) => this._renderPoint(point));
-  }
-
-  _renderPointsList() {
-    const points = this._getPoints().slice();
-    render(this._mainContainer, this._pointsListComponent, RenderPosition.BEFORE_END);
-    this._renderPoints(points);
-  }
-
-  _renderPointsSection() {
-    this._renderSort();
-    this._renderPointsList();
-  }
-
-  _renderLoading() {
-    render(this._boardComponent, this._loadingComponent, RenderPosition.AFTERBEGIN);
-  }
-
-  _clearBoard(resetSortType = false) {
-    this._pointNewPresenter.destroy();
-    Object.values(this._pointPresenter).forEach((presenter) =>
-      presenter.destroy(),
-    );
-    this._pointPresenter = {};
-
-    remove(this._sortComponent);
-    remove(this._listEmptyComponent);
-    remove(this._costComponent);
-    remove(this._infoComponent);
-    remove(this._loadingComponent);
-
-    if (resetSortType) {
-      this._currentSortType = SortType.DEFAULT;
-    }
-  }
-
-  _renderListEmpty() {
-    render(this._mainContainer, this._listEmptyComponent, RenderPosition.BEFORE_END);
-  }
-
-  _renderBoard() {
-    if (this._isLoading) {
-      this._renderLoading();
-      return;
-    }
-    const points = this._getPoints().slice();
-
-    if (points.length === 0) {
-      this._renderListEmpty();
-      return;
-    }
-
-    this._renderTripInfo(points);
-    this._renderPointsSection();
-  }
-
-  hide() {
-    this._mainContainer.classList.add('trip-events--hidden');
-  }
-
-  show() {
-    this._mainContainer.classList.remove('trip-events--hidden');
   }
 }

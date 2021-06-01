@@ -25,14 +25,7 @@ const createOffersTemplate = (point) => {
 };
 
 const createPointTemplate = (point) => {
-  const {
-    type,
-    startTime,
-    endTime,
-    basePrice,
-    destinationInfo,
-    isFavorite,
-  } = point;
+  const {type, startTime, endTime, basePrice, destinationInfo, isFavorite} = point;
 
   const icon = type.toLowerCase();
   const dateStart = humanizeShortDate(startTime);
@@ -95,16 +88,6 @@ export default class Point extends AbstractView {
     return createPointTemplate(this._point);
   }
 
-  _btnClickHandler(evt) {
-    evt.preventDefault();
-    this._callback.btnClick();
-  }
-
-  _favoriteClickHandler(evt) {
-    evt.preventDefault();
-    this._callback.favoriteClick();
-  }
-
   setRollupBtnClickHandler(callback) {
     this._callback.btnClick = callback;
     this.getElement()
@@ -117,6 +100,16 @@ export default class Point extends AbstractView {
     this.getElement()
       .querySelector('.event__favorite-btn')
       .addEventListener('click', this._favoriteClickHandler);
+  }
+  
+  _btnClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.btnClick();
+  }
+
+  _favoriteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.favoriteClick();
   }
 }
 

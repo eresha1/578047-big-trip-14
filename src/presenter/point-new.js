@@ -1,7 +1,7 @@
 import EditPointView from '../view/edit-point.js';
 
 import { RenderPosition, render, remove } from '../utils/render.js';
-import {UserAction, UpdateType, EMPTY_POINT} from '../utils/const.js';
+import {UserAction, UpdateType, Mode, EMPTY_POINT} from '../utils/const.js';
 
 export default class PointNew {
   constructor(pointListContainer, changeData, storage) {
@@ -11,36 +11,13 @@ export default class PointNew {
 
     this._newPointComponent = null;
 
+    this._mode = Mode.ADDING;
+
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
     this._handleFormClick = this._handleFormClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
 
-  }
-
-  init() {
-    if (this._newPointComponent !== null) {
-      return;
-    }
-    this._newPointComponent = new EditPointView(EMPTY_POINT, this._storage);
-    this._newPointComponent.setFormSubmitHandler(this._handleFormSubmit);
-    this._newPointComponent.setDeleteClickHandler(this._handleDeleteClick);
-    this._newPointComponent.setFormRollupBtnClickHandler(this._handleFormClick);
-
-    render(this._pointListContainer, this._newPointComponent, RenderPosition.AFTER_BEGIN);
-
-    document.addEventListener('keydown', this._escKeyDownHandler);
-  }
-
-  destroy() {
-    if (this._newPointComponent === null) {
-      return;
-    }
-
-    remove(this._newPointComponent);
-    this._newPointComponent = null;
-    document.querySelector('.trip-main__event-add-btn').disabled = false;
-    document.removeEventListener('keydown', this._escKeyDownHandler);
   }
 
   setSaving() {
@@ -60,6 +37,32 @@ export default class PointNew {
     };
 
     this._newPointComponent.shake(resetFormState);
+  }
+
+
+  init() {
+    if (this._newPointComponent !== null) {
+      return;
+    }
+    this._newPointComponent = new EditPointView(EMPTY_POINT, this._storage, this._mode);
+    this._newPointComponent.setFormSubmitHandler(this._handleFormSubmit);
+    this._newPointComponent.setDeleteClickHandler(this._handleDeleteClick);
+    this._newPointComponent.setFormRollupBtnClickHandler(this._handleFormClick);
+
+    render(this._pointListContainer, this._newPointComponent, RenderPosition.AFTER_BEGIN);
+
+    document.addEventListener('keydown', this._escKeyDownHandler);
+  }
+
+  destroy() {
+    if (this._newPointComponent === null) {
+      return;
+    }
+
+    remove(this._newPointComponent);
+    this._newPointComponent = null;
+    document.querySelector('.trip-main__event-add-btn').disabled = false;
+    document.removeEventListener('keydown', this._escKeyDownHandler);
   }
 
 

@@ -21,6 +21,21 @@ const getCountTypes = (points) => {
   return pointsByType.map((item) => item.length).sort((a, b) => b - a);
 };
 
+const getMoneyByType = (points) => {
+  const pointsByType = makeUniqItemsArr(points);
+  return pointsByType.map((items) => {
+    return items.reduce((acc, item) => acc + item.basePrice, 0);
+  }).sort((a, b) => b - a);
+};
+
+const getTimeByType = (points) => {
+  const pointsByType = makeUniqItemsArr(points);
+  return pointsByType.map((items) => {
+    return items.reduce(
+      (acc, item) => acc + dayjs(item.endTime).diff(item.startTime, 'minute'), 0);
+  }).sort((a, b) => b - a);
+};
+
 export const renderTypeChart = (typeCtx, points) => {
   const uniqTypes = makeUniqItemsType(points);
   const typesCount = getCountTypes(points);
@@ -98,13 +113,6 @@ export const renderTypeChart = (typeCtx, points) => {
       },
     },
   });
-};
-
-const getMoneyByType = (points) => {
-  const pointsByType = makeUniqItemsArr(points);
-  return pointsByType.map((items) => {
-    return items.reduce((acc, item) => acc + item.basePrice, 0);
-  }).sort((a, b) => b - a);
 };
 
 export const renderMoneyChart = (moneyCtx, points) => {
@@ -185,14 +193,6 @@ export const renderMoneyChart = (moneyCtx, points) => {
       },
     },
   });
-};
-
-const getTimeByType = (points) => {
-  const pointsByType = makeUniqItemsArr(points);
-  return pointsByType.map((items) => {
-    return items.reduce(
-      (acc, item) => acc + dayjs(item.endTime).diff(item.startTime, 'minute'), 0);
-  }).sort((a, b) => b - a);
 };
 
 export const renderTimeChart = (timeCtx, points) => {

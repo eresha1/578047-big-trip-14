@@ -1,5 +1,9 @@
 import dayjs from 'dayjs';
 
+const castomizeTimeFormat = (time) => {
+  return time < 10 ? '0' + time : time;
+};
+
 export const humanizeShortDate = (date) => {
   return dayjs(date).format('MMM DD');
 };
@@ -16,34 +20,22 @@ export const humanizeTime = (date) => {
   return dayjs(date).format('HH:mm');
 };
 
-const castomizeTimeFormat = (time) => {
-  return time < 10 ? '0' + time : time;
-};
-
 export const getDuration = (startTime, endTime) => {
   return dayjs(endTime).diff(startTime, 'minute');
 };
 
 export const getDurationFormat = (duration) => {
-  const day = Math.trunc(duration / 1440);
-  const hours = Math.trunc((duration % 1440) / 60);
-  const minutes = (duration % 1440) % 60;
+  const days = castomizeTimeFormat(Math.trunc(duration / 1440));
+  const hours = castomizeTimeFormat(Math.trunc((duration % 1440) / 60));
+
+  const minutes = castomizeTimeFormat((duration % 1440) % 60);
 
   if (duration >= 1440) {
-    return (
-      castomizeTimeFormat(day) +
-      'D ' +
-      castomizeTimeFormat(hours) +
-      'H ' +
-      castomizeTimeFormat(minutes) +
-      'M'
-    );
+    return (`${days}D ${hours}H ${minutes}M`);
   } else if (duration >= 60) {
-    return (
-      castomizeTimeFormat(hours) + 'H ' + castomizeTimeFormat(minutes) + 'M'
-    );
+      return `${hours}H ${minutes}M`;
   } else {
-    return castomizeTimeFormat(minutes) + 'M';
+    return `${minutes}M`;
   }
 };
 
