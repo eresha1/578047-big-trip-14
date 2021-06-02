@@ -6,7 +6,6 @@ export default class Store {
 
   setDestinations(destinations) {
     this._destinations = destinations;
-    // console.log(this._destinations)
   }
 
   getDestinations() {
@@ -15,7 +14,6 @@ export default class Store {
 
   setOffers(offers) {
     this._offers = offers;
-    // offers.forEach((offer) => this._offers.set(offer.type, offer.offers));
   }
 
   getOffers() {

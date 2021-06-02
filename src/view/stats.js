@@ -43,10 +43,6 @@ export default class Statistics extends SmartView {
     return createStatisticsTemplate();
   }
 
-  restoreHandlers() {
-    this._setCharts();
-  }
-
   _setCharts() {
     if (this._moneyChart !== null || this._typeChart !== null || this._timeChart !== null) {
       this._moneyChart = null;
@@ -61,5 +57,9 @@ export default class Statistics extends SmartView {
     this._typeChart = renderTypeChart(typeCtx, this._data);
     this._moneyChart = renderMoneyChart(moneyCtx, this._data);
     this._timeChart = renderTimeChart(timeCtx, this._data);
+  }
+
+  restoreHandlers() {
+    this._setCharts();
   }
 }

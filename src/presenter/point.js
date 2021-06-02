@@ -130,6 +130,7 @@ export default class Point {
   _handleFormClick() {
     this._editPointComponent.reset(this._point);
     this._replaceFormToPoint();
+    document.removeEventListener('keydown', this._escKeyDownHandler);
   }
 
   _handleFormSubmit(update) {
@@ -150,6 +151,7 @@ export default class Point {
 
   _escKeyDownHandler(evt) {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
+      evt.preventDefault();
       this._editPointComponent.reset(this._point);
       this._replaceFormToPoint();
       document.removeEventListener('keydown', this._escKeyDownHandler);

@@ -30,14 +30,9 @@ const pointsModel = new PointsModel();
 const filterModel = new FilterModel();
 
 const navigationComponent = new NavigationView();
-render(navigationElement, navigationComponent, RenderPosition.BEFORE_END);
 
 const tripPresenter = new TripPresenter(headerElement, tripEventsElement, pointsModel, filterModel, api, storage);
 const filterPresenter = new FilterPresenter(filtersElement, pointsModel, filterModel);
-
-filterPresenter.init();
-tripPresenter.init();
-
 let statsComponent = null;
 
 const handleMenuClick = (menuItem) => {
@@ -57,6 +52,11 @@ const handleMenuClick = (menuItem) => {
       break;
   }
 };
+
+filterPresenter.init();
+tripPresenter.init();
+
+render(navigationElement, navigationComponent, RenderPosition.BEFORE_END);
 
 navigationComponent.setMenuClickHandler(handleMenuClick);
 
