@@ -147,7 +147,7 @@ export default class Trip {
   }
 
   _renderLoading() {
-    render(this._boardComponent, this._loadingComponent, RenderPosition.AFTERBEGIN);
+    render(this._mainContainer, this._loadingComponent, RenderPosition.AFTER_BEGIN);
   }
 
   _renderListEmpty() {
